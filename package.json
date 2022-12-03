@@ -18,8 +18,11 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^6.7.1",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "eslint-config-universe": "^11.1.1",
     "expo": "^47.0.0",
     "expo-status-bar": "~1.4.2",
     "native-base": "3.4.0",
@@ -45,5 +48,13 @@
   },
   "homepage": "https://github.com/GeekyAnts/nativebase-templates#readme",
   "author": "Aditya Jamuar",
-  "private": true
+  "private": true,
+  "eslintConfig": {
+    "extends": "universe/native",
+    "settings": {
+      "import/ignore": [
+        "react-native"
+      ]
+    }
+  }
 }
