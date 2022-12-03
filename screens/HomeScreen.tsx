@@ -24,8 +24,6 @@ export default function HomeScreen() {
         <HStack space={2} alignItems="center">
           <SelectStation />
         </HStack>
-
-        <ToggleDarkMode />
       </VStack>
     </View>
   );
