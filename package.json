@@ -18,7 +18,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-aria/ssr": "^3.4.0",
     "@react-native-community/datetimepicker": "^6.7.1",
+    "@react-native-picker/picker": "^2.4.8",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
@@ -32,6 +34,7 @@
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-svg": "13.4.0",
+    "react-native-ultimate-modal-picker": "^1.1.0",
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {
