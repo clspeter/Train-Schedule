@@ -36,9 +36,7 @@ const StationProvider = ({ children }) => {
   const [arrival, setArrival] = React.useState('南港');
   const [time, setTime] = React.useState('2021-08-01T12:00:00');
   const defalutValue = { departure, setDeparture, arrival, setArrival, time, setTime };
-  return (
-
-
+};
 // extend the theme
 export const theme = extendTheme({ config });
 type MyThemeType = typeof theme;

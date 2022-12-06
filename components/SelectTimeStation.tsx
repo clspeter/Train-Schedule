@@ -56,11 +56,7 @@ export default function SelectStationandTime() {
     <VStack flex={1} justifyContent="center" alignItems="center">
       <HStack>
         <Button
-          onPress={() =>
-            navigation.navigate('SelectDeparture', {
-              setDeparture(departure) {},
-            })
-          }
+          onPress={() => navigation.navigate('SelectDeparture')}
           mr="1"
           alignSelf="center"
           _text={{
