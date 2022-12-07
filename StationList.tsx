@@ -49,4 +49,3 @@ export const StationList = [
     CumulativeDistance: 28.3,
   },
 ];
-export type StationListType = typeof StationList;

@@ -1,4 +1,4 @@
-import React, { useContext, useState, createContext } from 'react';
+import React, { useState, createContext } from 'react';
 
 import { Journey } from './types';
 

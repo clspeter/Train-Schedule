@@ -1,8 +1,5 @@
 import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
-import DateTimePicker, {
-  DateTimePickerEvent,
-  IOSNativeProps,
-} from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -31,8 +28,6 @@ export default function SelectStationandTime() {
   const [showModal, setShowModal] = useState(false);
   const [date, setTime] = useState(new Date(1650707755000));
   const [show, setShow] = useState(false);
-  const [departure, setDeparture] = useState('中壢');
-  const [destination, setDestination] = useState('台北');
   const stationContext = useContext(StationContext);
   const navigation = useNavigation();
   const handleSwapDepartureAndDestination = () => {
@@ -43,7 +38,7 @@ export default function SelectStationandTime() {
     } as Journey);
   };
 
-  const onChange = (event, selectedDate) => {
+  const handleTimeChange = (_event: DateTimePickerEvent, selectedDate: Date) => {
     const currentDate = selectedDate;
     setShow(false);
     setTime(currentDate);
@@ -51,10 +46,6 @@ export default function SelectStationandTime() {
 
   const offset = date.getTimezoneOffset();
   const dateInUTC = new Date(date.getTime() - offset * 60 * 1000);
-
-  const listener = DeviceEventEmitter.addListener('event.setDeparture', (departureData) => {
-    setDeparture(departureData);
-  });
 
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">
@@ -96,6 +87,7 @@ export default function SelectStationandTime() {
           </Pressable>
         </Center>
         <Button
+          onPress={() => navigation.navigate('SelectDestination')}
           ml="1"
           alignSelf="center"
           _text={{
@@ -173,7 +165,9 @@ export default function SelectStationandTime() {
                 locale="zh-TW"
                 minuteInterval={10}
                 is24Hour
-                onChange={onChange}
+                onChange={() => {
+                  handleTimeChange();
+                }}
               />
             </HStack>
             <Modal.Footer>

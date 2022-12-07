@@ -1,26 +1,13 @@
 import { SSRProvider } from '@react-aria/ssr';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  VStack,
-  Box,
-} from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 import React from 'react';
-import { Platform } from 'react-native';
 
 import StationProvider from './StationContext';
-import NativeBaseIcon from './components/NativeBaseIcon';
 import HomeScreen from './screens/HomeScreen';
 import SelectDepartureScreen from './screens/SelectDepartureScreen';
+import SelectDestinationScreen from './screens/SelectDestinationScreen';
 
 // Define the config
 const config = {
@@ -61,7 +48,21 @@ export default function App(): JSX.Element {
                 name="SelectDeparture"
                 component={SelectDepartureScreen}
                 options={{
-                  title: '選擇出發時間',
+                  title: '選擇出發車站',
+                  headerStyle: {
+                    backgroundColor: '#0A1E45',
+                  },
+                  headerTintColor: '#AAAAAA',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="SelectDestination"
+                component={SelectDestinationScreen}
+                options={{
+                  title: '選擇抵達車站',
                   headerStyle: {
                     backgroundColor: '#0A1E45',
                   },
