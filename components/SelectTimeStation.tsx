@@ -20,9 +20,11 @@ import {
   FormControl,
   Modal,
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
+import { StationContext } from '../StationContext';
+import { Journey } from '../types';
 import TimeSelectModal from './TimeSelectModal';
 
 export default function SelectStationandTime() {
@@ -30,13 +32,15 @@ export default function SelectStationandTime() {
   const [date, setTime] = useState(new Date(1650707755000));
   const [show, setShow] = useState(false);
   const [departure, setDeparture] = useState('中壢');
-  const navigation = useNavigation();
   const [destination, setDestination] = useState('台北');
-
+  const stationContext = useContext(StationContext);
+  const navigation = useNavigation();
   const handleSwapDepartureAndDestination = () => {
-    const temp = destination;
-    setDestination(departure);
-    setDeparture(temp);
+    stationContext.setJourney({
+      departure: stationContext.journey.destination,
+      destination: stationContext.journey.departure,
+      time: stationContext.journey.time,
+    } as Journey);
   };
 
   const onChange = (event, selectedDate) => {
@@ -80,7 +84,7 @@ export default function SelectStationandTime() {
               letterSpacing: 'lg',
               textAlign: 'center',
             }}>
-            {departure}
+            {stationContext.journey.departure}
           </Center>
         </Button>
         <Center>
@@ -91,7 +95,7 @@ export default function SelectStationandTime() {
             <Icon as={Ionicons} name="swap-horizontal" size={10} color="white" mt="2" />
           </Pressable>
         </Center>
-        <Box
+        <Button
           ml="1"
           alignSelf="center"
           _text={{
@@ -101,7 +105,7 @@ export default function SelectStationandTime() {
             letterSpacing: 'lg',
             textAlign: 'center',
           }}
-          pt="4"
+          pt="0"
           bg="info.900"
           w="120"
           h="120"
@@ -115,9 +119,9 @@ export default function SelectStationandTime() {
               letterSpacing: 'lg',
               textAlign: 'center',
             }}>
-            {destination}
+            {stationContext.journey.destination}
           </Center>
-        </Box>
+        </Button>
       </HStack>
       <Center>
         <Pressable
