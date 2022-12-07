@@ -1,9 +1,14 @@
-# NativeBase TypeScript Expo Template
+# Train-Schedule
 
-The official NativeBase TypeScript template for [Expo](https://docs.expo.io/)
+iPhone APP that look up train schedule for personal use.  
+Not tested on andorid.
+
+## DEV
 
 ## Usage
 
 ```sh
-expo init my-app --template @native-base/expo-template-typescript
+yarn install
+
+yarn start
 ```
