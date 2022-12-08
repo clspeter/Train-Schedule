@@ -26,7 +26,6 @@ import TimeSelectModal from './TimeSelectModal';
 
 export default function SelectStationandTime() {
   const [showModal, setShowModal] = useState(false);
-  const [date, setTime] = useState(new Date(1650707755000));
   const [show, setShow] = useState(false);
   const stationContext = useContext(StationContext);
   const navigation = useNavigation();
@@ -38,14 +37,13 @@ export default function SelectStationandTime() {
     } as Journey);
   };
 
-  const handleTimeChange = (_event: DateTimePickerEvent, selectedDate: Date) => {
-    const currentDate = selectedDate;
+  const onChange = (_event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     setShow(false);
-    setTime(currentDate);
+    stationContext.setJourney({ ...stationContext.journey, time: selectedDate } as Journey);
   };
 
-  const offset = date.getTimezoneOffset();
-  const dateInUTC = new Date(date.getTime() - offset * 60 * 1000);
+  const offset = stationContext.journey.time.getTimezoneOffset();
+  const dateInUTC = new Date(stationContext.journey.time.getTime() - offset * 60 * 1000);
 
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">
@@ -130,7 +128,7 @@ export default function SelectStationandTime() {
                 fontSize: '2xl',
                 color: 'white',
               }}>
-              {date.toLocaleDateString('zh-TW')}
+              {stationContext.journey.time.toLocaleDateString('zh-TW')}
             </Center>
             <Divider bg="#0A1E45" orientation="vertical" />
             <Center
@@ -139,20 +137,27 @@ export default function SelectStationandTime() {
                 fontSize: '2xl',
                 color: 'white',
               }}>
-              {date.toLocaleTimeString('zh-TW', {
+              {stationContext.journey.time.toLocaleTimeString('zh-TW', {
                 hour12: true,
                 hour: '2-digit',
                 minute: '2-digit',
               })}
             </Center>
           </Flex>
+          {show && (
+            <DateTimePicker
+              display="spinner"
+              testID="dateTimePicker"
+              value={stationContext.journey.time}
+              mode="datetime"
+              locale="zh-TW"
+              minuteInterval={10}
+              is24Hour
+              onChange={onChange}
+            />
+          )}
         </Pressable>
-        <Modal
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-          overlayVisible
-          closeOnOverlayClick
-          backdropVisible>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)} closeOnOverlayClick>
           <Modal.Content width="330">
             <Modal.CloseButton />
             <Modal.Header>選擇時刻</Modal.Header>
@@ -160,14 +165,12 @@ export default function SelectStationandTime() {
               <DateTimePicker
                 display="spinner"
                 testID="dateTimePicker"
-                value={date}
+                value={stationContext.journey.time}
                 mode="datetime"
                 locale="zh-TW"
                 minuteInterval={10}
                 is24Hour
-                onChange={() => {
-                  handleTimeChange();
-                }}
+                onChange={onChange}
               />
             </HStack>
             <Modal.Footer>
