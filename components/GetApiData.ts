@@ -32,7 +32,6 @@ export const getApiToken = async () => {
       client_secret: CLIENT_SECRET,
     },
   }).then((res) => {
-    console.log(res.data.token_type);
     return res.data.access_token;
   });
 };

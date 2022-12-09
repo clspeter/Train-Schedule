@@ -42,12 +42,7 @@ export default function SelectStationandTime() {
     setShow(false);
     stationContext.setJourney({ ...stationContext.journey, time: selectedDate } as Journey);
   };
-  const handleLookUp = () => {
-    const token = getApiToken().then((token) => {
-      console.log(token);
-      stationContext.setApiToken(token);
-    });
-  };
+  const handleLookUp = () => {};
 
   const offset = stationContext.journey.time.getTimezoneOffset();
   const dateInUTC = new Date(stationContext.journey.time.getTime() - offset * 60 * 1000);
