@@ -1,6 +1,7 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 
-import { Journey } from './types';
+import { StationList } from './StationList';
+import { Journey, StatinType } from './types';
 
 type ContextType = {
   journey: Journey;
@@ -15,10 +16,17 @@ export const StationContext = createContext<ContextType>({} as ContextType);
 
 const StationProvider = ({ children }: StationProviderProps) => {
   const [journey, setJourney] = useState<Journey>({
-    departure: '中壢',
-    destination: '北湖',
+    departure: null,
+    destination: null,
     time: new Date(),
   });
+  useEffect(() => {
+    setJourney({
+      ...journey,
+      departure: StationList.find((station) => station.StationID === '1150') as StatinType,
+      destination: StationList.find((station) => station.StationID === '1140') as StatinType,
+    });
+  }, []);
   return (
     <StationContext.Provider value={{ journey, setJourney }}>{children}</StationContext.Provider>
   );

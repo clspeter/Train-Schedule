@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import { StationContext } from '../StationContext';
 import { StationList } from '../StationList';
-import { Journey, StationListType } from '../types';
+import { Journey, StationListType, StatinType } from '../types';
 
 const arrayChunk = (arr: StationListType, column: number) => {
   const array = arr.slice();
@@ -17,7 +17,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
   const stationContext = useContext(StationContext);
   const navigation = useNavigation();
   const notselected = props.selected === 'departure' ? 'destination' : 'departure';
-  const handelSetDeparture = (station: string) => {
+  const handelSetDeparture = (station: StatinType) => {
     if (stationContext.journey[notselected] === station) {
       stationContext.setJourney({
         departure: stationContext.journey.destination,
@@ -40,7 +40,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
           {row.map((col, i) => (
             <Button
               onPress={() => {
-                handelSetDeparture(col.StationName.Zh_tw);
+                handelSetDeparture(col);
               }}
               key={`${col.StationID}2`}
               _text={{
