@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   Text,
   Link,
@@ -13,13 +14,17 @@ import {
   Pressable,
   View,
 } from 'native-base';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Touchable, TouchableOpacity } from 'react-native';
 
+import { StationContext } from '../StationContext';
+import Locaton from '../components/GetLocaton';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
 
 export default function HomeScreen() {
+  const Context = useContext(StationContext);
+  useEffect(() => {}, [Context.apiToken]);
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
       <VStack space={5} alignItems="center" mt="10">
@@ -27,6 +32,8 @@ export default function HomeScreen() {
           <SelectStationandTime />
         </HStack>
       </VStack>
+      <Locaton />
+      <Text>API Token: {Context.apiToken ? 'Readyr' : 'NULL'}</Text>
     </View>
   );
 }

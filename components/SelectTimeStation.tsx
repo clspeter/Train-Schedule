@@ -22,7 +22,7 @@ import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
 import { Journey } from '../types';
-import GetApiData from './GetApiData';
+import { getApiToken } from './GetApiData';
 import TimeSelectModal from './TimeSelectModal';
 
 export default function SelectStationandTime() {
@@ -42,7 +42,13 @@ export default function SelectStationandTime() {
     setShow(false);
     stationContext.setJourney({ ...stationContext.journey, time: selectedDate } as Journey);
   };
-  const handleLookUp = GetApiData();
+  const handleLookUp = () => {
+    const token = getApiToken().then((token) => {
+      console.log(token);
+      stationContext.setApiToken(token);
+    });
+  };
+
   const offset = stationContext.journey.time.getTimezoneOffset();
   const dateInUTC = new Date(stationContext.journey.time.getTime() - offset * 60 * 1000);
 
@@ -187,7 +193,13 @@ export default function SelectStationandTime() {
           </Modal.Content>
         </Modal>
       </Center>
-      <Button mt="5" width="150" rounded="3xl" onPress={handleLookUp}>
+      <Button
+        mt="5"
+        width="150"
+        rounded="3xl"
+        onPress={() => {
+          handleLookUp();
+        }}>
         <HStack space={2} alignItems="center">
           <Icon as={SimpleLineIcons} name="magnifier" size={4} color="white" mt="0.5" />
           <Text fontSize="md">查詢時刻</Text>

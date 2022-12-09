@@ -46,6 +46,5 @@ export const StationList = [
       Zh_tw: '臺北',
       En: 'Taipei',
     },
-    CumulativeDistance: 28.3,
   },
 ];
