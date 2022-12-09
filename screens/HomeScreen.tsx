@@ -33,7 +33,7 @@ export default function HomeScreen() {
         </HStack>
       </VStack>
       <Locaton />
-      <Text>API Token: {Context.apiToken ? 'Readyr' : 'NULL'}</Text>
+      <Text>API Token: {Context.apiToken ? 'Ready' : 'NULL'}</Text>
     </View>
   );
 }
