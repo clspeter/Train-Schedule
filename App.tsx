@@ -8,6 +8,7 @@ import StationProvider from './StationContext';
 import HomeScreen from './screens/HomeScreen';
 import SelectDepartureScreen from './screens/SelectDepartureScreen';
 import SelectDestinationScreen from './screens/SelectDestinationScreen';
+import { RootStackParamList } from './types';
 
 // Define the config
 const config = {
@@ -15,7 +16,7 @@ const config = {
   initialColorMode: 'dark',
 };
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // extend the theme
 export const theme = extendTheme({ config });

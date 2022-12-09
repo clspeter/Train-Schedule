@@ -21,7 +21,7 @@ import React, { useContext, useState } from 'react';
 import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
-import { Journey } from '../types';
+import { Journey, homeScreenProp } from '../types';
 import { getApiToken } from './GetApiData';
 import TimeSelectModal from './TimeSelectModal';
 
@@ -29,7 +29,7 @@ export default function SelectStationandTime() {
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
   const stationContext = useContext(StationContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<homeScreenProp>();
   const handleSwapDepartureAndDestination = () => {
     stationContext.setJourney({
       departure: stationContext.journey.destination,
