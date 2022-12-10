@@ -32,7 +32,6 @@ const StationProvider = ({ children }: StationProviderProps) => {
       destination: StationList.find((station) => station.StationID === '1140') as StatinType,
     });
     getApiToken().then((token) => {
-      console.log(token);
       setApiToken(token);
     });
   }, []);
