@@ -21,8 +21,8 @@ import React, { useContext, useState } from 'react';
 import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
+import { getApiToken } from '../api/apiRequest';
 import { Journey, homeScreenProp } from '../types';
-import { getApiToken } from './GetApiData';
 import TimeSelectModal from './TimeSelectModal';
 
 export default function SelectStationandTime() {

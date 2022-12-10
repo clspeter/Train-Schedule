@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect } from 'react';
 
 import { StationList } from './StationList';
+import { getApiToken } from './api/apiRequest';
 import { Journey, StatinType } from './types';
 
 type ContextType = {
@@ -29,6 +30,10 @@ const StationProvider = ({ children }: StationProviderProps) => {
       ...journey,
       departure: StationList.find((station) => station.StationID === '1150') as StatinType,
       destination: StationList.find((station) => station.StationID === '1140') as StatinType,
+    });
+    getApiToken().then((token) => {
+      console.log(token);
+      setApiToken(token);
     });
   }, []);
   return <StationContext.Provider value={value}>{children}</StationContext.Provider>;
