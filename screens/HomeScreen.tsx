@@ -32,7 +32,7 @@ export default function HomeScreen() {
           <SelectStationandTime />
         </HStack>
       </VStack>
-      <Center>
+      <Center m={5}>
         <Locaton />
         <Text>API Token: {Context.apiToken ? `...${Context.apiToken.slice(-15)}` : 'NULL'}</Text>
       </Center>

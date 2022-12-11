@@ -25,6 +25,7 @@ import { StationContext } from '../StationContext';
 import { apiDailyTimetableOD } from '../api/apiRequest';
 import { Journey, homeScreenProp } from '../types';
 import TimeSelectModal from './TimeSelectModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SelectStationandTime() {
   const [oDTimeTable, setODTimeTable] = useState<any[] | null>([]);
@@ -53,6 +54,7 @@ export default function SelectStationandTime() {
     ).then((res) => {
       setODTimeTable(res.data);
     });
+    navigation.navigate('TimeTable');
   };
 
   const offset = Context.journey.time.getTimezoneOffset();
@@ -214,28 +216,6 @@ export default function SelectStationandTime() {
         </HStack>
       </Button>
       <Center flex={1} bg="blue.200" w="40" h="40" />
-
-      <FlatList
-        width="100%"
-        height={390}
-        data={oDTimeTable}
-        renderItem={({ item }) => (
-          <Box
-            borderBottomWidth="1"
-            borderColor="muted.400"
-            flex={1}
-            pl={['0', '4']}
-            pr={['0', '5']}
-            py="2">
-            <Text>
-              {item.DailyTrainInfo.TrainNo} {item.OriginStopTime.ArrivalTime}
-              {'->'}
-              {item.DestinationStopTime.DepartureTime}
-            </Text>
-          </Box>
-        )}
-        keyExtractor={(item) => item.DailyTrainInfo.TrainNo}
-      />
     </VStack>
     // make a flatlist to show the timetable
   );

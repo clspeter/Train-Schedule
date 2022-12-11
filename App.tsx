@@ -8,6 +8,7 @@ import StationProvider from './StationContext';
 import HomeScreen from './screens/HomeScreen';
 import SelectDepartureScreen from './screens/SelectDepartureScreen';
 import SelectDestinationScreen from './screens/SelectDestinationScreen';
+import TimeTableScreen from './screens/TimeTableScreen';
 import { RootStackParamList } from './types';
 
 // Define the config
@@ -64,6 +65,20 @@ export default function App(): JSX.Element {
                 component={SelectDestinationScreen}
                 options={{
                   title: '選擇抵達車站',
+                  headerStyle: {
+                    backgroundColor: '#0A1E45',
+                  },
+                  headerTintColor: '#AAAAAA',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="TimeTable"
+                component={TimeTableScreen}
+                options={{
+                  title: '時刻表',
                   headerStyle: {
                     backgroundColor: '#0A1E45',
                   },

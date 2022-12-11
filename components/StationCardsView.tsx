@@ -4,8 +4,7 @@ import React, { useContext } from 'react';
 
 import { StationContext } from '../StationContext';
 import { StationList } from '../StationList';
-import { Journey, StationListType, StatinType } from '../types';
-
+import { Journey, StationListType, StatinType, homeScreenProp } from '../types';
 const arrayChunk = (arr: StationListType, column: number) => {
   const array = arr.slice();
   const chunks = [];
@@ -15,7 +14,7 @@ const arrayChunk = (arr: StationListType, column: number) => {
 
 export default function StationCardsView(props: { selected: 'departure' | 'destination' }) {
   const stationContext = useContext(StationContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<homeScreenProp>();
   const notselected = props.selected === 'departure' ? 'destination' : 'departure';
   const handelSetDeparture = (station: StatinType) => {
     if (stationContext.journey[notselected] === station) {
