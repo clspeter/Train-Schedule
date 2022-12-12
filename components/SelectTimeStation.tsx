@@ -23,7 +23,7 @@ import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
 import { apiDailyTimetableOD } from '../api/apiRequest';
-import { Journey, homeScreenProp, oDTimeTable } from '../types';
+import { Journey, homeScreenProp, oDTimeTableType } from '../types';
 import TimeSelectModal from './TimeSelectModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -45,6 +45,15 @@ export default function SelectStationandTime() {
     setShow(false);
     Context.setJourney({ ...Context.journey, time: selectedDate } as Journey);
   };
+  const clearAll = async () => {
+    try {
+      await AsyncStorage.clear();
+    } catch (e) {
+      // clear error
+    }
+
+    console.log('Clear all storage.');
+  };
   const handleLookUp = () => {
     /*  apiDailyTimetableOD(
       Context.apiToken,
@@ -56,31 +65,33 @@ export default function SelectStationandTime() {
     }); */
     navigation.navigate('TimeTable');
   };
-  const storeTable = async (value: oDTimeTable) => {
+  const checkTimeTable = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(
         `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
           Context.journey.departure!.StationID
         }-${Context.journey.destination!.StationID}`
       );
-      //return jsonValue != null ? JSON.parse(jsonValue) : null;
-      if (jsonValue == null)
-        try {
-          await AsyncStorage.setItem(
-            `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-              Context.journey.departure!.StationID
-            }-${Context.journey.destination!.StationID}`,
-            JSON.stringify(value)
-          );
-        } catch (e) {
-          console.log(e);
-        }
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       console.log(e);
     }
   };
 
-  useEffect(() => {
+  const storeTimeTable = async (value: oDTimeTableType) => {
+    try {
+      await AsyncStorage.setItem(
+        `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
+          Context.journey.departure!.StationID
+        }-${Context.journey.destination!.StationID}`,
+        JSON.stringify(value)
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const apiTimeTable = async () => {
     if (Context.journey.departure && Context.journey.destination) {
       apiDailyTimetableOD(
         Context.apiToken,
@@ -88,9 +99,19 @@ export default function SelectStationandTime() {
         Context.journey.destination.StationID,
         Context.journey.time.toLocaleDateString('en-CA')
       ).then((res) => {
-        storeTable(res.data);
+        storeTimeTable(res.data);
       });
     }
+  };
+
+  useEffect(() => {
+    checkTimeTable().then((res) => {
+      if (res) {
+        setODTimeTable(res);
+      } else {
+        apiTimeTable();
+      }
+    });
   }, [Context.journey.time, Context.journey.departure, Context.journey.destination]);
 
   const offset = Context.journey.time.getTimezoneOffset();
@@ -239,6 +260,7 @@ export default function SelectStationandTime() {
           </Modal.Content>
         </Modal>
       </Center>
+
       <Button
         mt="5"
         width="150"
@@ -252,6 +274,17 @@ export default function SelectStationandTime() {
         </HStack>
       </Button>
       <Center flex={1} bg="blue.200" w="40" h="40" />
+      <Button
+        mt="5"
+        width="150"
+        rounded="3xl"
+        onPress={() => {
+          clearAll();
+        }}>
+        <HStack space={2} alignItems="center">
+          <Text fontSize="md">ClearAll</Text>
+        </HStack>
+      </Button>
     </VStack>
     // make a flatlist to show the timetable
   );
