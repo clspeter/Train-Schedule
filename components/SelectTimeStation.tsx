@@ -23,7 +23,7 @@ import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
 import { apiDailyTimetableOD } from '../api/apiRequest';
-import { Journey, homeScreenProp } from '../types';
+import { Journey, homeScreenProp, oDTimeTable } from '../types';
 import TimeSelectModal from './TimeSelectModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -56,7 +56,7 @@ export default function SelectStationandTime() {
     }); */
     navigation.navigate('TimeTable');
   };
-  const storeTable = async (value) => {
+  const storeTable = async (value: oDTimeTable) => {
     try {
       const jsonValue = await AsyncStorage.getItem(
         `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${

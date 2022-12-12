@@ -1,0 +1,122 @@
+[
+  {
+    "TrainDate": "2022-12-10",
+    "DailyTrainInfo": {
+      "TrainNo": "1283",
+      "Direction": 1,
+      "StartingStationID": "0990",
+      "StartingStationName": {
+        "Zh_tw": "松山",
+        "En": "Songshan"
+      },
+      "EndingStationID": "1150",
+      "EndingStationName": {
+        "Zh_tw": "北湖",
+        "En": "Beihu"
+      },
+      "TrainTypeID": "1131",
+      "TrainTypeCode": "6",
+      "TrainTypeName": {
+        "Zh_tw": "區間",
+        "En": "Local Train"
+      },
+      "TripLine": 0,
+      "OverNightStationID": "1130",
+      "WheelchairFlag": 0,
+      "PackageServiceFlag": 0,
+      "DiningFlag": 0,
+      "BikeFlag": 1,
+      "BreastFeedingFlag": 0,
+      "DailyFlag": 1,
+      "ServiceAddedFlag": 0,
+      "SuspendedFlag": 0,
+      "Note": {
+        "Zh_tw": "每日行駛。在富岡跨日。"
+      }
+    },
+    "OriginStopTime": {
+      "StopSequence": 16,
+      "StationID": "1140",
+      "StationName": {
+        "Zh_tw": "新富",
+        "En": "Xinfu"
+      },
+      "ArrivalTime": "00:06",
+      "DepartureTime": "00:07",
+      "SuspendedFlag": 0
+    },
+    "DestinationStopTime": {
+      "StopSequence": 17,
+      "StationID": "1150",
+      "StationName": {
+        "Zh_tw": "北湖",
+        "En": "Beihu"
+      },
+      "ArrivalTime": "00:10",
+      "DepartureTime": "00:18",
+      "SuspendedFlag": 0
+    },
+    "UpdateTime": "2022-12-10T06:08:20+08:00",
+    "VersionID": 30
+  },
+  {
+    "TrainDate": "2022-12-10",
+    "DailyTrainInfo": {
+      "TrainNo": "1395",
+      "Direction": 1,
+      "StartingStationID": "1020",
+      "StartingStationName": {
+        "Zh_tw": "板橋",
+        "En": "Banqiao"
+      },
+      "EndingStationID": "1210",
+      "EndingStationName": {
+        "Zh_tw": "新竹",
+        "En": "Hsinchu"
+      },
+      "TrainTypeID": "1131",
+      "TrainTypeCode": "6",
+      "TrainTypeName": {
+        "Zh_tw": "區間",
+        "En": "Local Train"
+      },
+      "TripLine": 0,
+      "OverNightStationID": "1080",
+      "WheelchairFlag": 0,
+      "PackageServiceFlag": 0,
+      "DiningFlag": 0,
+      "BikeFlag": 0,
+      "BreastFeedingFlag": 0,
+      "DailyFlag": 0,
+      "ServiceAddedFlag": 1,
+      "SuspendedFlag": 0,
+      "Note": {
+        "Zh_tw": "民國111年12月10、11日行駛。在桃園跨日。"
+      }
+    },
+    "OriginStopTime": {
+      "StopSequence": 13,
+      "StationID": "1140",
+      "StationName": {
+        "Zh_tw": "新富",
+        "En": "Xinfu"
+      },
+      "ArrivalTime": "00:29",
+      "DepartureTime": "00:30",
+      "SuspendedFlag": 0
+    },
+    "DestinationStopTime": {
+      "StopSequence": 14,
+      "StationID": "1150",
+      "StationName": {
+        "Zh_tw": "北湖",
+        "En": "Beihu"
+      },
+      "ArrivalTime": "00:32",
+      "DepartureTime": "00:32",
+      "SuspendedFlag": 0
+    },
+    "UpdateTime": "2022-12-10T06:08:20+08:00",
+    "VersionID": 30
+  }
+]
