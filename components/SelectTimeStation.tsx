@@ -18,7 +18,7 @@ import {
   Modal,
   FlatList,
 } from 'native-base';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
@@ -46,16 +46,52 @@ export default function SelectStationandTime() {
     Context.setJourney({ ...Context.journey, time: selectedDate } as Journey);
   };
   const handleLookUp = () => {
-    apiDailyTimetableOD(
+    /*  apiDailyTimetableOD(
       Context.apiToken,
       Context.journey.departure!.StationID,
       Context.journey.destination!.StationID,
       Context.journey.time.toLocaleDateString('en-CA')
     ).then((res) => {
       setODTimeTable(res.data);
-    });
+    }); */
     navigation.navigate('TimeTable');
   };
+  const storeTable = async (value) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(
+        `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
+          Context.journey.departure!.StationID
+        }-${Context.journey.destination!.StationID}`
+      );
+      //return jsonValue != null ? JSON.parse(jsonValue) : null;
+      if (jsonValue == null)
+        try {
+          await AsyncStorage.setItem(
+            `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
+              Context.journey.departure!.StationID
+            }-${Context.journey.destination!.StationID}`,
+            JSON.stringify(value)
+          );
+        } catch (e) {
+          console.log(e);
+        }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    if (Context.journey.departure && Context.journey.destination) {
+      apiDailyTimetableOD(
+        Context.apiToken,
+        Context.journey.departure.StationID,
+        Context.journey.destination.StationID,
+        Context.journey.time.toLocaleDateString('en-CA')
+      ).then((res) => {
+        storeTable(res.data);
+      });
+    }
+  }, [Context.journey.time, Context.journey.departure, Context.journey.destination]);
 
   const offset = Context.journey.time.getTimezoneOffset();
   const dateInUTC = new Date(Context.journey.time.getTime() - offset * 60 * 1000);
