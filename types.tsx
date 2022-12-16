@@ -21,4 +21,9 @@ export type RootStackParamList = {
   TimeTable: undefined;
 };
 
+export type ApiToken = {
+  access_token: string;
+  vaild_time: Date;
+};
+
 export type homeScreenProp = NativeStackNavigationProp<RootStackParamList>;

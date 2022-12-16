@@ -34,7 +34,11 @@ export default function HomeScreen() {
       </VStack>
       <Center m={5}>
         <Locaton />
-        <Text>API Token: {Context.apiToken ? `...${Context.apiToken.slice(-15)}` : 'NULL'}</Text>
+        <Text>
+          API Token:{' '}
+          {Context.apiToken.access_token ? `...${Context.apiToken.access_token.slice(-5)}` : 'NULL'}{' '}
+          | Vaild: {new Date(Context.apiToken.vaild_time).toLocaleString()}
+        </Text>
       </Center>
     </View>
   );

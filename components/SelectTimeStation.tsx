@@ -94,7 +94,7 @@ export default function SelectStationandTime() {
   const apiTimeTable = async () => {
     if (Context.journey.departure && Context.journey.destination) {
       apiDailyTimetableOD(
-        Context.apiToken,
+        Context.apiToken.access_token,
         Context.journey.departure.StationID,
         Context.journey.destination.StationID,
         Context.journey.time.toLocaleDateString('en-CA')
@@ -105,14 +105,21 @@ export default function SelectStationandTime() {
   };
 
   useEffect(() => {
-    checkTimeTable().then((res) => {
-      if (res) {
-        setODTimeTable(res);
-      } else {
-        apiTimeTable();
-      }
-    });
-  }, [Context.journey.time, Context.journey.departure, Context.journey.destination]);
+    if (Context.journey.departure && Context.journey.destination && Context.apiToken.access_token) {
+      checkTimeTable().then((res) => {
+        if (res) {
+          setODTimeTable(res);
+        } else {
+          apiTimeTable();
+        }
+      });
+    }
+  }, [
+    Context.journey.time,
+    Context.journey.departure,
+    Context.journey.destination,
+    Context.apiToken.access_token,
+  ]);
 
   const offset = Context.journey.time.getTimezoneOffset();
   const dateInUTC = new Date(Context.journey.time.getTime() - offset * 60 * 1000);
@@ -280,6 +287,7 @@ export default function SelectStationandTime() {
         rounded="3xl"
         onPress={() => {
           clearAll();
+          console.log(Context.apiToken);
         }}>
         <HStack space={2} alignItems="center">
           <Text fontSize="md">ClearAll</Text>
