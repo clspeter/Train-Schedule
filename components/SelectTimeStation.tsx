@@ -286,13 +286,11 @@ export default function SelectStationandTime() {
         rounded="3xl"
         onPress={() => {
           clearAll();
-          console.log(Context.apiToken);
         }}>
         <HStack space={2} alignItems="center">
-          <Text fontSize="md">ClearAll</Text>
+          <Text fontSize="md">Clear All</Text>
         </HStack>
       </Button>
     </VStack>
-    // make a flatlist to show the timetable
   );
 }
