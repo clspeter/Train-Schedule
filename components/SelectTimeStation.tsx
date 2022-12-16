@@ -51,8 +51,7 @@ export default function SelectStationandTime() {
     } catch (e) {
       // clear error
     }
-
-    console.log('Clear all storage.');
+    console.log('All storage Cleared.');
   };
   const handleLookUp = () => {
     /*  apiDailyTimetableOD(

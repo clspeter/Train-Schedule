@@ -62,13 +62,6 @@ export default function TimeTableScreen() {
 
   useEffect(() => {
     getODTimeTable();
-    console.log(
-      Context.journey.time.toLocaleTimeString('zh-TW', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-    );
   }, []);
   if (isLoaded === false) {
     return (
