@@ -43,6 +43,7 @@ const StationProvider = ({ children }: StationProviderProps) => {
         const vaild_time = new Date(tokenObj.vaild_time);
         console.log(vaild_time.toLocaleString());
         console.log(new Date().toLocaleString());
+        vaild_time.setHours(vaild_time.getHours() - 1);
         if (new Date() < vaild_time) {
           setApiToken(tokenObj);
           console.log('token is valid');
@@ -52,7 +53,7 @@ const StationProvider = ({ children }: StationProviderProps) => {
       getApiToken().then((token) => {
         //get token and set vaild date to 12 hours later
         const vaild_time = new Date();
-        vaild_time.setHours(vaild_time.getHours() + 20);
+        vaild_time.setHours(vaild_time.getHours() + 24);
         setApiToken({
           access_token: token.access_token,
           vaild_time,
