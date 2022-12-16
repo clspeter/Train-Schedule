@@ -24,7 +24,6 @@ import ToggleDarkMode from '../components/ToggleDarkMode';
 
 export default function HomeScreen() {
   const Context = useContext(StationContext);
-  useEffect(() => {}, [Context.apiToken]);
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
       <VStack space={5} alignItems="center" mt="10">

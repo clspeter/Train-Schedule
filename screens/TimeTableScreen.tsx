@@ -1,10 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Box, Text, FlatList, View, HStack, Center, VStack } from 'native-base';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
-import { Fontisto } from '@expo/vector-icons';
+
 import { StationContext } from '../StationContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 import { oDTimeTableType } from '../types';
 
 export default function TimeTableScreen() {

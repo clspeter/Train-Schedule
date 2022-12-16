@@ -1,7 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import React, { useContext, useEffect } from 'react';
-
-import { StationContext } from '../StationContext';
 
 const API_BASE_URL = `https://tdx.transportdata.tw/api/basic`;
 const API_AUTH_URL = `https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token`;

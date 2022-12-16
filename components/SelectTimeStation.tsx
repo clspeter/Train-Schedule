@@ -66,29 +66,31 @@ export default function SelectStationandTime() {
     navigation.navigate('TimeTable');
   };
   const checkTimeTable = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem(
-        `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-          Context.journey.departure!.StationID
-        }-${Context.journey.destination!.StationID}`
-      );
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.log(e);
-    }
+    if (Context.journey.departure && Context.journey.destination)
+      try {
+        const jsonValue = await AsyncStorage.getItem(
+          `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
+            Context.journey.departure.StationID
+          }-${Context.journey.destination.StationID}`
+        );
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+      } catch (e) {
+        console.log(e);
+      }
   };
 
   const storeTimeTable = async (value: oDTimeTableType) => {
-    try {
-      await AsyncStorage.setItem(
-        `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-          Context.journey.departure!.StationID
-        }-${Context.journey.destination!.StationID}`,
-        JSON.stringify(value)
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    if (Context.journey.departure && Context.journey.destination)
+      try {
+        await AsyncStorage.setItem(
+          `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
+            Context.journey.departure.StationID
+          }-${Context.journey.destination.StationID}`,
+          JSON.stringify(value)
+        );
+      } catch (e) {
+        console.log(e);
+      }
   };
 
   const apiTimeTable = async () => {
@@ -120,9 +122,6 @@ export default function SelectStationandTime() {
     Context.journey.destination,
     Context.apiToken.access_token,
   ]);
-
-  const offset = Context.journey.time.getTimezoneOffset();
-  const dateInUTC = new Date(Context.journey.time.getTime() - offset * 60 * 1000);
 
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">
@@ -228,7 +227,7 @@ export default function SelectStationandTime() {
               display="spinner"
               testID="dateTimePicker"
               value={Context.journey.time}
-              // @ts-ignore
+              // @ts-expect-error: Componet type not set
               mode="datetime"
               locale="zh-TW"
               minuteInterval={10}
@@ -246,7 +245,7 @@ export default function SelectStationandTime() {
                 display="spinner"
                 testID="dateTimePicker"
                 value={Context.journey.time}
-                // @ts-ignore
+                // @ts-expect-error: Componet type not set
                 mode="datetime"
                 locale="zh-TW"
                 minuteInterval={10}

@@ -1,10 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, createContext, useEffect } from 'react';
 
 import { StationList } from './StationList';
 import { getApiToken } from './api/apiRequest';
 import { Journey, StatinType, ApiToken } from './types';
-import { getJSDocDeprecatedTag } from 'typescript';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ContextType = {
   apiToken: ApiToken;
@@ -43,7 +42,7 @@ const StationProvider = ({ children }: StationProviderProps) => {
         const vaild_time = new Date(tokenObj.vaild_time);
         console.log(vaild_time.toLocaleString());
         console.log(new Date().toLocaleString());
-        vaild_time.setHours(vaild_time.getHours() - 1);
+        vaild_time.setHours(vaild_time.getHours() - 23); //1 for testind, 1 for production
         if (new Date() < vaild_time) {
           setApiToken(tokenObj);
           console.log('token is valid');
@@ -51,9 +50,9 @@ const StationProvider = ({ children }: StationProviderProps) => {
         }
       }
       getApiToken().then((token) => {
-        //get token and set vaild date to 12 hours later
+        //get token and set vaild time
         const vaild_time = new Date();
-        vaild_time.setHours(vaild_time.getHours() + 24);
+        vaild_time.setHours(vaild_time.getHours() + 1); //1 for testind, 24 for production
         setApiToken({
           access_token: token.access_token,
           vaild_time,
