@@ -38,6 +38,9 @@ export default function HomeScreen() {
           {Context.apiToken.access_token ? `...${Context.apiToken.access_token.slice(-5)}` : 'NULL'}{' '}
           | Vaild: {new Date(Context.apiToken.vaild_time).toLocaleString()}
         </Text>
+        <Text>
+          Train Status Updated Time: {new Date(Context.trainStatus.UpdateTime).toLocaleString()}
+        </Text>
       </Center>
     </View>
   );

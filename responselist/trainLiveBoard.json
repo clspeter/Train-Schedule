@@ -1,0 +1,43 @@
+{
+  "UpdateTime": "2022-12-17T20:03:09+08:00",
+  "UpdateInterval": 30,
+  "SrcUpdateTime": "2022-12-17T20:03:00+08:00",
+  "SrcUpdateInterval": 60,
+  "AuthorityCode": "TRA",
+  "TrainLiveBoards": [
+    {
+      "TrainNo": "2244",
+      "TrainTypeID": "1131",
+      "TrainTypeCode": "6",
+      "TrainTypeName": {
+        "Zh_tw": "區間",
+        "En": "Local Train"
+      },
+      "StationID": "1250",
+      "StationName": {
+        "Zh_tw": "竹南",
+        "En": "Zhunan"
+      },
+      "TrainStationStatus": 2,
+      "DelayTime": 19,
+      "UpdateTime": "2022-12-17T20:02:58+08:00"
+    },
+    {
+      "TrainNo": "2264",
+      "TrainTypeID": "1131",
+      "TrainTypeCode": "6",
+      "TrainTypeName": {
+        "Zh_tw": "區間",
+        "En": "Local Train"
+      },
+      "StationID": "3390",
+      "StationName": {
+        "Zh_tw": "員林",
+        "En": "Yuanlin"
+      },
+      "TrainStationStatus": 2,
+      "DelayTime": 14,
+      "UpdateTime": "2022-12-17T20:02:58+08:00"
+    }
+  ]
+}
