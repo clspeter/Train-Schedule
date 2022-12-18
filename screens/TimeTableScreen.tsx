@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 import { StationContext } from '../StationContext';
-import { oDTimeTableType, TrainLiveBoardType } from '../types';
+import { oDTimeTableType, TrainLiveBoardType, TrainLiveBoardDataType } from '../types';
 
 export default function TimeTableScreen() {
   const [oDtimetable, setODTimeTable] = useState<any[] | null>([]);
@@ -62,14 +62,6 @@ export default function TimeTableScreen() {
     }
   };
 
-  const checkDelayTime = (trainNo: number, trainLiveBoards: TrainLiveBoardType) => {
-    for (const train of trainLiveBoards.TrainLiveBoards) {
-      if (train.TrainNo === trainNo) {
-        return train.delayTime;
-      }
-    }
-    return null;
-  };
   const TravelTime = (props: { train: oDTimeTableType }) => {
     const hoursDiff =
       parseInt(props.train.DestinationStopTime.ArrivalTime.split(':')[0]) -
@@ -92,22 +84,33 @@ export default function TimeTableScreen() {
     }
   };
 
-  const ShowDelayTime = (train) => {
-    const delayTime = checkDelayTime(train.TrainNo, Context.trainStatus.TrainLiveBoards);
-    if (delayTime === null) {
-      return;
+  const checkDelayTime = (trainNo: string, trainLiveBoards: TrainLiveBoardType[]) => {
+    for (const train of trainLiveBoards) {
+      if (train.TrainNo === trainNo) {
+        return train.DelayTime;
+      }
     }
-    if (delayTime === 0) {
+    return null;
+  };
+
+  const ShowDelayTime = (props: { TrainNo: string }) => {
+    const delayTime = checkDelayTime(props.TrainNo, Context.trainStatus.TrainLiveBoards);
+    if (delayTime === null) {
       return (
-        <Text color="white" fontSize="sm">
-          準點
+        <Text alignSelf="center" color="gray.700" fontSize="sm">
+          未發車
         </Text>
       );
-    }
-    if (delayTime > 0) {
+    } else if (delayTime > 0) {
       return (
-        <Text color="red.500" fontSize="sm">
+        <Text alignSelf="center" color="red.500" fontSize="sm">
           慢{delayTime}分
+        </Text>
+      );
+    } else {
+      return (
+        <Text alignSelf="center" color="green.500" fontSize="sm">
+          準點
         </Text>
       );
     }
@@ -174,7 +177,14 @@ export default function TimeTableScreen() {
           </Text>
           <View w={100} h={30} mt={1}>
             <VStack>
-              <Text alignSelf="center">準點</Text>
+              {new Date(Context.journey.time).toLocaleDateString('en-US') ===
+              new Date().toLocaleDateString('en-US') ? (
+                <ShowDelayTime TrainNo={item.DailyTrainInfo.TrainNo} />
+              ) : (
+                <Text alignSelf="center" fontSize="sm">
+                  {' '}
+                </Text>
+              )}
               <SvgArrow color={index >= FlatlistIndex ? 'white' : '#71717a'} />
               <TravelTime train={item} />
             </VStack>
@@ -205,9 +215,9 @@ export default function TimeTableScreen() {
         <FlatList
           ref={flatList}
           viewabilityConfig={viewabilityConfig}
+          removeClippedSubviews={true}
           initialScrollIndex={FlatlistIndex - 1}
           windowSize={21}
-          updateCellsBatchingPeriod={30}
           maxToRenderPerBatch={20}
           initialNumToRender={20}
           refreshing={false}
@@ -221,7 +231,7 @@ export default function TimeTableScreen() {
             });
           }} */
           renderItem={RenderItem}
-          keyExtractor={(item) => item.DailyTrainInfo.TrainNo}
+          keyExtractor={(item) => item.DailyTrainInfo.TrainNo + Context.journey.time}
         />
       </View>
     );

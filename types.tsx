@@ -2,10 +2,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { StationList } from './StationList';
 import oDTimeTableExample from './responselist/oDTimeTableExample.json';
-import trainLiveBoard from './responselist/trainLiveBoard.json';
+import trainLiveBoardData from './responselist/trainLiveBoardData.json';
 
 export type oDTimeTableType = typeof oDTimeTableExample[number];
-export type TrainLiveBoardType = typeof trainLiveBoard;
+export type TrainLiveBoardDataType = typeof trainLiveBoardData;
+export type TrainLiveBoardType = typeof trainLiveBoardData.TrainLiveBoards[0];
 export type StationListType = typeof StationList;
 export type StatinType = StationListType[number];
 

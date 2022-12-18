@@ -3,15 +3,15 @@ import React, { useState, createContext, useEffect } from 'react';
 
 import { StationList } from './StationList';
 import { getApiToken, getTrainStatus } from './api/apiRequest';
-import { Journey, StatinType, ApiToken, TrainLiveBoardType } from './types';
+import { Journey, StatinType, ApiToken, TrainLiveBoardType, TrainLiveBoardDataType } from './types';
 
 type ContextType = {
   apiToken: ApiToken;
   setApiToken: React.Dispatch<React.SetStateAction<ApiToken>>;
   journey: Journey;
   setJourney: React.Dispatch<React.SetStateAction<Journey>>;
-  trainStatus: TrainLiveBoardType;
-  setTrainStatus: React.Dispatch<React.SetStateAction<TrainLiveBoardType>>;
+  trainStatus: TrainLiveBoardDataType;
+  setTrainStatus: React.Dispatch<React.SetStateAction<TrainLiveBoardDataType>>;
 };
 
 type StationProviderProps = {
@@ -21,7 +21,9 @@ type StationProviderProps = {
 export const StationContext = createContext<ContextType>({} as ContextType);
 
 const StationProvider = ({ children }: StationProviderProps) => {
-  const [trainStatus, setTrainStatus] = useState<TrainLiveBoardType>({} as TrainLiveBoardType);
+  const [trainStatus, setTrainStatus] = useState<TrainLiveBoardDataType>(
+    {} as TrainLiveBoardDataType
+  );
   const [apiToken, setApiToken] = useState<ApiToken>({
     access_token: '',
     vaild_time: new Date(),
