@@ -1,34 +1,28 @@
 import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import {
   VStack,
   HStack,
-  Box,
   Center,
   Text,
   Icon,
   Button,
-  Input,
   Pressable,
   Divider,
   Flex,
-  FormControl,
   Modal,
-  FlatList,
 } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
-import { DeviceEventEmitter, View, StyleSheet } from 'react-native';
 
 import { StationContext } from '../StationContext';
 import { apiDailyTimetableOD } from '../api/apiRequest';
 import { Journey, homeScreenProp, oDTimeTableType } from '../types';
-import TimeSelectModal from './TimeSelectModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SelectStationandTime() {
-  const [oDTimeTable, setODTimeTable] = useState<any[] | null>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [oDTimeTable, setODTimeTable] = useState<oDTimeTableType[] | never[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
   const Context = useContext(StationContext);

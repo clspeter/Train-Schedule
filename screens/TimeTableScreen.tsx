@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Box, Text, FlatList, View, HStack, Center, VStack } from 'native-base';
+import { Box, Text, FlatList, View, HStack, VStack } from 'native-base';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 import { StationContext } from '../StationContext';
-import { oDTimeTableType, TrainLiveBoardType, TrainLiveBoardDataType } from '../types';
+import { oDTimeTableType, TrainLiveBoardType } from '../types';
 
 export default function TimeTableScreen() {
-  const [oDtimetable, setODTimeTable] = useState<any[] | null>([]);
+  const [oDtimetable, setODTimeTable] = useState<oDTimeTableType[] | never[]>([]);
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const Context = useContext(StationContext);
@@ -35,8 +35,8 @@ export default function TimeTableScreen() {
     try {
       const value = await AsyncStorage.getItem(
         `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-          Context.journey.departure!.StationID
-        }-${Context.journey.destination!.StationID}`
+          Context.journey.departure?.StationID
+        }-${Context.journey.destination?.StationID}`
       );
       if (value !== null) {
         setODTimeTable(JSON.parse(value));
@@ -209,7 +209,7 @@ export default function TimeTableScreen() {
         <Text>Loading...</Text>
       </View>
     );
-  } else {
+  } else if (oDtimetable) {
     return (
       <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
         <FlatList

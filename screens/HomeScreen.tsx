@@ -1,21 +1,5 @@
-import axios from 'axios';
-import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  VStack,
-  Box,
-  Pressable,
-  View,
-} from 'native-base';
-import React, { useContext, useEffect } from 'react';
-import { Touchable, TouchableOpacity } from 'react-native';
+import { Text, HStack, Center, VStack, View } from 'native-base';
+import React, { useContext } from 'react';
 
 import { StationContext } from '../StationContext';
 import Locaton from '../components/GetLocaton';
