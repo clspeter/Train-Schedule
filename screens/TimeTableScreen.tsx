@@ -71,13 +71,13 @@ export default function TimeTableScreen() {
       parseInt(props.train.OriginStopTime.DepartureTime.split(':')[1]);
     if (minutesDiff < 0) {
       return (
-        <Text color="white" fontSize="sm" alignSelf="center" mt={-5}>
+        <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
           {hoursDiff == 1 ? '' : `${hoursDiff - 1} 時`} {60 + minutesDiff} 分
         </Text>
       );
     } else {
       return (
-        <Text color="white" fontSize="sm" alignSelf="center" mt={-5}>
+        <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
           {hoursDiff == 0 ? '' : `${hoursDiff} 時`} {minutesDiff} 分
         </Text>
       );
@@ -97,19 +97,19 @@ export default function TimeTableScreen() {
     const delayTime = checkDelayTime(props.TrainNo, Context.trainStatus.TrainLiveBoards);
     if (delayTime === null) {
       return (
-        <Text alignSelf="center" color="gray.700" fontSize="sm">
+        <Text alignSelf="center" color="gray.700" fontSize="md">
           未發車
         </Text>
       );
     } else if (delayTime > 0) {
       return (
-        <Text alignSelf="center" color="red.500" fontSize="sm">
+        <Text alignSelf="center" color="red.500" fontSize="md">
           慢{delayTime}分
         </Text>
       );
     } else {
       return (
-        <Text alignSelf="center" color="green.500" fontSize="sm">
+        <Text alignSelf="center" color="green.500" fontSize="md">
           準點
         </Text>
       );

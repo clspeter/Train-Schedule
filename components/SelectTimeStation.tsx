@@ -35,6 +35,15 @@ export default function SelectStationandTime() {
     } as Journey);
   };
 
+  const saveJourney = async () => {
+    try {
+      await AsyncStorage.setItem('journey', JSON.stringify(Context.journey));
+      console.log('saved journey');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const onChange = (_event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     setShow(false);
     Context.setJourney({ ...Context.journey, time: selectedDate } as Journey);
@@ -56,6 +65,7 @@ export default function SelectStationandTime() {
     ).then((res) => {
       setODTimeTable(res.data);
     }); */
+    saveJourney();
     navigation.navigate('TimeTable');
   };
   const checkTimeTable = async () => {

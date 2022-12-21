@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
+import { LocationObject } from 'expo-location';
 import React, { useState, createContext, useEffect } from 'react';
 
-import { StationList } from './StationList';
+import StationList from './responselist/StationList.json';
 import { getApiToken, getTrainStatus } from './api/apiRequest';
-import { Journey, StatinType, ApiToken, TrainLiveBoardType, TrainLiveBoardDataType } from './types';
+import { Journey, StatinType, ApiToken, TrainLiveBoardDataType } from './types';
 
 type ContextType = {
   apiToken: ApiToken;
@@ -33,7 +35,47 @@ const StationProvider = ({ children }: StationProviderProps) => {
     destination: null,
     time: new Date(),
   });
+  const [initalJourney, setInitalJourney] = useState<Journey>({
+    departure: null,
+    destination: null,
+    time: new Date(),
+  });
+
   const value = { apiToken, setApiToken, journey, setJourney, trainStatus, setTrainStatus };
+
+  const loadJourney = async () => {
+    try {
+      const savedDD = await AsyncStorage.getItem('journey');
+      if (savedDD === null) {
+        console.log('no saved journey, set default');
+        setJourney({
+          ...journey,
+          departure: StationList.find((station) => station.StationID === '1150') as StatinType,
+          destination: StationList.find((station) => station.StationID === '1000') as StatinType,
+        });
+        setInitalJourney({
+          ...journey,
+          departure: StationList.find((station) => station.StationID === '1150') as StatinType,
+          destination: StationList.find((station) => station.StationID === '1000') as StatinType,
+        });
+      } else {
+        console.log('saved journey found, load it');
+        const objSavedDD = JSON.parse(savedDD);
+        setJourney({
+          ...journey,
+          departure: objSavedDD.departure,
+          destination: objSavedDD.destination,
+        });
+        setInitalJourney({
+          ...journey,
+          departure: objSavedDD.departure,
+          destination: objSavedDD.destination,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getApiTokenAndSave = () => {
     getApiToken().then((token) => {
@@ -70,23 +112,60 @@ const StationProvider = ({ children }: StationProviderProps) => {
       console.log('token valid until: ' + vaild_time.toLocaleString());
       return;
     }
-    console.log('token not valid, get new token');
+    console.log('token invalid, get new token');
     getApiTokenAndSave();
+  };
+
+  const findNearestStation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      return;
+    }
+    const location = await Location.getLastKnownPositionAsync({});
+    if (location === null) {
+      console.log('location not found');
+      return;
+    } else {
+      const { latitude, longitude } = location.coords;
+      const nearestStation = StationList.reduce((prev, curr) => {
+        const prevDistance = Math.sqrt(
+          Math.pow(prev.StationPosition.PositionLat - latitude, 2) +
+            Math.pow(prev.StationPosition.PositionLon - longitude, 2)
+        );
+        const currDistance = Math.sqrt(
+          Math.pow(curr.StationPosition.PositionLat - latitude, 2) +
+            Math.pow(curr.StationPosition.PositionLon - longitude, 2)
+        );
+        return prevDistance < currDistance ? prev : curr;
+      });
+      if (nearestStation.StationID === initalJourney.departure?.StationID) return;
+      else if (nearestStation.StationID === initalJourney.destination?.StationID)
+        setJourney({
+          ...initalJourney,
+          departure: nearestStation,
+          destination: initalJourney.departure,
+        });
+      else setJourney({ ...initalJourney, departure: nearestStation });
+    }
   };
 
   useEffect(() => {
     checkAndUpdateToken();
-    setJourney({
-      ...journey,
-      departure: StationList.find((station) => station.StationID === '1150') as StatinType,
-      destination: StationList.find((station) => station.StationID === '1140') as StatinType,
-    });
+    loadJourney();
   }, []);
+
+  useEffect(() => {
+    if (initalJourney.departure === null) {
+      return;
+    }
+    findNearestStation();
+  }, [initalJourney]);
 
   const updateTrainStatus = () => {
     getTrainStatus(apiToken.access_token).then((status) => {
       setTrainStatus(status.data);
-      console.log('live update time: ' + new Date(status.data.UpdateTime).toLocaleString());
+      console.log('live status update time: ' + new Date(status.data.UpdateTime).toLocaleString());
     });
   };
 

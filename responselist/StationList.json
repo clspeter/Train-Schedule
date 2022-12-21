@@ -1,0 +1,162 @@
+[
+  {
+    "StationUID": "TRA-0990",
+    "StationID": "0990",
+    "StationName": {
+      "Zh_tw": "松山",
+      "En": "Songshan"
+    },
+    "StationPosition": {
+      "PositionLon": 121.57807,
+      "PositionLat": 25.04936
+    },
+    "StationAddress": "11088臺北市信義區永吉里松山路 11 號B1",
+    "StationPhone": "02-27673819",
+    "StationClass": "1",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/0990"
+  },
+  {
+    "StationUID": "TRA-1000",
+    "StationID": "1000",
+    "StationName": {
+      "Zh_tw": "臺北",
+      "En": "Taipei"
+    },
+    "StationPosition": {
+      "PositionLon": 121.51784,
+      "PositionLat": 25.04771
+    },
+    "StationAddress": "100230臺北市中正區黎明里北平西路 3 號",
+    "StationPhone": "02-23713558",
+    "StationClass": "0",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1000"
+  },
+  {
+    "StationUID": "TRA-1080",
+    "StationID": "1080",
+    "StationName": {
+      "Zh_tw": "桃園",
+      "En": "Taoyuan"
+    },
+    "StationPosition": {
+      "PositionLon": 121.31399,
+      "PositionLat": 24.98941
+    },
+    "StationAddress": "33041桃園市桃園區武陵里中正路 1 號",
+    "StationPhone": "03-3767050",
+    "StationClass": "1",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1080"
+  },
+  {
+    "StationUID": "TRA-1090",
+    "StationID": "1090",
+    "StationName": {
+      "Zh_tw": "內壢",
+      "En": "Neili"
+    },
+    "StationPosition": {
+      "PositionLon": 121.25814,
+      "PositionLat": 24.97287
+    },
+    "StationAddress": "32072桃園市中壢區中原里中華路一段 267 號",
+    "StationPhone": "03-4559725",
+    "StationClass": "3",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1090"
+  },
+  {
+    "StationUID": "TRA-1100",
+    "StationID": "1100",
+    "StationName": {
+      "Zh_tw": "中壢",
+      "En": "Zhongli_Taoyuan"
+    },
+    "StationPosition": {
+      "PositionLon": 121.22571,
+      "PositionLat": 24.95382
+    },
+    "StationAddress": "32041桃園市中壢區石頭里中和路 139 號",
+    "StationPhone": "03-4223235",
+    "StationClass": "1",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1100"
+  },
+  {
+    "StationUID": "TRA-1110",
+    "StationID": "1110",
+    "StationName": {
+      "Zh_tw": "埔心",
+      "En": "Puxin"
+    },
+    "StationPosition": {
+      "PositionLon": 121.18366,
+      "PositionLat": 24.91945
+    },
+    "StationAddress": "32653桃園市楊梅區埔心里永美路 208 號",
+    "StationPhone": "03-4827100",
+    "StationClass": "3",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1110"
+  },
+  {
+    "StationUID": "TRA-1120",
+    "StationID": "1120",
+    "StationName": {
+      "Zh_tw": "楊梅",
+      "En": "Yangmei"
+    },
+    "StationPosition": {
+      "PositionLon": 121.14634,
+      "PositionLat": 24.91391
+    },
+    "StationAddress": "32643桃園市楊梅區楊梅里大成路 256 號",
+    "StationPhone": "03-4782893",
+    "StationClass": "3",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1120"
+  },
+  {
+    "StationUID": "TRA-1130",
+    "StationID": "1130",
+    "StationName": {
+      "Zh_tw": "富岡",
+      "En": "Fugang"
+    },
+    "StationPosition": {
+      "PositionLon": 121.08313,
+      "PositionLat": 24.93462
+    },
+    "StationAddress": "32649桃園市楊梅區富岡里成功路 37 號",
+    "StationPhone": "03-4723754",
+    "StationClass": "3",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1130"
+  },
+  {
+    "StationUID": "TRA-1140",
+    "StationID": "1140",
+    "StationName": {
+      "Zh_tw": "新富",
+      "En": "Xinfu"
+    },
+    "StationPosition": {
+      "PositionLon": 121.06759,
+      "PositionLat": 24.93107
+    },
+    "StationAddress": "32649桃園市楊梅區富豐里富全街 1 號",
+    "StationPhone": "03-4723754",
+    "StationClass": "5",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1140"
+  },
+  {
+    "StationUID": "TRA-1150",
+    "StationID": "1150",
+    "StationName": {
+      "Zh_tw": "北湖",
+      "En": "Beihu"
+    },
+    "StationPosition": {
+      "PositionLon": 121.05586,
+      "PositionLat": 24.92191
+    },
+    "StationAddress": "30371新竹縣湖口鄉東興村北湖路 1 號",
+    "StationPhone": "03-5993850",
+    "StationClass": "4",
+    "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1150"
+  }
+]

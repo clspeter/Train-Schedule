@@ -3,7 +3,7 @@ import { VStack, Box, Divider, View, Text, HStack, Button } from 'native-base';
 import React, { useContext } from 'react';
 
 import { StationContext } from '../StationContext';
-import { StationList } from '../StationList';
+import StationList from '../responselist/StationList.json';
 import { Journey, StationListType, StatinType, homeScreenProp } from '../types';
 const arrayChunk = (arr: StationListType, column: number) => {
   const array = arr.slice();

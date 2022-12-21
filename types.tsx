@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { StationList } from './StationList';
+import StationList from './responselist/StationList.json';
 import oDTimeTableExample from './responselist/oDTimeTableExample.json';
 import trainLiveBoardData from './responselist/trainLiveBoardData.json';
 
