@@ -20,9 +20,13 @@ type StationProviderProps = {
   children: React.ReactNode;
 };
 
+type SettingType = {
+  startuplocation: boolean;
+};
 export const StationContext = createContext<ContextType>({} as ContextType);
 
 const StationProvider = ({ children }: StationProviderProps) => {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [trainStatus, setTrainStatus] = useState<TrainLiveBoardDataType>(
     {} as TrainLiveBoardDataType
   );
@@ -40,8 +44,24 @@ const StationProvider = ({ children }: StationProviderProps) => {
     destination: null,
     time: new Date(),
   });
+  const [loadSetting, setLoadSetting] = useState<SettingType>({ startuplocation: false });
 
   const value = { apiToken, setApiToken, journey, setJourney, trainStatus, setTrainStatus };
+  const loadSettingFromStorage = async () => {
+    try {
+      const setting = await AsyncStorage.getItem('setting');
+      if (setting === null) {
+        console.log('no saved setting, set default');
+        setLoadSetting({ startuplocation: false });
+      } else {
+        console.log('saved setting found, load it');
+        const objSetting = JSON.parse(setting);
+        setLoadSetting(objSetting);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const loadJourney = async () => {
     try {

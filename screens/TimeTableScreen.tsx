@@ -235,5 +235,10 @@ export default function TimeTableScreen() {
         />
       </View>
     );
-  }
+  } else
+    return (
+      <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
+        <Text>Error...</Text>
+      </View>
+    );
 }

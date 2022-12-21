@@ -22,6 +22,7 @@ export type RootStackParamList = {
   SelectDestination: undefined;
   SelectStation: undefined;
   TimeTable: undefined;
+  Setting: undefined;
 };
 
 export type ApiToken = {
