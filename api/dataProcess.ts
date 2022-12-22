@@ -27,7 +27,7 @@ const stopCount = (OriginStopSequence: number, DestinationStopSequence: number) 
   return DestinationStopSequence - OriginStopSequence;
 };
 
-const updateDelayTime = (
+export const updateDelayTime = (
   ODTimeTableInfo: ODTimeTableInfoType[],
   trainLiveBoards: TrainLiveBoardType[]
 ) => {

@@ -136,6 +136,11 @@ const StationProvider = ({ children }: StationProviderProps) => {
     getApiTokenAndSave();
   };
 
+  useEffect(() => {
+    checkAndUpdateToken();
+    loadJourney();
+  }, []);
+
   const findNearestStation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -169,11 +174,6 @@ const StationProvider = ({ children }: StationProviderProps) => {
       else setJourney({ ...initalJourney, departure: nearestStation });
     }
   };
-
-  useEffect(() => {
-    checkAndUpdateToken();
-    loadJourney();
-  }, []);
 
   useEffect(() => {
     if (initalJourney.departure === null) {
