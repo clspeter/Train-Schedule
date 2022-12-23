@@ -12,8 +12,8 @@ type ContextType = {
   setApiToken: React.Dispatch<React.SetStateAction<ApiToken>>;
   journey: Journey;
   setJourney: React.Dispatch<React.SetStateAction<Journey>>;
-  trainStatus: TrainLiveBoardDataType;
-  setTrainStatus: React.Dispatch<React.SetStateAction<TrainLiveBoardDataType>>;
+  trainLiveBoardData: TrainLiveBoardDataType;
+  setTrainLiveBoardData: React.Dispatch<React.SetStateAction<TrainLiveBoardDataType>>;
 };
 
 type StationProviderProps = {
@@ -27,7 +27,7 @@ export const StationContext = createContext<ContextType>({} as ContextType);
 
 const StationProvider = ({ children }: StationProviderProps) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [trainStatus, setTrainStatus] = useState<TrainLiveBoardDataType>(
+  const [trainLiveBoardData, setTrainLiveBoardData] = useState<TrainLiveBoardDataType>(
     {} as TrainLiveBoardDataType
   );
   const [apiToken, setApiToken] = useState<ApiToken>({
@@ -46,7 +46,14 @@ const StationProvider = ({ children }: StationProviderProps) => {
   });
   const [loadSetting, setLoadSetting] = useState<SettingType>({ startuplocation: false });
 
-  const value = { apiToken, setApiToken, journey, setJourney, trainStatus, setTrainStatus };
+  const value = {
+    apiToken,
+    setApiToken,
+    journey,
+    setJourney,
+    trainLiveBoardData,
+    setTrainLiveBoardData,
+  };
   const loadSettingFromStorage = async () => {
     try {
       const setting = await AsyncStorage.getItem('setting');
@@ -184,7 +191,7 @@ const StationProvider = ({ children }: StationProviderProps) => {
 
   const updateTrainStatus = () => {
     getTrainStatus(apiToken.access_token).then((status) => {
-      setTrainStatus(status.data);
+      setTrainLiveBoardData(status.data);
       console.log('live status update time: ' + new Date(status.data.UpdateTime).toLocaleString());
     });
   };

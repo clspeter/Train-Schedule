@@ -10,6 +10,19 @@ export type TrainLiveBoardType = typeof trainLiveBoardData.TrainLiveBoards[0];
 export type StationListType = typeof StationList;
 export type StatinType = StationListType[number];
 
+export type ODTimeTableInfoType = {
+  TrainNo: string;
+  TrainDate: string;
+  TrainTypeName: string;
+  OriginStationID: string;
+  DepartureTime: string;
+  DestinationStationID: string;
+  ArrivalTime: string;
+  Stops: number;
+  TravelTime: number;
+  DelayTime: number;
+};
+
 export type Journey = {
   departure: StatinType | null;
   destination: StatinType | null;

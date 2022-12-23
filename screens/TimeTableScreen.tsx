@@ -4,10 +4,11 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 import { StationContext } from '../StationContext';
-import { oDTimeTableType, TrainLiveBoardType } from '../types';
+import { ODTimeTableInfoType, TrainLiveBoardType } from '../types';
+import { updateDelayTime } from '../api/dataProcess';
 
 export default function TimeTableScreen() {
-  const [oDtimetable, setODTimeTable] = useState<oDTimeTableType[] | never[]>([]);
+  const [oDtimetable, setODTimeTable] = useState<ODTimeTableInfoType[] | never[]>([]);
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const Context = useContext(StationContext);
@@ -16,8 +17,8 @@ export default function TimeTableScreen() {
     waitForInteraction: false,
     itemVisiblePercentThreshold: 95,
   };
-  const isLater = (item: oDTimeTableType) =>
-    item.OriginStopTime.DepartureTime >
+  const isLater = (item: ODTimeTableInfoType) =>
+    item.DepartureTime >
     Context.journey.time.toLocaleTimeString('zh-TW', {
       hour12: false,
       hour: '2-digit',
@@ -62,40 +63,38 @@ export default function TimeTableScreen() {
     }
   };
 
-  const TravelTime = (props: { train: oDTimeTableType }) => {
-    const hoursDiff =
-      parseInt(props.train.DestinationStopTime.ArrivalTime.split(':')[0]) -
-      parseInt(props.train.OriginStopTime.DepartureTime.split(':')[0]);
-    const minutesDiff =
-      parseInt(props.train.DestinationStopTime.ArrivalTime.split(':')[1]) -
-      parseInt(props.train.OriginStopTime.DepartureTime.split(':')[1]);
-    if (minutesDiff < 0) {
+  const TravelTime = (props: { train: ODTimeTableInfoType }) => {
+    const travelHours = Math.floor(props.train.TravelTime / 60);
+    const travelMinutes = props.train.TravelTime % 60;
+    if (travelMinutes < 60) {
       return (
         <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
-          {hoursDiff == 1 ? '' : `${hoursDiff - 1} 時`} {60 + minutesDiff} 分
+          {Math.abs(travelMinutes)} 分
         </Text>
       );
     } else {
       return (
         <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
-          {hoursDiff == 0 ? '' : `${hoursDiff} 時`} {minutesDiff} 分
+          {travelHours} 時 {travelMinutes} 分
         </Text>
       );
     }
   };
 
-  const checkDelayTime = (trainNo: string, trainLiveBoards: TrainLiveBoardType[]) => {
-    for (const train of trainLiveBoards) {
-      if (train.TrainNo === trainNo) {
-        return train.DelayTime;
-      }
-    }
-    return null;
+  const checkandUpdateDelayTime = (
+    oDtimetable: ODTimeTableInfoType[],
+    trainLiveBoards: TrainLiveBoardType[]
+  ) => {
+    setODTimeTable(updateDelayTime(oDtimetable, trainLiveBoards));
   };
+  useEffect(() => {
+    checkandUpdateDelayTime(oDtimetable, Context.trainLiveBoardData.TrainLiveBoards),
+      [Context.trainLiveBoardData];
+  });
 
-  const ShowDelayTime = (props: { TrainNo: string }) => {
-    const delayTime = checkDelayTime(props.TrainNo, Context.trainStatus.TrainLiveBoards);
-    if (delayTime === null) {
+  const ShowDelayTime = (props: { time: number }) => {
+    const delayTime = props.time;
+    if (delayTime === -1) {
       return (
         <Text alignSelf="center" color="gray.700" fontSize="md">
           未發車
@@ -136,7 +135,7 @@ export default function TimeTableScreen() {
     getODTimeTable();
   }, []);
 
-  const RenderItem = ({ item, index }: { item: oDTimeTableType; index: number }) => (
+  const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => (
     <Box
       borderBottomWidth="1"
       borderColor="muted.400"
@@ -153,17 +152,17 @@ export default function TimeTableScreen() {
             fontSize={20}
             ml={1}
             color={index >= FlatlistIndex ? 'white' : 'gray.600'}>
-            {item.DailyTrainInfo.TrainNo}
+            {item.TrainNo}
           </Text>
           <Text
             fontSize={16}
             ml={1}
             alignSelf="center"
-            color={item.DailyTrainInfo.TrainTypeName.Zh_tw === '區間' ? 'blue.400' : 'white'}>
-            {item.DailyTrainInfo.TrainTypeName.Zh_tw}
+            color={item.TrainTypeName.slice(0, 2) === '區間' ? 'blue.400' : 'white'}>
+            {item.TrainTypeName.slice(0, 2)}
           </Text>
           <Text fontSize={16} ml={1} color="white" alignSelf="center">
-            {item.DestinationStopTime.StopSequence - item.OriginStopTime.StopSequence}站
+            {item.Stops}站
           </Text>
         </VStack>
         <HStack mt={0} flex={5}>
@@ -173,13 +172,13 @@ export default function TimeTableScreen() {
             width={85}
             alignSelf="center"
             pl="-5">
-            {item.OriginStopTime.DepartureTime}
+            {item.DepartureTime}
           </Text>
           <View w={100} h={30} mt={1}>
             <VStack>
               {new Date(Context.journey.time).toLocaleDateString('en-US') ===
               new Date().toLocaleDateString('en-US') ? (
-                <ShowDelayTime TrainNo={item.DailyTrainInfo.TrainNo} />
+                <ShowDelayTime time={item.DelayTime} />
               ) : (
                 <Text alignSelf="center" fontSize="sm">
                   {' '}
@@ -196,7 +195,7 @@ export default function TimeTableScreen() {
             width={85}
             alignSelf="center"
             ml={2}>
-            {item.DestinationStopTime.ArrivalTime}
+            {item.ArrivalTime}
           </Text>
         </HStack>
       </HStack>
@@ -231,7 +230,7 @@ export default function TimeTableScreen() {
             });
           }} */
           renderItem={RenderItem}
-          keyExtractor={(item) => item.DailyTrainInfo.TrainNo + Context.journey.time}
+          keyExtractor={(item) => Context.journey.time + item.TrainNo}
         />
       </View>
     );

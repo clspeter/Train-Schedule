@@ -23,7 +23,8 @@ export default function HomeScreen() {
           | Vaild: {new Date(Context.apiToken.vaild_time).toLocaleString()}
         </Text>
         <Text>
-          Train Status Updated Time: {new Date(Context.trainStatus.UpdateTime).toLocaleString()}
+          Train Status Updated Time:{' '}
+          {new Date(Context.trainLiveBoardData.UpdateTime).toLocaleString()}
         </Text>
       </Center>
     </View>

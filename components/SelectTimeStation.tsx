@@ -17,12 +17,13 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { StationContext } from '../StationContext';
 import { apiDailyTimetableOD } from '../api/apiRequest';
-import { Journey, homeScreenProp, oDTimeTableType } from '../types';
+import { apiDailyTimetableODDataProcess } from '../api/dataProcess';
+import { Journey, homeScreenProp, oDTimeTableType, ODTimeTableInfoType } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SelectStationandTime() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [oDTimeTable, setODTimeTable] = useState<oDTimeTableType[] | never[]>([]);
+  const [oDTimeTable, setODTimeTable] = useState<ODTimeTableInfoType[] | never[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
   const Context = useContext(StationContext);
@@ -82,7 +83,7 @@ export default function SelectStationandTime() {
       }
   };
 
-  const storeTimeTable = async (value: oDTimeTableType) => {
+  const storeTimeTable = async (value: ODTimeTableInfoType[]) => {
     if (Context.journey.departure && Context.journey.destination)
       try {
         await AsyncStorage.setItem(
@@ -104,7 +105,9 @@ export default function SelectStationandTime() {
         Context.journey.destination.StationID,
         Context.journey.time.toLocaleDateString('en-CA')
       ).then((res) => {
-        storeTimeTable(res.data);
+        const infoData = apiDailyTimetableODDataProcess(res.data);
+        setODTimeTable(infoData);
+        storeTimeTable(infoData);
       });
     }
   };
