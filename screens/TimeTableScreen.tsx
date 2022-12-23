@@ -14,8 +14,8 @@ export default function TimeTableScreen() {
   const Context = useContext(StationContext);
   const flatList = useRef<typeof FlatList>(null);
   const viewabilityConfig = {
-    waitForInteraction: true,
-    itemVisiblePercentThreshold: 50,
+    waitForInteraction: false,
+    itemVisiblePercentThreshold: 95,
   };
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
@@ -32,8 +32,7 @@ export default function TimeTableScreen() {
   }, [Context.oDTimeTableInfo]);
 
   useEffect(() => {
-    getODTimeTable();
-    /* if (Context.oDTimeTableInfo) {
+    if (Context.oDTimeTableInfo) {
       setFlatlistIndex(() => {
         const index = Context.oDTimeTableInfo.findIndex(isLater);
         if (index === -1) {
@@ -42,12 +41,14 @@ export default function TimeTableScreen() {
         return index;
       });
       setODTimeTableInfo(Context.oDTimeTableInfo);
-    } */
+    }
   }, []);
-
   useEffect(() => {
     setIsLoaded(true);
   }, [oDTimeTableInfo]);
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [Context.oDTimeTableInfo]);
 
   let count = 0;
   function delay(n: number) {
@@ -56,7 +57,7 @@ export default function TimeTableScreen() {
       count++;
     });
   }
-  const getODTimeTable = async () => {
+  /* const getODTimeTable = async () => {
     try {
       const value = await AsyncStorage.getItem(
         `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
@@ -64,7 +65,7 @@ export default function TimeTableScreen() {
         }-${Context.journey.destination?.StationID}`
       );
       if (value !== null) {
-        setODTimeTableInfo(JSON.parse(value));
+        setODTimeTable(JSON.parse(value));
         setFlatlistIndex(() => {
           const index = JSON.parse(value).findIndex(isLater);
           if (index === -1) {
@@ -85,7 +86,7 @@ export default function TimeTableScreen() {
     } catch (e) {
       console.log(e);
     }
-  };
+  }; */
 
   const TravelTime = (props: { train: ODTimeTableInfoType }) => {
     const travelHours = Math.floor(props.train.TravelTime / 60);
