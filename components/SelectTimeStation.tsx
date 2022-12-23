@@ -23,7 +23,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SelectStationandTime() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [oDTimeTable, setODTimeTable] = useState<ODTimeTableInfoType[] | never[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
   const Context = useContext(StationContext);
@@ -106,7 +105,7 @@ export default function SelectStationandTime() {
         Context.journey.time.toLocaleDateString('en-CA')
       ).then((res) => {
         const infoData = apiDailyTimetableODDataProcess(res.data);
-        setODTimeTable(infoData);
+        Context.setODTimeTableInfo(infoData);
         storeTimeTable(infoData);
       });
     }
@@ -116,7 +115,7 @@ export default function SelectStationandTime() {
     if (Context.journey.departure && Context.journey.destination && Context.apiToken.access_token) {
       checkTimeTable().then((res) => {
         if (res) {
-          setODTimeTable(res);
+          Context.setODTimeTableInfo(res);
         } else {
           apiTimeTable();
         }

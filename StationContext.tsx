@@ -5,7 +5,14 @@ import React, { useState, createContext, useEffect } from 'react';
 
 import StationList from './responselist/StationList.json';
 import { getApiToken, getTrainStatus } from './api/apiRequest';
-import { Journey, StatinType, ApiToken, TrainLiveBoardDataType } from './types';
+import {
+  Journey,
+  StatinType,
+  ApiToken,
+  TrainLiveBoardDataType,
+  oDTimeTableType,
+  ODTimeTableInfoType,
+} from './types';
 
 type ContextType = {
   apiToken: ApiToken;
@@ -14,6 +21,8 @@ type ContextType = {
   setJourney: React.Dispatch<React.SetStateAction<Journey>>;
   trainLiveBoardData: TrainLiveBoardDataType;
   setTrainLiveBoardData: React.Dispatch<React.SetStateAction<TrainLiveBoardDataType>>;
+  oDTimeTableInfo: ODTimeTableInfoType[];
+  setODTimeTableInfo: React.Dispatch<React.SetStateAction<ODTimeTableInfoType[]>>;
 };
 
 type StationProviderProps = {
@@ -45,6 +54,7 @@ const StationProvider = ({ children }: StationProviderProps) => {
     time: new Date(),
   });
   const [loadSetting, setLoadSetting] = useState<SettingType>({ startuplocation: false });
+  const [oDTimeTableInfo, setODTimeTableInfo] = useState<ODTimeTableInfoType[]>([]);
 
   const value = {
     apiToken,
@@ -53,6 +63,8 @@ const StationProvider = ({ children }: StationProviderProps) => {
     setJourney,
     trainLiveBoardData,
     setTrainLiveBoardData,
+    oDTimeTableInfo,
+    setODTimeTableInfo,
   };
   const loadSettingFromStorage = async () => {
     try {

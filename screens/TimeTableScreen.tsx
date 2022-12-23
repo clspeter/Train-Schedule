@@ -8,14 +8,14 @@ import { ODTimeTableInfoType, TrainLiveBoardType } from '../types';
 import { updateDelayTime } from '../api/dataProcess';
 
 export default function TimeTableScreen() {
-  const [oDtimetable, setODTimeTable] = useState<ODTimeTableInfoType[] | never[]>([]);
+  const [oDTimeTableInfo, setODTimeTableInfo] = useState<ODTimeTableInfoType[]>([]);
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const Context = useContext(StationContext);
   const flatList = useRef<typeof FlatList>(null);
   const viewabilityConfig = {
-    waitForInteraction: false,
-    itemVisiblePercentThreshold: 95,
+    waitForInteraction: true,
+    itemVisiblePercentThreshold: 50,
   };
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
@@ -24,6 +24,30 @@ export default function TimeTableScreen() {
       hour: '2-digit',
       minute: '2-digit',
     });
+
+  useEffect(() => {
+    if (Context.oDTimeTableInfo) {
+      setODTimeTableInfo(Context.oDTimeTableInfo);
+    }
+  }, [Context.oDTimeTableInfo]);
+
+  useEffect(() => {
+    getODTimeTable();
+    /* if (Context.oDTimeTableInfo) {
+      setFlatlistIndex(() => {
+        const index = Context.oDTimeTableInfo.findIndex(isLater);
+        if (index === -1) {
+          return Context.oDTimeTableInfo.length;
+        }
+        return index;
+      });
+      setODTimeTableInfo(Context.oDTimeTableInfo);
+    } */
+  }, []);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, [oDTimeTableInfo]);
 
   let count = 0;
   function delay(n: number) {
@@ -40,7 +64,7 @@ export default function TimeTableScreen() {
         }-${Context.journey.destination?.StationID}`
       );
       if (value !== null) {
-        setODTimeTable(JSON.parse(value));
+        setODTimeTableInfo(JSON.parse(value));
         setFlatlistIndex(() => {
           const index = JSON.parse(value).findIndex(isLater);
           if (index === -1) {
@@ -80,17 +104,19 @@ export default function TimeTableScreen() {
       );
     }
   };
-
+  /* 
   const checkandUpdateDelayTime = (
     oDtimetable: ODTimeTableInfoType[],
     trainLiveBoards: TrainLiveBoardType[]
   ) => {
     setODTimeTable(updateDelayTime(oDtimetable, trainLiveBoards));
+    console.log(setODTimeTable(updateDelayTime(oDtimetable, trainLiveBoards)));
   };
+
   useEffect(() => {
     checkandUpdateDelayTime(oDtimetable, Context.trainLiveBoardData.TrainLiveBoards),
       [Context.trainLiveBoardData];
-  });
+  }); */
 
   const ShowDelayTime = (props: { time: number }) => {
     const delayTime = props.time;
@@ -131,10 +157,6 @@ export default function TimeTableScreen() {
     </Svg>
   );
 
-  useEffect(() => {
-    getODTimeTable();
-  }, []);
-
   const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => (
     <Box
       borderBottomWidth="1"
@@ -158,8 +180,8 @@ export default function TimeTableScreen() {
             fontSize={16}
             ml={1}
             alignSelf="center"
-            color={item.TrainTypeName.slice(0, 2) === '區間' ? 'blue.400' : 'white'}>
-            {item.TrainTypeName.slice(0, 2)}
+            color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
+            {item.TrainTypeName}
           </Text>
           <Text fontSize={16} ml={1} color="white" alignSelf="center">
             {item.Stops}站
@@ -208,7 +230,7 @@ export default function TimeTableScreen() {
         <Text>Loading...</Text>
       </View>
     );
-  } else if (oDtimetable) {
+  } else if (oDTimeTableInfo) {
     return (
       <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
         <FlatList
@@ -216,13 +238,13 @@ export default function TimeTableScreen() {
           viewabilityConfig={viewabilityConfig}
           removeClippedSubviews={true}
           initialScrollIndex={FlatlistIndex - 1}
-          windowSize={21}
+          windowSize={6}
           maxToRenderPerBatch={20}
-          initialNumToRender={20}
+          initialNumToRender={11}
           refreshing={false}
           getItemLayout={(data, index) => ({ length: 100, offset: 100 * index, index })}
           width="100%"
-          data={oDtimetable}
+          data={oDTimeTableInfo}
           /*           onScrollToIndexFailed={(info) => {
             const wait = new Promise((resolve) => setTimeout(resolve, 500));
             wait.then(() => {
