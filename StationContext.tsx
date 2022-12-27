@@ -12,6 +12,7 @@ import {
   TrainLiveBoardDataType,
   oDTimeTableType,
   ODTimeTableInfoType,
+  SettingType,
 } from './types';
 
 type ContextType = {
@@ -23,19 +24,19 @@ type ContextType = {
   setTrainLiveBoardData: React.Dispatch<React.SetStateAction<TrainLiveBoardDataType>>;
   oDTimeTableInfo: ODTimeTableInfoType[];
   setODTimeTableInfo: React.Dispatch<React.SetStateAction<ODTimeTableInfoType[]>>;
+  appSetting: SettingType;
+  setAppSetting: React.Dispatch<React.SetStateAction<SettingType>>;
 };
 
 type StationProviderProps = {
   children: React.ReactNode;
 };
 
-type SettingType = {
-  startuplocation: boolean;
-};
 export const StationContext = createContext<ContextType>({} as ContextType);
 
 const StationProvider = ({ children }: StationProviderProps) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [appSetting, setAppSetting] = useState<SettingType>({ useNearestStationOnStartUp: false });
   const [trainLiveBoardData, setTrainLiveBoardData] = useState<TrainLiveBoardDataType>(
     {} as TrainLiveBoardDataType
   );
@@ -53,7 +54,7 @@ const StationProvider = ({ children }: StationProviderProps) => {
     destination: null,
     time: new Date(),
   });
-  const [loadSetting, setLoadSetting] = useState<SettingType>({ startuplocation: false });
+
   const [oDTimeTableInfo, setODTimeTableInfo] = useState<ODTimeTableInfoType[]>([]);
 
   const value = {
@@ -65,17 +66,20 @@ const StationProvider = ({ children }: StationProviderProps) => {
     setTrainLiveBoardData,
     oDTimeTableInfo,
     setODTimeTableInfo,
+    appSetting,
+    setAppSetting,
   };
+
   const loadSettingFromStorage = async () => {
     try {
       const setting = await AsyncStorage.getItem('setting');
       if (setting === null) {
         console.log('no saved setting, set default');
-        setLoadSetting({ startuplocation: false });
+        setAppSetting({ useNearestStationOnStartUp: false });
       } else {
-        console.log('saved setting found, load it');
         const objSetting = JSON.parse(setting);
-        setLoadSetting(objSetting);
+        console.log('saved setting found, load it' + objSetting.useNearestStationOnStartUp);
+        setAppSetting(objSetting);
       }
     } catch (e) {
       console.log(e);
@@ -156,8 +160,9 @@ const StationProvider = ({ children }: StationProviderProps) => {
   };
 
   useEffect(() => {
-    checkAndUpdateToken();
+    loadSettingFromStorage();
     loadJourney();
+    checkAndUpdateToken();
   }, []);
 
   const findNearestStation = async () => {
@@ -195,11 +200,11 @@ const StationProvider = ({ children }: StationProviderProps) => {
   };
 
   useEffect(() => {
-    if (initalJourney.departure === null) {
+    if (initalJourney.departure === null || appSetting.useNearestStationOnStartUp === false) {
       return;
     }
     findNearestStation();
-  }, [initalJourney]);
+  }, [initalJourney, appSetting]);
 
   const updateTrainStatus = () => {
     getTrainStatus(apiToken.access_token).then((status) => {

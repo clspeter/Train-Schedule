@@ -16,6 +16,7 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 
 import { StationContext } from '../StationContext';
+import { updateDelayTime } from '../api/dataProcess';
 import { apiDailyTimetableOD } from '../api/apiRequest';
 import { apiDailyTimetableODDataProcess } from '../api/dataProcess';
 import { Journey, homeScreenProp, oDTimeTableType, ODTimeTableInfoType } from '../types';
@@ -65,6 +66,7 @@ export default function SelectStationandTime() {
     ).then((res) => {
       setODTimeTable(res.data);
     }); */
+    updateDelayTimeTable();
     saveJourney();
     navigation.navigate('TimeTable');
   };
@@ -127,6 +129,17 @@ export default function SelectStationandTime() {
     Context.journey.destination,
     Context.apiToken.access_token,
   ]);
+
+  const updateDelayTimeTable = () => {
+    return updateDelayTime(Context.oDTimeTableInfo, Context.trainLiveBoardData.TrainLiveBoards);
+  };
+
+  useEffect(() => {
+    if (Context.trainLiveBoardData.TrainLiveBoards === null) {
+      return;
+    }
+    Context.setODTimeTableInfo(updateDelayTimeTable());
+  }, [Context.trainLiveBoardData]);
 
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">

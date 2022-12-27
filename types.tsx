@@ -19,7 +19,7 @@ export type ODTimeTableInfoType = {
   DestinationStationID: string;
   ArrivalTime: string;
   Stops: number;
-  TravelTime: number;
+  TravelTime: { Hours: number; Minutes: number };
   DelayTime: number;
 };
 
@@ -27,6 +27,10 @@ export type Journey = {
   departure: StatinType | null;
   destination: StatinType | null;
   time: Date;
+};
+
+export type SettingType = {
+  useNearestStationOnStartUp: boolean;
 };
 
 export type RootStackParamList = {

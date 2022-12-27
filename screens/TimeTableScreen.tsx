@@ -5,7 +5,6 @@ import Svg, { Path } from 'react-native-svg';
 
 import { StationContext } from '../StationContext';
 import { ODTimeTableInfoType, TrainLiveBoardType } from '../types';
-import { updateDelayTime } from '../api/dataProcess';
 
 export default function TimeTableScreen() {
   const [oDTimeTableInfo, setODTimeTableInfo] = useState<ODTimeTableInfoType[]>([]);
@@ -15,7 +14,7 @@ export default function TimeTableScreen() {
   const flatList = useRef<typeof FlatList>(null);
   const viewabilityConfig = {
     waitForInteraction: false,
-    itemVisiblePercentThreshold: 95,
+    itemVisiblePercentThreshold: 20,
   };
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
@@ -24,12 +23,6 @@ export default function TimeTableScreen() {
       hour: '2-digit',
       minute: '2-digit',
     });
-
-  useEffect(() => {
-    if (Context.oDTimeTableInfo) {
-      setODTimeTableInfo(Context.oDTimeTableInfo);
-    }
-  }, [Context.oDTimeTableInfo]);
 
   useEffect(() => {
     if (Context.oDTimeTableInfo) {
@@ -42,13 +35,8 @@ export default function TimeTableScreen() {
       });
       setODTimeTableInfo(Context.oDTimeTableInfo);
     }
-  }, []);
-  useEffect(() => {
     setIsLoaded(true);
-  }, [oDTimeTableInfo]);
-  useEffect(() => {
-    setIsLoaded(false);
-  }, [Context.oDTimeTableInfo]);
+  }, []);
 
   let count = 0;
   function delay(n: number) {
@@ -89,21 +77,12 @@ export default function TimeTableScreen() {
   }; */
 
   const TravelTime = (props: { train: ODTimeTableInfoType }) => {
-    const travelHours = Math.floor(props.train.TravelTime / 60);
-    const travelMinutes = props.train.TravelTime % 60;
-    if (travelMinutes < 60) {
-      return (
-        <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
-          {Math.abs(travelMinutes)} 分
-        </Text>
-      );
-    } else {
-      return (
-        <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
-          {travelHours} 時 {travelMinutes} 分
-        </Text>
-      );
-    }
+    return (
+      <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
+        {props.train.TravelTime.Hours == 0 ? '' : props.train.TravelTime.Hours + '時'}{' '}
+        {props.train.TravelTime.Minutes} 分
+      </Text>
+    );
   };
   /* 
   const checkandUpdateDelayTime = (
@@ -123,7 +102,7 @@ export default function TimeTableScreen() {
     const delayTime = props.time;
     if (delayTime === -1) {
       return (
-        <Text alignSelf="center" color="gray.700" fontSize="md">
+        <Text alignSelf="center" color="gray.600" fontSize="md">
           未發車
         </Text>
       );
@@ -158,73 +137,61 @@ export default function TimeTableScreen() {
     </Svg>
   );
 
-  const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => (
-    <Box
-      borderBottomWidth="1"
-      borderColor="muted.400"
-      backgroundColor={index === FlatlistIndex ? 'info.900' : 'blueGray.900'}
-      flex={1}
-      h="100"
-      pl={['0', '4']}
-      pr={['0', '5']}
-      py="2">
-      <HStack>
-        <VStack flex={1.2}>
-          <Text
-            alignSelf="center"
-            fontSize={20}
-            ml={1}
-            color={index >= FlatlistIndex ? 'white' : 'gray.600'}>
-            {item.TrainNo}
-          </Text>
-          <Text
-            fontSize={16}
-            ml={1}
-            alignSelf="center"
-            color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
-            {item.TrainTypeName}
-          </Text>
-          <Text fontSize={16} ml={1} color="white" alignSelf="center">
-            {item.Stops}站
-          </Text>
-        </VStack>
-        <HStack mt={0} flex={5}>
-          <Text
-            fontSize={30}
-            color={index >= FlatlistIndex ? 'white' : 'gray.600'}
-            width={85}
-            alignSelf="center"
-            pl="-5">
-            {item.DepartureTime}
-          </Text>
-          <View w={100} h={30} mt={1}>
-            <VStack>
-              {new Date(Context.journey.time).toLocaleDateString('en-US') ===
-              new Date().toLocaleDateString('en-US') ? (
-                <ShowDelayTime time={item.DelayTime} />
-              ) : (
-                <Text alignSelf="center" fontSize="sm">
-                  {' '}
-                </Text>
-              )}
-              <SvgArrow color={index >= FlatlistIndex ? 'white' : '#71717a'} />
-              <TravelTime train={item} />
-            </VStack>
-          </View>
-          {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
-          <Text
-            fontSize={30}
-            color={index >= FlatlistIndex ? 'white' : 'gray.600'}
-            width={85}
-            alignSelf="center"
-            ml={2}>
-            {item.ArrivalTime}
-          </Text>
+  const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => {
+    const textColor = grayOut(index);
+    return (
+      <Box
+        borderBottomWidth="1"
+        borderColor="muted.400"
+        backgroundColor={index === FlatlistIndex ? 'info.900' : 'blueGray.900'}
+        flex={1}
+        h="100"
+        pl={['0', '4']}
+        pr={['0', '5']}
+        py="2">
+        <HStack>
+          <VStack flex={1.2}>
+            <Text alignSelf="center" fontSize={20} ml={1} color={textColor}>
+              {item.TrainNo}
+            </Text>
+            <Text
+              fontSize={16}
+              ml={1}
+              alignSelf="center"
+              color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
+              {item.TrainTypeName}
+            </Text>
+            <Text fontSize={16} ml={1} color="white" alignSelf="center">
+              {item.Stops}站
+            </Text>
+          </VStack>
+          <HStack mt={0} flex={5}>
+            <Text fontSize={30} color={textColor} width={85} alignSelf="center" pl="-5">
+              {item.DepartureTime}
+            </Text>
+            <View w={100} h={30} mt={1}>
+              <VStack>
+                {new Date(Context.journey.time).toLocaleDateString('en-US') ===
+                new Date().toLocaleDateString('en-US') ? (
+                  <ShowDelayTime time={item.DelayTime} />
+                ) : (
+                  <Text alignSelf="center" fontSize="sm">
+                    {' '}
+                  </Text>
+                )}
+                <SvgArrow color={textColor} />
+                <TravelTime train={item} />
+              </VStack>
+            </View>
+            {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
+            <Text fontSize={30} color={textColor} width={85} alignSelf="center" ml={2}>
+              {item.ArrivalTime}
+            </Text>
+          </HStack>
         </HStack>
-      </HStack>
-    </Box>
-  );
-
+      </Box>
+    );
+  };
   if (isLoaded === false) {
     return (
       <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>

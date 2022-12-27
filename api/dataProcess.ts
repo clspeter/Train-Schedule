@@ -2,12 +2,22 @@ import ODTimeTable from '../responselist/oDTimeTableExample.json';
 import { oDTimeTableType, TrainLiveBoardType, ODTimeTableInfoType } from '../types';
 // caculate the time difference between two time
 
-const travelTimeminuate = (time1: string, time2: string) => {
+// caculate travel time hours and minutes
+const travelTimeCaulate = (time1: string, time2: string) => {
   const time1Arr = time1.split(':');
   const time2Arr = time2.split(':');
   const time1Min = parseInt(time1Arr[0]) * 60 + parseInt(time1Arr[1]);
   const time2Min = parseInt(time2Arr[0]) * 60 + parseInt(time2Arr[1]);
-  return time2Min - time1Min;
+  const travelTimeMin = time2Min - time1Min;
+  let hours = Math.floor(travelTimeMin / 60);
+  if (hours < 0) {
+    hours = hours + 24;
+  }
+  let minuate = travelTimeMin % 60;
+  if (minuate < 0) {
+    minuate = minuate + 60;
+  }
+  return { hours, minuate };
 };
 
 const stopCount = (OriginStopSequence: number, DestinationStopSequence: number) => {
@@ -36,6 +46,10 @@ const trainType = (TrainTypeNameZH: string) => {
 export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) => {
   const ODTimeTableInfo: ODTimeTableInfoType[] = [];
   ODTimeTable.forEach((item) => {
+    const travelTime = travelTimeCaulate(
+      item.OriginStopTime.DepartureTime,
+      item.DestinationStopTime.ArrivalTime
+    );
     const ODTimeTableItem: ODTimeTableInfoType = {
       TrainNo: item.DailyTrainInfo.TrainNo,
       TrainDate: item.TrainDate,
@@ -45,10 +59,7 @@ export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) =
       DestinationStationID: item.DailyTrainInfo.EndingStationID,
       ArrivalTime: item.DestinationStopTime.ArrivalTime,
       Stops: stopCount(item.OriginStopTime.StopSequence, item.DestinationStopTime.StopSequence),
-      TravelTime: travelTimeminuate(
-        item.OriginStopTime.DepartureTime,
-        item.DestinationStopTime.ArrivalTime
-      ),
+      TravelTime: { Hours: travelTime.hours, Minutes: travelTime.minuate },
       DelayTime: -1,
     };
     ODTimeTableInfo.push(ODTimeTableItem);
