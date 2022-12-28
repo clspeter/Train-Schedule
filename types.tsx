@@ -23,10 +23,15 @@ export type ODTimeTableInfoType = {
   DelayTime: number;
 };
 
-export type Journey = {
+export interface Journey {
   departure: StatinType | null;
   destination: StatinType | null;
   time: Date;
+}
+
+export type ShortCutType = Journey & {
+  index: number;
+  isNow: string;
 };
 
 export type SettingType = {

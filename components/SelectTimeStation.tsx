@@ -49,14 +49,7 @@ export default function SelectStationandTime() {
     setShow(false);
     Context.setJourney({ ...Context.journey, time: selectedDate } as Journey);
   };
-  const clearAll = async () => {
-    try {
-      await AsyncStorage.clear();
-    } catch (e) {
-      // clear error
-    }
-    console.log('All storage Cleared.');
-  };
+
   const handleLookUp = () => {
     /*  apiDailyTimetableOD(
       Context.apiToken,
@@ -298,17 +291,6 @@ export default function SelectStationandTime() {
         </HStack>
       </Button>
       <Center flex={1} bg="blue.200" w="40" h="40" />
-      <Button
-        mt="5"
-        width="150"
-        rounded="3xl"
-        onPress={() => {
-          clearAll();
-        }}>
-        <HStack space={2} alignItems="center">
-          <Text fontSize="md">Clear All</Text>
-        </HStack>
-      </Button>
     </VStack>
   );
 }
