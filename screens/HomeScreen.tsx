@@ -9,6 +9,7 @@ import { StationContext } from '../StationContext';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import StateStore from '../store';
 
 const clearAll = async () => {
   try {
@@ -27,7 +28,7 @@ const ShortCuts = () => {
       index: shortCuts.length + 1,
       departure: Context.journey.departure,
       destination: Context.journey.destination,
-      time: Context.journey.time,
+      time: new Date(Context.journey.time),
       isNow: 'false',
     };
     setShortCuts([...shortCuts, newShortCut]);
@@ -58,7 +59,9 @@ const ShortCuts = () => {
               })}
             </Text>
           </View>
-          <Button onPress={() => handleDeleteShortcut(item.index)}>刪除</Button>
+          <Button onPress={() => handleDeleteShortcut(item.index)} borderLeftRadius="none">
+            刪除
+          </Button>
         </HStack>
       </Box>
     );
@@ -110,6 +113,7 @@ export default function HomeScreen() {
           <Text fontSize="md">Clear All</Text>
         </HStack>
       </Button>
+      <StateStore />
     </View>
   );
 }

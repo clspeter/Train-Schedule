@@ -78,7 +78,10 @@ const StationProvider = ({ children }: StationProviderProps) => {
         setAppSetting({ useNearestStationOnStartUp: false });
       } else {
         const objSetting = JSON.parse(setting);
-        console.log('saved setting found, load it' + objSetting.useNearestStationOnStartUp);
+        console.log(
+          'saved setting found, load it. useNearestStationOnStartUp: ' +
+            objSetting.useNearestStationOnStartUp
+        );
         setAppSetting(objSetting);
       }
     } catch (e) {

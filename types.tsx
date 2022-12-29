@@ -34,6 +34,14 @@ export type ShortCutType = Journey & {
   isNow: string;
 };
 
+export interface ShortCutWithSrtingTimeType {
+  departure: StatinType;
+  destination: StatinType;
+  time: Date | string;
+  index: number;
+  isNow: string;
+}
+
 export type SettingType = {
   useNearestStationOnStartUp: boolean;
 };
