@@ -37,7 +37,6 @@ export const StateStore = () => {
   useEffect(() => {
     if (shortCuts.length > 0) {
       saveShortcuts();
-      console.log(shortCuts);
       console.log('shortcuts saved');
     }
   }, [shortCuts]);

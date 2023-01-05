@@ -1,4 +1,4 @@
-import { Text, HStack, Center, VStack, View, Box, Button, FlatList } from 'native-base';
+import { Text, HStack, Center, VStack, View, Box, Button, FlatList, Pressable } from 'native-base';
 import React, { useContext } from 'react';
 import { useRecoilState } from 'recoil';
 import { shortCutsState } from '../store';
@@ -48,16 +48,25 @@ const ShortCuts = () => {
         mt={1}>
         <HStack space={2} alignItems="center" justifyContent="space-between">
           <View flex={5}>
-            <Text alignSelf="center" fontSize={18}>
-              {item.departure?.StationName.Zh_tw}{' '}
-              <AntDesign name="arrowright" size={18} color="white" />{' '}
-              {item.destination?.StationName.Zh_tw}{' '}
-              {item.time?.toLocaleString('zh-TW', {
-                hour12: true,
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </Text>
+            <Pressable
+              onPress={() => {
+                Context.setJourney({
+                  departure: item.departure,
+                  destination: item.destination,
+                  time: item.time,
+                });
+              }}>
+              <Text alignSelf="center" fontSize={18}>
+                {item.departure?.StationName.Zh_tw}{' '}
+                <AntDesign name="arrowright" size={18} color="white" />{' '}
+                {item.destination?.StationName.Zh_tw}{' '}
+                {item.time?.toLocaleString('zh-TW', {
+                  hour12: true,
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
+            </Pressable>
           </View>
           <Button onPress={() => handleDeleteShortcut(item.index)} borderLeftRadius="none">
             刪除
