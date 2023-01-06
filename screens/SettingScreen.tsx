@@ -1,18 +1,19 @@
 import { View, Switch, Text, HStack, Flex } from 'native-base';
-import React, { useContext } from 'react';
-import { StationContext } from '../StationContext';
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { appSettingRecoil } from '../store';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingScreen() {
-  const Context = useContext(StationContext);
+  const [appSetting, setAppSetting] = useRecoilState(appSettingRecoil);
   const saveSettingToStorage = async () => {
     try {
       await AsyncStorage.setItem(
         'setting',
         JSON.stringify({
-          ...Context.appSetting,
-          useNearestStationOnStartUp: !Context.appSetting.useNearestStationOnStartUp,
+          ...appSetting,
+          useNearestStationOnStartUp: !appSetting.useNearestStationOnStartUp,
         })
       );
     } catch (e) {
@@ -21,9 +22,9 @@ export default function SettingScreen() {
   };
 
   const handleSwitch = () => {
-    Context.setAppSetting({
-      ...Context.appSetting,
-      useNearestStationOnStartUp: !Context.appSetting.useNearestStationOnStartUp,
+    setAppSetting({
+      ...appSetting,
+      useNearestStationOnStartUp: !appSetting.useNearestStationOnStartUp,
     });
     saveSettingToStorage();
   };
@@ -35,7 +36,7 @@ export default function SettingScreen() {
         <Switch
           ml={5}
           size="md"
-          isChecked={Context.appSetting.useNearestStationOnStartUp}
+          isChecked={appSetting.useNearestStationOnStartUp}
           onChange={() => {
             handleSwitch();
           }}

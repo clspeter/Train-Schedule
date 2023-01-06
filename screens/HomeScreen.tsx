@@ -8,7 +8,6 @@ import { AntDesign } from '@expo/vector-icons';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RecoilState from '../state';
 
 const clearAll = async () => {
   try {
@@ -121,7 +120,6 @@ export default function HomeScreen() {
           <Text fontSize="md">Clear All</Text>
         </HStack>
       </Button>
-      <RecoilState />
     </View>
   );
 }
