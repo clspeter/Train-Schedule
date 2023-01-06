@@ -1,16 +1,19 @@
+import { useRecoilState, useRecoilValue } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Box, Text, FlatList, View, HStack, VStack } from 'native-base';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-import { StationContext } from '../StationContext';
 import { ODTimeTableInfoType, TrainLiveBoardType } from '../types';
+import * as Recoil from '../store';
 
 export default function TimeTableScreen() {
-  const [oDTimeTableInfo, setODTimeTableInfo] = useState<ODTimeTableInfoType[]>([]);
+  const [oDTimeTableInfoState, setODTimeTableInfoState] = useState<ODTimeTableInfoType[]>([]);
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const Context = useContext(StationContext);
+  const journey = useRecoilValue(Recoil.journeyRecoil);
+
+  const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
   const flatList = useRef<typeof FlatList>(null);
   const viewabilityConfig = {
     waitForInteraction: false,
@@ -18,22 +21,22 @@ export default function TimeTableScreen() {
   };
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
-    Context.journey.time.toLocaleTimeString('zh-TW', {
+    journey.time.toLocaleTimeString('zh-TW', {
       hour12: false,
       hour: '2-digit',
       minute: '2-digit',
     });
 
   useEffect(() => {
-    if (Context.oDTimeTableInfo) {
+    if (oDTimeTableInfo) {
       setFlatlistIndex(() => {
-        const index = Context.oDTimeTableInfo.findIndex(isLater);
+        const index = oDTimeTableInfo.findIndex(isLater);
         if (index === -1) {
-          return Context.oDTimeTableInfo.length;
+          return oDTimeTableInfo.length;
         }
         return index;
       });
-      setODTimeTableInfo(Context.oDTimeTableInfo);
+      setODTimeTableInfoState(oDTimeTableInfo);
     }
     setIsLoaded(true);
   }, []);
@@ -48,9 +51,9 @@ export default function TimeTableScreen() {
   /* const getODTimeTable = async () => {
     try {
       const value = await AsyncStorage.getItem(
-        `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-          Context.journey.departure?.StationID
-        }-${Context.journey.destination?.StationID}`
+        `odtimetables${journey.time.toLocaleDateString('en-CA')}-${
+          journey.departure?.StationID
+        }-${journey.destination?.StationID}`
       );
       if (value !== null) {
         setODTimeTable(JSON.parse(value));
@@ -94,8 +97,8 @@ export default function TimeTableScreen() {
   };
 
   useEffect(() => {
-    checkandUpdateDelayTime(oDtimetable, Context.trainLiveBoardData.TrainLiveBoards),
-      [Context.trainLiveBoardData];
+    checkandUpdateDelayTime(oDtimetable, trainLiveBoardData.TrainLiveBoards),
+      [trainLiveBoardData];
   }); */
 
   const ShowDelayTime = (props: { time: number }) => {
@@ -171,7 +174,7 @@ export default function TimeTableScreen() {
             </Text>
             <View w={100} h={30} mt={1}>
               <VStack>
-                {new Date(Context.journey.time).toLocaleDateString('en-US') ===
+                {new Date(journey.time).toLocaleDateString('en-US') ===
                 new Date().toLocaleDateString('en-US') ? (
                   <ShowDelayTime time={item.DelayTime} />
                 ) : (
@@ -198,7 +201,7 @@ export default function TimeTableScreen() {
         <Text>Loading...</Text>
       </View>
     );
-  } else if (oDTimeTableInfo) {
+  } else if (oDTimeTableInfoState) {
     return (
       <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
         <FlatList
@@ -212,7 +215,7 @@ export default function TimeTableScreen() {
           refreshing={false}
           getItemLayout={(data, index) => ({ length: 100, offset: 100 * index, index })}
           width="100%"
-          data={oDTimeTableInfo}
+          data={oDTimeTableInfoState}
           /*           onScrollToIndexFailed={(info) => {
             const wait = new Promise((resolve) => setTimeout(resolve, 500));
             wait.then(() => {
@@ -220,7 +223,7 @@ export default function TimeTableScreen() {
             });
           }} */
           renderItem={RenderItem}
-          keyExtractor={(item) => Context.journey.time + item.TrainNo}
+          keyExtractor={(item) => journey.time + item.TrainNo}
         />
       </View>
     );

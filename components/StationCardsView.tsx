@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { VStack, Box, Divider, View, Text, HStack, Button } from 'native-base';
-import React, { useContext } from 'react';
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { journeyRecoil } from '../store';
 
-import { StationContext } from '../StationContext';
 import StationList from '../responselist/StationList.json';
 import { Journey, StationListType, StatinType, homeScreenProp } from '../types';
 const arrayChunk = (arr: StationListType, column: number) => {
@@ -13,19 +14,19 @@ const arrayChunk = (arr: StationListType, column: number) => {
 };
 
 export default function StationCardsView(props: { selected: 'departure' | 'destination' }) {
-  const stationContext = useContext(StationContext);
+  const [journey, setJourney] = useRecoilState(journeyRecoil);
   const navigation = useNavigation<homeScreenProp>();
   const notselected = props.selected === 'departure' ? 'destination' : 'departure';
   const handelSetDeparture = (station: StatinType) => {
-    if (stationContext.journey[notselected] === station) {
-      stationContext.setJourney({
-        departure: stationContext.journey.destination,
-        destination: stationContext.journey.departure,
-        time: stationContext.journey.time,
+    if (journey[notselected] === station) {
+      setJourney({
+        departure: journey.destination,
+        destination: journey.departure,
+        time: journey.time,
       } as Journey);
     } else {
-      stationContext.setJourney({
-        ...stationContext.journey,
+      setJourney({
+        ...journey,
         [props.selected]: station,
       } as Journey);
     }

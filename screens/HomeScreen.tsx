@@ -1,15 +1,13 @@
 import { Text, HStack, Center, VStack, View, Box, Button, FlatList, Pressable } from 'native-base';
 import React, { useContext } from 'react';
-import { useRecoilState } from 'recoil';
-import { shortCutsState } from '../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import * as Recoil from '../store';
 import { ShortCutType } from '../types';
 
 import { AntDesign } from '@expo/vector-icons';
-import { StationContext } from '../StationContext';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import StateStore from '../store';
 
 const clearAll = async () => {
   try {
@@ -21,14 +19,15 @@ const clearAll = async () => {
 };
 
 const ShortCuts = () => {
-  const Context = useContext(StationContext);
-  const [shortCuts, setShortCuts] = useRecoilState(shortCutsState);
+  const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
+  const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
+
   const handleNowShortcut = () => {
     const newShortCut: ShortCutType = {
       index: shortCuts.length + 1,
-      departure: Context.journey.departure,
-      destination: Context.journey.destination,
-      time: new Date(Context.journey.time),
+      departure: journey.departure,
+      destination: journey.destination,
+      time: new Date(journey.time),
       isNow: 'false',
     };
     setShortCuts([...shortCuts, newShortCut]);
@@ -50,7 +49,7 @@ const ShortCuts = () => {
           <View flex={5}>
             <Pressable
               onPress={() => {
-                Context.setJourney({
+                setJourney({
                   departure: item.departure,
                   destination: item.destination,
                   time: item.time,
@@ -90,7 +89,8 @@ const ShortCuts = () => {
 };
 
 export default function HomeScreen() {
-  const Context = useContext(StationContext);
+  const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
+  const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
 
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
@@ -102,13 +102,11 @@ export default function HomeScreen() {
       <ShortCuts />
       <Center m={5}>
         <Text>
-          API Token:{' '}
-          {Context.apiToken.access_token ? `...${Context.apiToken.access_token.slice(-5)}` : 'NULL'}{' '}
-          | Vaild: {new Date(Context.apiToken.vaild_time).toLocaleString()}
+          API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
+          Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
         </Text>
         <Text>
-          Train Status Updated Time:{' '}
-          {new Date(Context.trainLiveBoardData.UpdateTime).toLocaleString()}
+          Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
         </Text>
       </Center>
       <Button
@@ -122,7 +120,7 @@ export default function HomeScreen() {
           <Text fontSize="md">Clear All</Text>
         </HStack>
       </Button>
-      <StateStore />
+      <Recoil.RecoilStore />
     </View>
   );
 }

@@ -14,6 +14,8 @@ import {
   Modal,
 } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import * as Recoil from '../store';
 
 import { StationContext } from '../StationContext';
 import { updateDelayTime } from '../api/dataProcess';
@@ -26,19 +28,23 @@ export default function SelectStationandTime() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
-  const Context = useContext(StationContext);
+  const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
+  const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoRecoil);
+  const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
+  const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
+
   const navigation = useNavigation<homeScreenProp>();
   const handleSwapDepartureAndDestination = () => {
-    Context.setJourney({
-      departure: Context.journey.destination,
-      destination: Context.journey.departure,
-      time: Context.journey.time,
+    setJourney({
+      departure: journey.destination,
+      destination: journey.departure,
+      time: journey.time,
     } as Journey);
   };
 
   const saveJourney = async () => {
     try {
-      await AsyncStorage.setItem('journey', JSON.stringify(Context.journey));
+      await AsyncStorage.setItem('journey', JSON.stringify(journey));
       console.log('saved journey');
     } catch (e) {
       console.log(e);
@@ -47,15 +53,15 @@ export default function SelectStationandTime() {
 
   const onChange = (_event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     setShow(false);
-    Context.setJourney({ ...Context.journey, time: selectedDate } as Journey);
+    setJourney({ ...journey, time: selectedDate } as Journey);
   };
 
   const handleLookUp = () => {
     /*  apiDailyTimetableOD(
-      Context.apiToken,
-      Context.journey.departure!.StationID,
-      Context.journey.destination!.StationID,
-      Context.journey.time.toLocaleDateString('en-CA')
+      apiToken,
+      journey.departure!.StationID,
+      journey.destination!.StationID,
+      journey.time.toLocaleDateString('en-CA')
     ).then((res) => {
       setODTimeTable(res.data);
     }); */
@@ -64,12 +70,12 @@ export default function SelectStationandTime() {
     navigation.navigate('TimeTable');
   };
   const checkTimeTable = async () => {
-    if (Context.journey.departure && Context.journey.destination)
+    if (journey.departure && journey.destination)
       try {
         const jsonValue = await AsyncStorage.getItem(
-          `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-            Context.journey.departure.StationID
-          }-${Context.journey.destination.StationID}`
+          `odtimetables${journey.time.toLocaleDateString('en-CA')}-${journey.departure.StationID}-${
+            journey.destination.StationID
+          }`
         );
         return jsonValue != null ? JSON.parse(jsonValue) : null;
       } catch (e) {
@@ -78,12 +84,12 @@ export default function SelectStationandTime() {
   };
 
   const storeTimeTable = async (value: ODTimeTableInfoType[]) => {
-    if (Context.journey.departure && Context.journey.destination)
+    if (journey.departure && journey.destination)
       try {
         await AsyncStorage.setItem(
-          `odtimetables${Context.journey.time.toLocaleDateString('en-CA')}-${
-            Context.journey.departure.StationID
-          }-${Context.journey.destination.StationID}`,
+          `odtimetables${journey.time.toLocaleDateString('en-CA')}-${journey.departure.StationID}-${
+            journey.destination.StationID
+          }`,
           JSON.stringify(value)
         );
       } catch (e) {
@@ -92,47 +98,42 @@ export default function SelectStationandTime() {
   };
 
   const apiTimeTable = async () => {
-    if (Context.journey.departure && Context.journey.destination) {
+    if (journey.departure && journey.destination) {
       apiDailyTimetableOD(
-        Context.apiToken.access_token,
-        Context.journey.departure.StationID,
-        Context.journey.destination.StationID,
-        Context.journey.time.toLocaleDateString('en-CA')
+        apiToken.access_token,
+        journey.departure.StationID,
+        journey.destination.StationID,
+        journey.time.toLocaleDateString('en-CA')
       ).then((res) => {
         const infoData = apiDailyTimetableODDataProcess(res.data);
-        Context.setODTimeTableInfo(infoData);
+        setODTimeTableInfo(infoData);
         storeTimeTable(infoData);
       });
     }
   };
 
   useEffect(() => {
-    if (Context.journey.departure && Context.journey.destination && Context.apiToken.access_token) {
+    if (journey.departure && journey.destination && apiToken.access_token) {
       checkTimeTable().then((res) => {
         if (res) {
-          Context.setODTimeTableInfo(res);
+          setODTimeTableInfo(res);
         } else {
           apiTimeTable();
         }
       });
     }
-  }, [
-    Context.journey.time,
-    Context.journey.departure,
-    Context.journey.destination,
-    Context.apiToken.access_token,
-  ]);
+  }, [journey.time, journey.departure, journey.destination, apiToken.access_token]);
 
   const updateDelayTimeTable = () => {
-    return updateDelayTime(Context.oDTimeTableInfo, Context.trainLiveBoardData.TrainLiveBoards);
+    return updateDelayTime(oDTimeTableInfo, trainLiveBoardData.TrainLiveBoards);
   };
 
   useEffect(() => {
-    if (Context.trainLiveBoardData.TrainLiveBoards === null) {
+    if (trainLiveBoardData.TrainLiveBoards === null) {
       return;
     }
-    Context.setODTimeTableInfo(updateDelayTimeTable());
-  }, [Context.trainLiveBoardData]);
+    setODTimeTableInfo(updateDelayTimeTable());
+  }, [trainLiveBoardData]);
 
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">
@@ -162,7 +163,7 @@ export default function SelectStationandTime() {
               letterSpacing: 'lg',
               textAlign: 'center',
             }}>
-            {Context.journey.departure?.StationName.Zh_tw}
+            {journey.departure?.StationName.Zh_tw}
           </Center>
         </Button>
         <Center>
@@ -198,7 +199,7 @@ export default function SelectStationandTime() {
               letterSpacing: 'lg',
               textAlign: 'center',
             }}>
-            {Context.journey.destination?.StationName.Zh_tw}
+            {journey.destination?.StationName.Zh_tw}
           </Center>
         </Button>
       </HStack>
@@ -217,7 +218,7 @@ export default function SelectStationandTime() {
                 fontSize: '2xl',
                 color: 'white',
               }}>
-              {Context.journey.time.toLocaleDateString('zh-TW')}
+              {journey.time.toLocaleDateString('zh-TW')}
             </Center>
             <Divider bg="#0A1E45" orientation="vertical" />
             <Center
@@ -226,7 +227,7 @@ export default function SelectStationandTime() {
                 fontSize: '2xl',
                 color: 'white',
               }}>
-              {Context.journey.time.toLocaleTimeString('zh-TW', {
+              {journey.time.toLocaleTimeString('zh-TW', {
                 hour12: true,
                 hour: '2-digit',
                 minute: '2-digit',
@@ -237,7 +238,7 @@ export default function SelectStationandTime() {
             <DateTimePicker
               display="spinner"
               testID="dateTimePicker"
-              value={Context.journey.time}
+              value={journey.time}
               // @ts-expect-error: Componet type not set
               mode="datetime"
               locale="zh-TW"
@@ -255,7 +256,7 @@ export default function SelectStationandTime() {
               <DateTimePicker
                 display="spinner"
                 testID="dateTimePicker"
-                value={Context.journey.time}
+                value={journey.time}
                 // @ts-expect-error: Componet type not set
                 mode="datetime"
                 locale="zh-TW"
