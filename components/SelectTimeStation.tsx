@@ -13,15 +13,14 @@ import {
   Flex,
   Modal,
 } from 'native-base';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
 
-import { StationContext } from '../StationContext';
 import { updateDelayTime } from '../api/dataProcess';
 import { apiDailyTimetableOD } from '../api/apiRequest';
 import { apiDailyTimetableODDataProcess } from '../api/dataProcess';
-import { Journey, homeScreenProp, oDTimeTableType, ODTimeTableInfoType } from '../types';
+import { Journey, homeScreenProp, ODTimeTableInfoType } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SelectStationandTime() {
