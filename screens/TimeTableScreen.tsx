@@ -82,24 +82,11 @@ export default function TimeTableScreen() {
   const TravelTime = (props: { train: ODTimeTableInfoType }) => {
     return (
       <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
-        {props.train.TravelTime.Hours == 0 ? '' : props.train.TravelTime.Hours + '時'}{' '}
-        {props.train.TravelTime.Minutes} 分
+        {props.train.TravelTime.Hours}
+        {props.train.TravelTime.Minutes}
       </Text>
     );
   };
-  /* 
-  const checkandUpdateDelayTime = (
-    oDtimetable: ODTimeTableInfoType[],
-    trainLiveBoards: TrainLiveBoardType[]
-  ) => {
-    setODTimeTable(updateDelayTime(oDtimetable, trainLiveBoards));
-    console.log(setODTimeTable(updateDelayTime(oDtimetable, trainLiveBoards)));
-  };
-
-  useEffect(() => {
-    checkandUpdateDelayTime(oDtimetable, trainLiveBoardData.TrainLiveBoards),
-      [trainLiveBoardData];
-  }); */
 
   const ShowDelayTime = (props: { time: number }) => {
     const delayTime = props.time;
@@ -109,16 +96,16 @@ export default function TimeTableScreen() {
           未發車
         </Text>
       );
-    } else if (delayTime > 0) {
+    } else if (delayTime === 0) {
       return (
-        <Text alignSelf="center" color="red.500" fontSize="md">
-          慢{delayTime}分
+        <Text alignSelf="center" color="green.500" fontSize="md">
+          準點
         </Text>
       );
     } else {
       return (
-        <Text alignSelf="center" color="green.500" fontSize="md">
-          準點
+        <Text alignSelf="center" color="red.500" fontSize="md">
+          慢{delayTime}分
         </Text>
       );
     }

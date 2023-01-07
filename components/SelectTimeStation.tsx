@@ -17,7 +17,6 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
 
-import { updateDelayTime } from '../api/dataProcess';
 import { apiDailyTimetableOD } from '../api/apiRequest';
 import { apiDailyTimetableODDataProcess } from '../api/dataProcess';
 import { Journey, homeScreenProp, ODTimeTableInfoType } from '../types';
@@ -28,7 +27,7 @@ export default function SelectStationandTime() {
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
-  const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoRecoil);
+  const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
 
@@ -64,7 +63,6 @@ export default function SelectStationandTime() {
     ).then((res) => {
       setODTimeTable(res.data);
     }); */
-    updateDelayTimeTable();
     saveJourney();
     navigation.navigate('TimeTable');
   };
@@ -122,17 +120,6 @@ export default function SelectStationandTime() {
       });
     }
   }, [journey.time, journey.departure, journey.destination, apiToken.access_token]);
-
-  const updateDelayTimeTable = () => {
-    return updateDelayTime(oDTimeTableInfo, trainLiveBoardData.TrainLiveBoards);
-  };
-
-  useEffect(() => {
-    if (trainLiveBoardData.TrainLiveBoards === null) {
-      return;
-    }
-    setODTimeTableInfo(updateDelayTimeTable());
-  }, [trainLiveBoardData]);
 
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">

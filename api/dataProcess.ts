@@ -13,11 +13,13 @@ const travelTimeCaulate = (time1: string, time2: string) => {
   if (hours < 0) {
     hours = hours + 24;
   }
-  let minuate = travelTimeMin % 60;
-  if (minuate < 0) {
-    minuate = minuate + 60;
+  let minuates = travelTimeMin % 60;
+  if (minuates < 0) {
+    minuates = minuates + 60;
   }
-  return { hours, minuate };
+  const hoursStr = hours > 0 ? hours + '時' : '';
+  const minuatesStr = minuates > 0 ? minuates + '分' : '';
+  return { hoursStr, minuatesStr };
 };
 
 const stopCount = (OriginStopSequence: number, DestinationStopSequence: number) => {
@@ -28,15 +30,16 @@ export const updateDelayTime = (
   ODTimeTableInfo: ODTimeTableInfoType[],
   trainLiveBoards: TrainLiveBoardType[]
 ) => {
-  ODTimeTableInfo.forEach((item) => {
+  const updatedODTimeTableInfo = ODTimeTableInfo.map((item) => {
     const trainLiveBoard = trainLiveBoards.find(
       (trainLiveBoard) => trainLiveBoard.TrainNo === item.TrainNo
     );
     if (trainLiveBoard) {
-      item.DelayTime = trainLiveBoard.DelayTime;
+      return { ...item, DelayTime: trainLiveBoard.DelayTime };
     }
+    return item;
   });
-  return ODTimeTableInfo;
+  return updatedODTimeTableInfo;
 };
 
 const trainType = (TrainTypeNameZH: string) => {
@@ -59,7 +62,7 @@ export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) =
       DestinationStationID: item.DailyTrainInfo.EndingStationID,
       ArrivalTime: item.DestinationStopTime.ArrivalTime,
       Stops: stopCount(item.OriginStopTime.StopSequence, item.DestinationStopTime.StopSequence),
-      TravelTime: { Hours: travelTime.hours, Minutes: travelTime.minuate },
+      TravelTime: { Hours: travelTime.hoursStr, Minutes: travelTime.minuatesStr },
       DelayTime: -1,
     };
     ODTimeTableInfo.push(ODTimeTableItem);

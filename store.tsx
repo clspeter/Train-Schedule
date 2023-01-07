@@ -40,6 +40,11 @@ export const oDTimeTableInfoRecoil = atom({
   default: [] as ODTimeTableInfoType[],
 });
 
+export const oDTimeTableInfoInitialRecoil = atom({
+  key: 'oDTimeTableInfoInitialRecoil',
+  default: [] as ODTimeTableInfoType[],
+});
+
 export const appSettingRecoil = atom({
   key: 'appSettingRecoil',
   default: { useNearestStationOnStartUp: false } as SettingType,

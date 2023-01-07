@@ -19,7 +19,7 @@ export type ODTimeTableInfoType = {
   DestinationStationID: string;
   ArrivalTime: string;
   Stops: number;
-  TravelTime: { Hours: number; Minutes: number };
+  TravelTime: { Hours: string; Minutes: string };
   DelayTime: number;
 };
 

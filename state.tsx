@@ -1,17 +1,28 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import React, { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Recoil from './store';
 import StationList from './responselist/StationList.json';
-import { Journey, StatinType, ShortCutWithSrtingTimeType } from './types';
+import { updateDelayTime } from './api/dataProcess';
+import {
+  Journey,
+  StatinType,
+  ShortCutWithSrtingTimeType,
+  ODTimeTableInfoType,
+  TrainLiveBoardType,
+} from './types';
 import { getApiToken, getTrainStatus } from './api/apiRequest';
 
 export const RecoilState = () => {
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [appSetting, setAppSetting] = useRecoilState(Recoil.appSettingRecoil);
-  const setTrainLiveBoardData = useSetRecoilState(Recoil.trainLiveBoardDataRecoil);
+  const [trainLiveBoardData, setTrainLiveBoardData] = useRecoilState(
+    Recoil.trainLiveBoardDataRecoil
+  );
+  const oDTimeTableInfoInitial = useRecoilValue(Recoil.oDTimeTableInfoInitialRecoil);
+  const setODTimeTableInfo = useSetRecoilState(Recoil.oDTimeTableInfoRecoil);
   const [apiToken, setApiToken] = useRecoilState(Recoil.apiTokenRecoil);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [initalJourney, setInitalJourney] = useState<Journey>({
@@ -210,6 +221,21 @@ export const RecoilState = () => {
   useEffect(() => {
     loadShortcuts();
   }, []);
+
+  const checkandUpdateDelayTime = () => {
+    const updatedODTimeTableInfo = updateDelayTime(
+      oDTimeTableInfoInitial,
+      trainLiveBoardData.TrainLiveBoards
+    );
+    setODTimeTableInfo(updatedODTimeTableInfo);
+  };
+
+  useEffect(() => {
+    if (trainLiveBoardData.TrainLiveBoards === undefined || oDTimeTableInfoInitial === undefined) {
+      return;
+    }
+    checkandUpdateDelayTime();
+  }, [trainLiveBoardData, oDTimeTableInfoInitial]);
 
   return <></>;
 };
