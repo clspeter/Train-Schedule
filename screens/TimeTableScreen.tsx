@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Box, Text, FlatList, View, HStack, VStack } from 'native-base';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { FlashList } from '@shopify/flash-list';
 
 import { ODTimeTableInfoType, TrainLiveBoardType } from '../types';
 import * as Recoil from '../store';
@@ -17,7 +18,7 @@ export default function TimeTableScreen() {
   const flatList = useRef<typeof FlatList>(null);
   const viewabilityConfig = {
     waitForInteraction: false,
-    itemVisiblePercentThreshold: 20,
+    itemVisiblePercentThreshold: 0,
   };
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
@@ -41,13 +42,6 @@ export default function TimeTableScreen() {
     setIsLoaded(true);
   }, []);
 
-  let count = 0;
-  function delay(n: number) {
-    return new Promise(function (resolve) {
-      setTimeout(resolve, n * 100);
-      count++;
-    });
-  }
   /* const getODTimeTable = async () => {
     try {
       const value = await AsyncStorage.getItem(
@@ -184,24 +178,18 @@ export default function TimeTableScreen() {
   };
   if (isLoaded === false) {
     return (
-      <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
+      <View backgroundColor="blueGray.900" flex={1}>
         <Text>Loading...</Text>
       </View>
     );
   } else if (oDTimeTableInfoState) {
     return (
-      <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
-        <FlatList
-          ref={flatList}
-          viewabilityConfig={viewabilityConfig}
+      <View backgroundColor="blueGray.900" flex={1}>
+        <FlashList
           removeClippedSubviews={true}
           initialScrollIndex={FlatlistIndex - 1}
-          windowSize={6}
-          maxToRenderPerBatch={20}
-          initialNumToRender={11}
           refreshing={false}
-          getItemLayout={(data, index) => ({ length: 100, offset: 100 * index, index })}
-          width="100%"
+          estimatedItemSize={100}
           data={oDTimeTableInfoState}
           /*           onScrollToIndexFailed={(info) => {
             const wait = new Promise((resolve) => setTimeout(resolve, 500));
@@ -210,13 +198,13 @@ export default function TimeTableScreen() {
             });
           }} */
           renderItem={RenderItem}
-          keyExtractor={(item) => journey.time + item.TrainNo}
+          keyExtractor={(item) => item.TrainNo}
         />
       </View>
     );
   } else
     return (
-      <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
+      <View backgroundColor="blueGray.900" flex={1}>
         <Text>Error...</Text>
       </View>
     );
