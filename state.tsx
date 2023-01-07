@@ -172,6 +172,10 @@ export const RecoilState = () => {
 
   const updateTrainStatus = () => {
     getTrainStatus(apiToken.access_token).then((status) => {
+      if (status.data === trainLiveBoardData) {
+        return;
+      }
+      console.log('live status up to date');
       setTrainLiveBoardData(status.data);
       console.log('live status update time: ' + new Date(status.data.UpdateTime).toLocaleString());
     });

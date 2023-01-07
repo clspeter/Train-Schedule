@@ -1,6 +1,17 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Box, Text, FlatList, View, HStack, VStack } from 'native-base';
+import {
+  Box,
+  Text,
+  FlatList,
+  View,
+  HStack,
+  VStack,
+  Center,
+  Spinner,
+  Container,
+  Toast,
+} from 'native-base';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
@@ -12,14 +23,10 @@ export default function TimeTableScreen() {
   const [oDTimeTableInfoState, setODTimeTableInfoState] = useState<ODTimeTableInfoType[]>([]);
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const journey = useRecoilValue(Recoil.journeyRecoil);
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
-  const flatList = useRef<typeof FlatList>(null);
-  const viewabilityConfig = {
-    waitForInteraction: false,
-    itemVisiblePercentThreshold: 0,
-  };
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
     journey.time.toLocaleTimeString('zh-TW', {
@@ -27,6 +34,25 @@ export default function TimeTableScreen() {
       hour: '2-digit',
       minute: '2-digit',
     });
+  const toastUpdateTrainLiveBoard = () => {
+    Toast.show({
+      title: '列車即時資訊已更新',
+      duration: 3000,
+    });
+    setIsRefreshing(true);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 100);
+  }, [isRefreshing]);
+
+  useEffect(() => {
+    if (isLoaded) {
+      toastUpdateTrainLiveBoard();
+    }
+  }, [oDTimeTableInfo]);
 
   useEffect(() => {
     if (oDTimeTableInfo) {
@@ -37,6 +63,7 @@ export default function TimeTableScreen() {
         }
         return index;
       });
+      console.log('oDTimeTableInfoState updated');
       setODTimeTableInfoState(oDTimeTableInfo);
     }
     setIsLoaded(true);
@@ -73,6 +100,24 @@ export default function TimeTableScreen() {
     }
   }; */
 
+  const LoadingSpinner = () => {
+    return (
+      <Spinner
+        animating={false}
+        size="lg"
+        color="blue.500"
+        justifyContent="center"
+        position="absolute"
+        w="100%"
+        h="100%"
+        top="0"
+        left="0"
+        zIndex={100}
+        backgroundColor="rgba(0, 0, 0, 0.5)"
+      />
+    );
+  };
+
   const TravelTime = (props: { train: ODTimeTableInfoType }) => {
     return (
       <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
@@ -105,13 +150,6 @@ export default function TimeTableScreen() {
     }
   };
 
-  const grayOut = (index: number) => {
-    if (index < FlatlistIndex) {
-      return '#71717a';
-    }
-    return 'white';
-  };
-
   const SvgArrow = (props: { color: string }) => (
     <Svg width="100" height="50" fill={props.color} viewBox="-10 10 50 50">
       <Path
@@ -122,10 +160,10 @@ export default function TimeTableScreen() {
   );
 
   const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => {
-    const textColor = grayOut(index);
     return (
       <Box
-        borderBottomWidth="1"
+        opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
+        borderTopWidth="1"
         borderColor="muted.400"
         backgroundColor={index === FlatlistIndex ? 'info.900' : 'blueGray.900'}
         flex={1}
@@ -135,7 +173,7 @@ export default function TimeTableScreen() {
         py="2">
         <HStack>
           <VStack flex={1.2}>
-            <Text alignSelf="center" fontSize={20} ml={1} color={textColor}>
+            <Text alignSelf="center" fontSize={20} ml={1} color="white">
               {item.TrainNo}
             </Text>
             <Text
@@ -150,7 +188,7 @@ export default function TimeTableScreen() {
             </Text>
           </VStack>
           <HStack mt={0} flex={5}>
-            <Text fontSize={30} color={textColor} width={85} alignSelf="center" pl="-5">
+            <Text fontSize={30} color="white" width={85} alignSelf="center" pl="-5">
               {item.DepartureTime}
             </Text>
             <View w={100} h={30} mt={1}>
@@ -163,12 +201,12 @@ export default function TimeTableScreen() {
                     {' '}
                   </Text>
                 )}
-                <SvgArrow color={textColor} />
+                <SvgArrow color="white" />
                 <TravelTime train={item} />
               </VStack>
             </View>
             {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
-            <Text fontSize={30} color={textColor} width={85} alignSelf="center" ml={2}>
+            <Text fontSize={30} color="white" width={85} alignSelf="center" ml={2}>
               {item.ArrivalTime}
             </Text>
           </HStack>
@@ -179,28 +217,33 @@ export default function TimeTableScreen() {
   if (isLoaded === false) {
     return (
       <View backgroundColor="blueGray.900" flex={1}>
-        <Text>Loading...</Text>
+        <Center>
+          <Spinner size="lg" />
+        </Center>
       </View>
     );
   } else if (oDTimeTableInfoState) {
     return (
-      <View backgroundColor="blueGray.900" flex={1}>
-        <FlashList
-          removeClippedSubviews={true}
-          initialScrollIndex={FlatlistIndex - 1}
-          refreshing={false}
-          estimatedItemSize={100}
-          data={oDTimeTableInfoState}
-          /*           onScrollToIndexFailed={(info) => {
+      <Box flex={1} backgroundColor="blueGray.900">
+        {isRefreshing && <LoadingSpinner />}
+        <View backgroundColor="blueGray.900" flex={1}>
+          <FlashList
+            removeClippedSubviews={true}
+            initialScrollIndex={FlatlistIndex - 1}
+            refreshing={false}
+            estimatedItemSize={100}
+            data={oDTimeTableInfoState}
+            /*           onScrollToIndexFailed={(info) => {
             const wait = new Promise((resolve) => setTimeout(resolve, 500));
             wait.then(() => {
               flatList.current?.scrollToIndex({ index: info.index, animated: true });
             });
           }} */
-          renderItem={RenderItem}
-          keyExtractor={(item) => item.TrainNo}
-        />
-      </View>
+            renderItem={RenderItem}
+            keyExtractor={(item) => item.TrainNo}
+          />
+        </View>
+      </Box>
     );
   } else
     return (
