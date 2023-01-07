@@ -43,8 +43,25 @@ export const updateDelayTime = (
 };
 
 const trainType = (TrainTypeNameZH: string) => {
-  return TrainTypeNameZH;
+  const trainTypeSlice2 = TrainTypeNameZH.slice(0, 2);
+  const trainTypeSlice3 = TrainTypeNameZH.slice(0, 3);
+  const trainTypeSlice4 = TrainTypeNameZH.slice(0, 4);
+  console.log(trainTypeSlice4);
+  if (trainTypeSlice2 === '區間') {
+    return '區間';
+  } else if (trainTypeSlice4 === '自強(3') {
+    return '自強3K';
+  } else if (trainTypeSlice3 === '自強(') {
+    return '自強';
+  } else if (trainTypeSlice2 === '莒光') {
+    return '莒光';
+  } else if (trainTypeSlice3 === '太魯閣') {
+    return '太魯閣';
+  } else if (trainTypeSlice3 === '普悠瑪') {
+    return '普悠瑪';
+  } else return 'e' + TrainTypeNameZH;
 };
+
 //處理資料
 export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) => {
   const ODTimeTableInfo: ODTimeTableInfoType[] = [];
@@ -56,7 +73,7 @@ export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) =
     const ODTimeTableItem: ODTimeTableInfoType = {
       TrainNo: item.DailyTrainInfo.TrainNo,
       TrainDate: item.TrainDate,
-      TrainTypeName: item.DailyTrainInfo.TrainTypeName.Zh_tw,
+      TrainTypeName: trainType(item.DailyTrainInfo.TrainTypeName.Zh_tw),
       OriginStationID: item.DailyTrainInfo.StartingStationID,
       DepartureTime: item.OriginStopTime.DepartureTime,
       DestinationStationID: item.DailyTrainInfo.EndingStationID,
