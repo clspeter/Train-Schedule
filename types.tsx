@@ -24,20 +24,15 @@ export type ODTimeTableInfoType = {
 };
 
 export interface Journey {
-  departure: StatinType | null;
-  destination: StatinType | null;
+  departure: StatinType;
+  destination: StatinType;
   time: Date;
 }
 
-export type ShortCutType = Journey & {
-  index: number;
-  isNow: string;
-};
-
-export interface ShortCutWithSrtingTimeType {
+export interface ShortCutType {
   departure: StatinType;
   destination: StatinType;
-  time: Date | string;
+  time: { hour: number; minute: number };
   index: number;
   isNow: string;
 }

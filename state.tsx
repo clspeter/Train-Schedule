@@ -5,13 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Recoil from './store';
 import StationList from './responselist/StationList.json';
 import { updateDelayTime } from './api/dataProcess';
-import {
-  Journey,
-  StatinType,
-  ShortCutWithSrtingTimeType,
-  ODTimeTableInfoType,
-  TrainLiveBoardType,
-} from './types';
+import { Journey, StatinType, ODTimeTableInfoType, TrainLiveBoardType } from './types';
 import { getApiToken, getTrainStatus } from './api/apiRequest';
 
 export const RecoilState = () => {
@@ -26,8 +20,8 @@ export const RecoilState = () => {
   const [apiToken, setApiToken] = useRecoilState(Recoil.apiTokenRecoil);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [initalJourney, setInitalJourney] = useState<Journey>({
-    departure: null,
-    destination: null,
+    departure: {} as StatinType,
+    destination: {} as StatinType,
     time: new Date(),
   });
 
@@ -205,9 +199,6 @@ export const RecoilState = () => {
       const value = await AsyncStorage.getItem('shortcuts');
       if (value !== null) {
         const objShortCuts = JSON.parse(value);
-        objShortCuts.forEach((item: ShortCutWithSrtingTimeType) => {
-          item.time = new Date(Date.parse(item.time));
-        });
         setShortCuts(objShortCuts);
       }
     } catch (e) {
