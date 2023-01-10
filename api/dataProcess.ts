@@ -1,9 +1,12 @@
 import ODTimeTable from '../responselist/oDTimeTableExample.json';
 import { oDTimeTableType, TrainLiveBoardType, ODTimeTableInfoType } from '../types';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 // caculate the time difference between two time
 
 // caculate travel time hours and minutes
-const travelTimeCaulate = (time1: string, time2: string) => {
+const caulateTravelTime = (time1: string, time2: string) => {
   const time1Arr = time1.split(':');
   const time2Arr = time2.split(':');
   const time1Min = parseInt(time1Arr[0]) * 60 + parseInt(time1Arr[1]);
@@ -19,6 +22,21 @@ const travelTimeCaulate = (time1: string, time2: string) => {
   }
   const hoursStr = hours > 0 ? hours + '時' : '';
   const minuatesStr = minuates > 0 ? minuates + '分' : '';
+  return { hoursStr, minuatesStr };
+};
+
+const travelTimeCaulate = (time1: string, time2: string) => {
+  dayjs.extend(customParseFormat);
+  dayjs.extend(duration);
+
+  const time2obj = dayjs(time2, 'HH:mm');
+  const time1obj = dayjs(time1, 'HH:mm');
+  let traveltime = dayjs.duration(time2obj.diff(time1obj));
+  if (time1 > time2) {
+    traveltime = traveltime.add(1, 'days');
+  }
+  const hoursStr = traveltime.hours() > 0 ? traveltime.hours() + '時' : '';
+  const minuatesStr = traveltime.minutes() > 0 ? traveltime.minutes() + '分' : '';
   return { hoursStr, minuatesStr };
 };
 
@@ -46,7 +64,6 @@ const trainType = (TrainTypeNameZH: string) => {
   const trainTypeSlice2 = TrainTypeNameZH.slice(0, 2);
   const trainTypeSlice3 = TrainTypeNameZH.slice(0, 3);
   const trainTypeSlice4 = TrainTypeNameZH.slice(0, 4);
-  console.log(trainTypeSlice4);
   if (trainTypeSlice2 === '區間') {
     return '區間';
   } else if (trainTypeSlice4 === '自強(3') {
