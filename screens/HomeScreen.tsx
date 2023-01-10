@@ -1,5 +1,5 @@
 import { Text, HStack, Center, VStack, View, Box, Button, FlatList, Pressable } from 'native-base';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
 import { ShortCutType } from '../types';
@@ -23,10 +23,10 @@ const clearAll = async () => {
 const ShortCuts = () => {
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
+  require('dayjs/locale/zh-tw');
 
   const handleNowShortcut = () => {
     const newShortCut: ShortCutType = {
-      index: shortCuts.length + 1,
       departure: journey.departure,
       destination: journey.destination,
       time: { hour: dayjs(journey.time).hour(), minute: dayjs(journey.time).minute() },
@@ -34,12 +34,13 @@ const ShortCuts = () => {
     };
     setShortCuts([...shortCuts, newShortCut]);
   };
+
   const handleDeleteShortcut = (index: number) => {
-    setShortCuts(shortCuts.filter((item) => item.index !== index));
+    const newShortCuts = shortCuts.filter((item, i) => i !== index);
+    setShortCuts(newShortCuts);
   };
 
   const renderItems = ({ item, index }: { item: ShortCutType; index: number }) => {
-    require('dayjs/locale/zh-tw');
     return (
       <Box
         key={`${item.departure?.StationID}-${item.destination?.StationID}`}
@@ -73,7 +74,7 @@ const ShortCuts = () => {
               </Text>
             </Pressable>
           </View>
-          <Button onPress={() => handleDeleteShortcut(item.index)} borderLeftRadius="none">
+          <Button onPress={() => handleDeleteShortcut(index)} borderLeftRadius="none">
             刪除
           </Button>
         </HStack>
