@@ -8,6 +8,8 @@ import { AntDesign } from '@expo/vector-icons';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 const clearAll = async () => {
   try {
@@ -27,7 +29,7 @@ const ShortCuts = () => {
       index: shortCuts.length + 1,
       departure: journey.departure,
       destination: journey.destination,
-      time: new Date(journey.time),
+      time: { hour: dayjs(journey.time).hour(), minute: dayjs(journey.time).minute() },
       isNow: 'false',
     };
     setShortCuts([...shortCuts, newShortCut]);
@@ -37,6 +39,7 @@ const ShortCuts = () => {
   };
 
   const renderItems = ({ item, index }: { item: ShortCutType; index: number }) => {
+    require('dayjs/locale/zh-tw');
     return (
       <Box
         key={`${item.departure?.StationID}-${item.destination?.StationID}`}
@@ -52,18 +55,21 @@ const ShortCuts = () => {
                 setJourney({
                   departure: item.departure,
                   destination: item.destination,
-                  time: item.time,
+                  time: dayjs()
+                    .set('hour', item.time.hour)
+                    .set('minute', item.time.minute)
+                    .toDate(),
                 });
               }}>
               <Text alignSelf="center" fontSize={18}>
                 {item.departure?.StationName.Zh_tw}{' '}
                 <AntDesign name="arrowright" size={18} color="white" />{' '}
                 {item.destination?.StationName.Zh_tw}{' '}
-                {item.time?.toLocaleString('zh-TW', {
-                  hour12: true,
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {dayjs()
+                  .set('hour', item.time.hour)
+                  .set('minute', item.time.minute)
+                  .locale('zh-tw')
+                  .format('A HH:mm')}
               </Text>
             </Pressable>
           </View>
