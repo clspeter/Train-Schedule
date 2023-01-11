@@ -23,8 +23,26 @@ const clearAll = async () => {
 const ShortCuts = () => {
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
-  const isNow = useRecoilValue(Recoil.isNowRecoil);
+  const [isNow, setIsNow] = useRecoilState(Recoil.isNowRecoil);
   require('dayjs/locale/zh-tw');
+
+  const handleApplyShortcut = (item: ShortCutType) => {
+    if (item.isNow) {
+      setJourney({
+        ...journey,
+        departure: item.departure,
+        destination: item.destination,
+      });
+      setIsNow(true);
+    } else {
+      setJourney({
+        departure: item.departure,
+        destination: item.destination,
+        time: dayjs().set('hour', item.time.hour).set('minute', item.time.minute).toDate(),
+      });
+      setIsNow(false);
+    }
+  };
 
   const handleNowShortcut = () => {
     const newShortCut: ShortCutType = {
@@ -54,14 +72,7 @@ const ShortCuts = () => {
           <View flex={5}>
             <Pressable
               onPress={() => {
-                setJourney({
-                  departure: item.departure,
-                  destination: item.destination,
-                  time: dayjs()
-                    .set('hour', item.time.hour)
-                    .set('minute', item.time.minute)
-                    .toDate(),
-                });
+                handleApplyShortcut(item);
               }}>
               <Text alignSelf="center" fontSize={18}>
                 {item.departure?.StationName.Zh_tw}{' '}
