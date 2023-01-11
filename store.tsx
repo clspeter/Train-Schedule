@@ -7,17 +7,41 @@ import {
   TrainLiveBoardDataType,
   ODTimeTableInfoType,
   SettingType,
+  StatinType,
 } from './types';
+
+export const isNowRecoil = atom({
+  key: 'isNowRecoil',
+  default: false,
+});
 
 export const shortCutsRecoil = atom({
   key: 'shortCutsRecoil',
   default: [] as ShortCutType[],
 });
+
+const initialStation: StatinType = {
+  StationUID: '',
+  StationID: '',
+  StationName: {
+    Zh_tw: '',
+    En: '',
+  },
+  StationPosition: {
+    PositionLon: 0,
+    PositionLat: 0,
+  },
+  StationAddress: '',
+  StationPhone: '',
+  StationClass: '',
+  StationURL: '',
+};
+
 export const journeyRecoil = atom({
   key: 'journeyRecoil',
   default: {
-    departure: null,
-    destination: null,
+    departure: initialStation,
+    destination: initialStation,
     time: new Date(),
   } as Journey,
 });
