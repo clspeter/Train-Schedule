@@ -23,6 +23,7 @@ const clearAll = async () => {
 const ShortCuts = () => {
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
+  const isNow = useRecoilValue(Recoil.isNowRecoil);
   require('dayjs/locale/zh-tw');
 
   const handleNowShortcut = () => {
@@ -30,7 +31,7 @@ const ShortCuts = () => {
       departure: journey.departure,
       destination: journey.destination,
       time: { hour: dayjs(journey.time).hour(), minute: dayjs(journey.time).minute() },
-      isNow: 'false',
+      isNow: isNow,
     };
     setShortCuts([...shortCuts, newShortCut]);
   };
@@ -66,11 +67,13 @@ const ShortCuts = () => {
                 {item.departure?.StationName.Zh_tw}{' '}
                 <AntDesign name="arrowright" size={18} color="white" />{' '}
                 {item.destination?.StationName.Zh_tw}{' '}
-                {dayjs()
-                  .set('hour', item.time.hour)
-                  .set('minute', item.time.minute)
-                  .locale('zh-tw')
-                  .format('A HH:mm')}
+                {item.isNow
+                  ? '立即出發'
+                  : dayjs()
+                      .set('hour', item.time.hour)
+                      .set('minute', item.time.minute)
+                      .locale('zh-tw')
+                      .format('A HH:mm')}
               </Text>
             </Pressable>
           </View>

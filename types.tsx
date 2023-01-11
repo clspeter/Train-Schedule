@@ -33,7 +33,7 @@ export interface ShortCutType {
   departure: StatinType;
   destination: StatinType;
   time: { hour: number; minute: number };
-  isNow: string;
+  isNow: boolean;
 }
 
 export type SettingType = {
