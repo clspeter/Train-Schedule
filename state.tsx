@@ -29,8 +29,8 @@ export const RecoilState = () => {
     try {
       const setting = await AsyncStorage.getItem('setting');
       if (setting === null) {
-        console.log('no saved setting, set default');
-        setAppSetting({ useNearestStationOnStartUp: false });
+        console.log('no saved setting, use default and save it');
+        await AsyncStorage.setItem('setting', JSON.stringify(appSetting));
       } else {
         const objSetting = JSON.parse(setting);
         console.log(
