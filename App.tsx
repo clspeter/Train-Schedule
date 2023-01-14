@@ -11,6 +11,7 @@ import HomeScreen from './screens/HomeScreen';
 import SelectDepartureScreen from './screens/SelectDepartureScreen';
 import SelectDestinationScreen from './screens/SelectDestinationScreen';
 import SettingScreen from './screens/SettingScreen';
+import TrainInfoScreen from './screens/TrainInfoScreen';
 import TimeTableScreen from './screens/TimeTableScreen';
 import { RootStackParamList, homeScreenProp } from './types';
 
@@ -116,6 +117,19 @@ export default function App(): JSX.Element {
                   },
                 }}
               />
+              <Stack.Screen
+                name="TrainInfo"
+                component={TrainInfoScreen}
+                options={{
+                  title: '列車詳細資料',
+                  headerStyle: {
+                    backgroundColor: '#0A1E45',
+                  },
+                  headerTintColor: '#AAAAAA',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                }}></Stack.Screen>
             </Stack.Navigator>
           </NavigationContainer>
         </RecoilRoot>

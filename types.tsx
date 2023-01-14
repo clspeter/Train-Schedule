@@ -14,9 +14,11 @@ export type ODTimeTableInfoType = {
   TrainNo: string;
   TrainDate: string;
   TrainTypeName: string;
-  OriginStationID: string;
+  StartingStationID: string;
+  StartingStationName: string;
+  EndingStationID: string;
+  EndingStationName: string;
   DepartureTime: string;
-  DestinationStationID: string;
   ArrivalTime: string;
   Stops: number;
   TravelTime: { Hours: string; Minutes: string };
@@ -47,6 +49,7 @@ export type RootStackParamList = {
   SelectStation: undefined;
   TimeTable: undefined;
   Setting: undefined;
+  TrainInfo: undefined;
 };
 
 export type ApiToken = {

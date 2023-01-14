@@ -73,3 +73,8 @@ export const appSettingRecoil = atom({
   key: 'appSettingRecoil',
   default: { useNearestStationOnStartUp: false } as SettingType,
 });
+
+export const TrainInfoRecoil = atom({
+  key: 'TrainInfoRecoil',
+  default: {} as ODTimeTableInfoType,
+});

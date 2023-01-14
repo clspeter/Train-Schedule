@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Box,
@@ -11,12 +11,14 @@ import {
   Spinner,
   Container,
   Toast,
+  Pressable,
 } from 'native-base';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
+import { useNavigation } from '@react-navigation/native';
 
-import { ODTimeTableInfoType, TrainLiveBoardType } from '../types';
+import { ODTimeTableInfoType, TrainLiveBoardType, homeScreenProp } from '../types';
 import * as Recoil from '../store';
 
 export default function TimeTableScreen() {
@@ -24,9 +26,16 @@ export default function TimeTableScreen() {
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const setTrainInfo = useSetRecoilState(Recoil.TrainInfoRecoil);
   const journey = useRecoilValue(Recoil.journeyRecoil);
+  const navigation = useNavigation<homeScreenProp>();
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
+  const handleOnPress = (item: ODTimeTableInfoType) => {
+    setTrainInfo(item);
+    navigation.navigate('TrainInfo');
+  };
+
   const isLater = (item: ODTimeTableInfoType) =>
     item.DepartureTime >
     journey.time.toLocaleTimeString('zh-TW', {
@@ -34,6 +43,7 @@ export default function TimeTableScreen() {
       hour: '2-digit',
       minute: '2-digit',
     });
+
   const toastUpdateTrainLiveBoard = () => {
     Toast.show({
       title: '列車即時資訊已更新',
@@ -161,57 +171,59 @@ export default function TimeTableScreen() {
 
   const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => {
     return (
-      <Box
-        opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
-        borderTopWidth="1"
-        borderColor="muted.400"
-        backgroundColor={index === FlatlistIndex ? 'info.900' : 'blueGray.900'}
-        flex={1}
-        h="100"
-        pl={['0', '4']}
-        pr={['0', '5']}
-        py="2">
-        <HStack>
-          <VStack flex={1.2}>
-            <Text alignSelf="center" fontSize={20} ml={1} color="white">
-              {item.TrainNo}
-            </Text>
-            <Text
-              fontSize={16}
-              ml={1}
-              alignSelf="center"
-              color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
-              {item.TrainTypeName}
-            </Text>
-            <Text fontSize={16} ml={1} color="white" alignSelf="center">
-              {item.Stops}站
-            </Text>
-          </VStack>
-          <HStack mt={0} flex={5}>
-            <Text fontSize={30} color="white" width={85} alignSelf="center" pl="-5">
-              {item.DepartureTime}
-            </Text>
-            <View w={100} h={30} mt={1}>
-              <VStack>
-                {new Date(journey.time).toLocaleDateString('en-US') ===
-                new Date().toLocaleDateString('en-US') ? (
-                  <ShowDelayTime time={item.DelayTime} />
-                ) : (
-                  <Text alignSelf="center" fontSize="sm">
-                    {' '}
-                  </Text>
-                )}
-                <SvgArrow color="white" />
-                <TravelTime train={item} />
-              </VStack>
-            </View>
-            {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
-            <Text fontSize={30} color="white" width={85} alignSelf="center" ml={2}>
-              {item.ArrivalTime}
-            </Text>
+      <Pressable onPress={() => handleOnPress(item)}>
+        <Box
+          opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
+          borderTopWidth="1"
+          borderColor="muted.400"
+          backgroundColor={index === FlatlistIndex ? 'info.900' : 'blueGray.900'}
+          flex={1}
+          h="100"
+          pl={['0', '4']}
+          pr={['0', '5']}
+          py="2">
+          <HStack>
+            <VStack flex={1.2}>
+              <Text alignSelf="center" fontSize={20} ml={1} color="white">
+                {item.TrainNo}
+              </Text>
+              <Text
+                fontSize={16}
+                ml={1}
+                alignSelf="center"
+                color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
+                {item.TrainTypeName}
+              </Text>
+              <Text fontSize={16} ml={1} color="white" alignSelf="center">
+                {item.Stops}站
+              </Text>
+            </VStack>
+            <HStack mt={0} flex={5}>
+              <Text fontSize={30} color="white" width={85} alignSelf="center" pl="-5">
+                {item.DepartureTime}
+              </Text>
+              <View w={100} h={30} mt={1}>
+                <VStack>
+                  {new Date(journey.time).toLocaleDateString('en-US') ===
+                  new Date().toLocaleDateString('en-US') ? (
+                    <ShowDelayTime time={item.DelayTime} />
+                  ) : (
+                    <Text alignSelf="center" fontSize="sm">
+                      {' '}
+                    </Text>
+                  )}
+                  <SvgArrow color="white" />
+                  <TravelTime train={item} />
+                </VStack>
+              </View>
+              {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
+              <Text fontSize={30} color="white" width={85} alignSelf="center" ml={2}>
+                {item.ArrivalTime}
+              </Text>
+            </HStack>
           </HStack>
-        </HStack>
-      </Box>
+        </Box>
+      </Pressable>
     );
   };
   if (isLoaded === false) {
