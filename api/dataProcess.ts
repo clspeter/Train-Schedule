@@ -53,7 +53,11 @@ export const updateDelayTime = (
       (trainLiveBoard) => trainLiveBoard.TrainNo === item.TrainNo
     );
     if (trainLiveBoard) {
-      return { ...item, DelayTime: trainLiveBoard.DelayTime };
+      return {
+        ...item,
+        DelayTime: trainLiveBoard.DelayTime,
+        PassedByStation: { ID: trainLiveBoard.StationID, Name: trainLiveBoard.StationName.Zh_tw },
+      };
     }
     return item;
   });
@@ -99,6 +103,7 @@ export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) =
       ArrivalTime: item.DestinationStopTime.ArrivalTime,
       Stops: stopCount(item.OriginStopTime.StopSequence, item.DestinationStopTime.StopSequence),
       TravelTime: { Hours: travelTime.hoursStr, Minutes: travelTime.minuatesStr },
+      PassedByStation: { ID: '', Name: '' },
       DelayTime: -1,
     };
     ODTimeTableInfo.push(ODTimeTableItem);

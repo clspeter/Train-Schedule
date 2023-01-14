@@ -22,6 +22,10 @@ export type ODTimeTableInfoType = {
   ArrivalTime: string;
   Stops: number;
   TravelTime: { Hours: string; Minutes: string };
+  PassedByStation: {
+    ID: string;
+    Name: string;
+  };
   DelayTime: number;
 };
 
