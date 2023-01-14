@@ -6,7 +6,7 @@ import * as Recoil from './store';
 import StationList from './responselist/StationList.json';
 import { updateDelayTime } from './api/dataProcess';
 import { Journey, StatinType, ODTimeTableInfoType, TrainLiveBoardType } from './types';
-import { getApiToken, getTrainStatus } from './api/apiRequest';
+import { getApiToken, apiTrainStatus } from './api/apiRequest';
 
 export const RecoilState = () => {
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
@@ -165,13 +165,22 @@ export const RecoilState = () => {
   }, [initalJourney, appSetting]);
 
   const updateTrainStatus = () => {
-    getTrainStatus(apiToken.access_token).then((status) => {
+    apiTrainStatus(apiToken.access_token).then((status) => {
+      if (status.data === undefined) {
+        return;
+      }
       if (status.data === trainLiveBoardData) {
         return;
       }
-      console.log('live status up to date');
       setTrainLiveBoardData(status.data);
-      console.log('live status update time: ' + new Date(status.data.UpdateTime).toLocaleString());
+      console.log(
+        'live status update time: ' +
+          new Date(status.data.UpdateTime).toLocaleString(
+            //show hours and minutes only
+            'en-US',
+            { hour: 'numeric', minute: 'numeric', hour12: true }
+          )
+      );
     });
   };
 
@@ -230,6 +239,11 @@ export const RecoilState = () => {
       return;
     }
     checkandUpdateDelayTime();
+    trainLiveBoardData.TrainLiveBoards.map((train: TrainLiveBoardType) => {
+      if (train.TrainNo === '149') {
+        console.log(train.StationName.Zh_tw);
+      }
+    });
   }, [trainLiveBoardData, oDTimeTableInfoInitial]);
 
   return <></>;

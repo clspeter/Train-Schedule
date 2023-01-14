@@ -262,6 +262,7 @@ export default function SelectStationandTime() {
               </Flex>
               {show && (
                 <DateTimePicker
+                  minimumDate={new Date(new Date().setHours(0, 0, 0, 0))}
                   display="spinner"
                   testID="dateTimePicker"
                   value={journey.time}

@@ -24,6 +24,12 @@ export const apiDailyTimetableOD = (
     `/v2/Rail/TRA/DailyTimetable/OD/${OriginStationID}/to/${DestinationStationID}/${TrainDate}`
   );
 
+export const apiTodayTrainStatusByNo = (token: string, trainNo: number): Promise<AxiosResponse> =>
+  apiRequest(token).get(`/v3/Rail/TRA/SpecificTrainTimetable/TrainNo/${trainNo}`);
+
+export const apiTrainStatusByNo = (token: string, trainNo: string): Promise<AxiosResponse> =>
+  apiRequest(token).get(`/v3/Rail/TRA/GeneralTrainTimetable/TrainNo/${trainNo}`);
+
 export const getApiToken = async () => {
   return await axios({
     method: 'post',
@@ -39,7 +45,7 @@ export const getApiToken = async () => {
   });
 };
 
-export const getTrainStatus = (token: string): Promise<AxiosResponse> =>
+export const apiTrainStatus = (token: string): Promise<AxiosResponse> =>
   apiRequest(token).get(`/v3/Rail/TRA/TrainLiveBoard`);
 
 /*
