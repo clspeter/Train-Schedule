@@ -1,0 +1,58 @@
+{
+  "UpdateTime": "2023-01-14T09:03:33+08:00",
+  "UpdateInterval": 14400,
+  "SrcUpdateTime": "2023-01-13T14:20:35+08:00",
+  "SrcUpdateInterval": -1,
+  "TrainDate": "2023-01-15",
+  "TrainTimetables": [
+    {
+      "TrainInfo": {
+        "TrainNo": "149",
+        "RouteID": "",
+        "Direction": 1,
+        "TrainTypeID": "1108",
+        "TrainTypeCode": "3",
+        "TrainTypeName": {
+          "Zh_tw": "自強(推拉式自強號且無自行車車廂)",
+          "En": "Tze-Chiang Limited Express"
+        },
+        "TripHeadSign": "往潮州",
+        "StartingStationID": "0900",
+        "StartingStationName": {
+          "Zh_tw": "基隆",
+          "En": "Keelung"
+        },
+        "EndingStationID": "5050",
+        "EndingStationName": {
+          "Zh_tw": "潮州",
+          "En": "Chaozhou"
+        },
+        "OverNightStationID": "4440",
+        "TripLine": 1,
+        "WheelChairFlag": 1,
+        "PackageServiceFlag": 0,
+        "DiningFlag": 0,
+        "BreastFeedFlag": 1,
+        "BikeFlag": 0,
+        "CarFlag": 0,
+        "DailyFlag": 1,
+        "ExtraTrainFlag": 0,
+        "SuspendedFlag": 0,
+        "Note": "每日行駛。在鳳山跨日。"
+      },
+      "StopTimes": [
+        {
+          "StopSequence": 1,
+          "StationID": "0900",
+          "StationName": {
+            "Zh_tw": "基隆",
+            "En": "Keelung"
+          },
+          "ArrivalTime": "18:11",
+          "DepartureTime": "18:11",
+          "SuspendedFlag": 0
+        }
+      ]
+    }
+  ]
+}

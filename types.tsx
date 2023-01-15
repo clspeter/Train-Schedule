@@ -3,12 +3,14 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import StationList from './responselist/StationList.json';
 import oDTimeTableExample from './responselist/oDTimeTableExample.json';
 import trainLiveBoardData from './responselist/trainLiveBoardData.json';
+import DailyTrainTimeTable from './responselist/DailyTrainTimeTable.json';
 
 export type oDTimeTableType = typeof oDTimeTableExample[number];
 export type TrainLiveBoardDataType = typeof trainLiveBoardData;
 export type TrainLiveBoardType = typeof trainLiveBoardData.TrainLiveBoards[0];
 export type StationListType = typeof StationList;
 export type StatinType = StationListType[number];
+export type TrainInfoType = typeof DailyTrainTimeTable;
 
 export type ODTimeTableInfoType = {
   TrainNo: string;
@@ -60,5 +62,17 @@ export type ApiToken = {
   access_token: string;
   vaild_time: Date;
 };
+
+export interface StopTimes {
+  StopSequence: number;
+  StationID: number;
+  StationName: {
+    Zh_tw: string;
+    En: string;
+  };
+  ArrivalTime: string;
+  DepartureTime: string;
+  SuspendedFlag: number;
+}
 
 export type homeScreenProp = NativeStackNavigationProp<RootStackParamList>;

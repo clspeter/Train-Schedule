@@ -1,4 +1,6 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
+import { apiTodayTrainStatusByNo } from './api/apiRequest';
+import { TrainInfoType } from './types';
 
 import {
   Journey,
@@ -77,4 +79,21 @@ export const appSettingRecoil = atom({
 export const TrainInfoRecoil = atom({
   key: 'TrainInfoRecoil',
   default: {} as ODTimeTableInfoType,
+});
+
+export const TrainInfoDetailRecoil = selector({
+  key: 'TrainInfoDetailRecoil',
+  get: async ({ get }) => {
+    const trainInfo = get(TrainInfoRecoil);
+    const apiToken = get(apiTokenRecoil);
+    console.log(TrainInfoDetailRecoil);
+    const trainInfoDetail = await apiTodayTrainStatusByNo(
+      apiToken.access_token,
+      trainInfo.TrainNo
+    ).then((res) => {
+      return res.data.TrainTimetables[0] as TrainInfoType['TrainTimetables'][0];
+    });
+    console.log(trainInfoDetail);
+    return trainInfoDetail;
+  },
 });
