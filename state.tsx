@@ -239,11 +239,6 @@ export const RecoilState = () => {
       return;
     }
     checkandUpdateDelayTime();
-    trainLiveBoardData.TrainLiveBoards.map((train: TrainLiveBoardType) => {
-      if (train.TrainNo === '149') {
-        console.log(train.StationName.Zh_tw);
-      }
-    });
   }, [trainLiveBoardData, oDTimeTableInfoInitial]);
 
   return <></>;
