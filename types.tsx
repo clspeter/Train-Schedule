@@ -58,6 +58,15 @@ export type RootStackParamList = {
   TrainInfo: undefined;
 };
 
+export interface TrainLiveBaordTrainInfoDisplay extends TrainLiveBoardType {
+  index: {
+    initialScroll: number;
+    showDelayTime: number;
+    start: number;
+    end: number;
+  };
+}
+
 export type ApiToken = {
   access_token: string;
   vaild_time: Date;

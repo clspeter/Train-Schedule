@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import { apiTodayTrainStatusByNo } from './api/apiRequest';
-import { TrainInfoType, TrainLiveBoardType } from './types';
+import { TrainInfoType, TrainLiveBaordTrainInfoDisplay, TrainLiveBoardType } from './types';
 
 import {
   Journey,
@@ -93,7 +93,6 @@ export const TrainInfoDetailRecoil = selector({
     ).then((res) => {
       return res.data.TrainTimetables[0] as TrainInfoType['TrainTimetables'][0];
     });
-    console.log(trainInfoDetail);
     return trainInfoDetail;
   },
 });
@@ -101,11 +100,38 @@ export const TrainInfoDetailRecoil = selector({
 export const TrainInfoLiveRecoil = selector({
   key: 'TrainInfoLiveRecoil',
   get: async ({ get }) => {
-    const trainInfo = get(TrainInfoRecoil);
+    const trainInfoDetail = get(TrainInfoDetailRecoil);
     const trainLiveBoardData = get(trainLiveBoardDataRecoil);
-    const trainLiveboard = trainLiveBoardData.TrainLiveBoards.find(
-      (train) => train.TrainNo === trainInfo.TrainNo
+    const trainLiveBoard = trainLiveBoardData.TrainLiveBoards.find(
+      (train) => train.TrainNo === trainInfoDetail.TrainInfo.TrainNo
     );
-    return trainLiveboard as TrainLiveBoardType;
+    if (!trainLiveBoard) {
+      console.log('trainLiveBoard not found');
+      return {
+        index: {
+          initialScroll: 0,
+          showDelayTime: -1,
+          start: 0,
+          end: 0,
+        },
+      } as TrainLiveBaordTrainInfoDisplay;
+    } else {
+      const showDelayIndex = trainInfoDetail.StopTimes.findIndex((stopTime) => {
+        if (trainInfoDetail.TrainInfo.Direction === 0) {
+          return trainLiveBoard.StationID >= stopTime.StationID;
+        }
+        return trainLiveBoard.StationID <= stopTime.StationID;
+      });
+      console.log('showDelayIndex' + showDelayIndex);
+      return {
+        ...trainLiveBoard,
+        index: {
+          initialScroll: showDelayIndex - 1,
+          showDelayTime: showDelayIndex,
+          start: 0,
+          end: 0,
+        },
+      } as TrainLiveBaordTrainInfoDisplay;
+    }
   },
 });

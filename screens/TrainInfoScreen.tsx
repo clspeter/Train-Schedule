@@ -13,32 +13,25 @@ export const TrainInfoScreen = () => {
   const trainInfoLive = useRecoilValue(Recoil.TrainInfoLiveRecoil);
 
   const ShowDelayTime = () => {
-    if (trainInfoLive.DelayTime === -1) {
+    if (trainInfoLive?.DelayTime === -1) {
       return (
-        <Text alignSelf="center" color="gray.600" fontSize="md">
+        <Text textAlign="center" color="gray.600" fontSize="md">
           未發車
         </Text>
       );
-    } else if (trainInfoLive.DelayTime === 0) {
+    } else if (trainInfoLive?.DelayTime === 0) {
       return (
-        <Text alignSelf="center" color="green.500" fontSize="md">
+        <Text textAlign="center" color="green.500" fontSize="md">
           準點
         </Text>
       );
     } else {
       return (
-        <Text alignSelf="center" color="red.500" fontSize="md">
-          慢{trainInfoLive.DelayTime}分
+        <Text textAlign="center" color="red.500" fontSize="md">
+          慢{trainInfoLive?.DelayTime}分
         </Text>
       );
     }
-  };
-
-  const ShowDelay = (props: { stationID: string }) => {
-    if (props.stationID === trainInfoLive.StationID && !delayShown) {
-      setDelayShown(true);
-      return <ShowDelayTime />;
-    } else return <View></View>;
   };
 
   const RenderItem = ({
@@ -61,8 +54,8 @@ export const TrainInfoScreen = () => {
           <Text flex={1} fontSize={24} textAlign="center">
             {item.DepartureTime}
           </Text>
-          <View flex={1}>
-            <ShowDelay stationID={item.StationID}></ShowDelay>
+          <View flex={1} justifyContent="center">
+            {index === trainInfoLive?.index.showDelayTime ? <ShowDelayTime /> : <View />}
           </View>
         </HStack>
       </View>
@@ -93,7 +86,7 @@ export const TrainInfoScreen = () => {
       <Suspense fallback="Loading...">
         <FlashList
           removeClippedSubviews={true}
-          initialScrollIndex={0}
+          initialScrollIndex={trainInfoLive?.index.showDelayTime}
           refreshing={false}
           estimatedItemSize={100}
           data={trainInfoDetail.StopTimes}
