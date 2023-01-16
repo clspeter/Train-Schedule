@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import { apiTodayTrainStatusByNo } from './api/apiRequest';
-import { TrainInfoType } from './types';
+import { TrainInfoType, TrainLiveBoardType } from './types';
 
 import {
   Journey,
@@ -95,5 +95,17 @@ export const TrainInfoDetailRecoil = selector({
     });
     console.log(trainInfoDetail);
     return trainInfoDetail;
+  },
+});
+
+export const TrainInfoLiveRecoil = selector({
+  key: 'TrainInfoLiveRecoil',
+  get: async ({ get }) => {
+    const trainInfo = get(TrainInfoRecoil);
+    const trainLiveBoardData = get(trainLiveBoardDataRecoil);
+    const trainLiveboard = trainLiveBoardData.TrainLiveBoards.find(
+      (train) => train.TrainNo === trainInfo.TrainNo
+    );
+    return trainLiveboard as TrainLiveBoardType;
   },
 });
