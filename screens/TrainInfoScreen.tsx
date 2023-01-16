@@ -1,16 +1,27 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import * as Recoil from '../store';
 import { View, Text, Heading, VStack, HStack } from 'native-base';
-import { TrainInfoType, StopTimes } from '../types';
+import { TrainInfoType, StopTimes, homeScreenProp, ODTimeTableInfoType } from '../types';
 import { TrainInfo } from '../type/DailyTrainTimetableTodayTrainNoType';
 
 export const TrainInfoScreen = () => {
   const [delayShown, setDelayShown] = useState<boolean>(false);
-  const trainInfo = useRecoilValue(Recoil.TrainInfoRecoil);
+  const [trainInfo, setTrainInfo] = useRecoilState(Recoil.TrainInfoRecoil);
   const trainInfoDetail = useRecoilValue(Recoil.TrainInfoDetailRecoil);
   const trainInfoLive = useRecoilValue(Recoil.TrainInfoLiveRecoil);
+
+  // unmount時清空trainInfo,避免後臺持續更新trainInfoLive
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        if (!__DEV__) setTrainInfo({} as ODTimeTableInfoType);
+        console.log('TrainInfoScreen unmount');
+      };
+    }, [])
+  );
 
   const ShowDelayTime = () => {
     if (trainInfoLive?.DelayTime === -1) {
@@ -42,7 +53,12 @@ export const TrainInfoScreen = () => {
     index: number;
   }) => {
     return (
-      <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1} key={index}>
+      <View
+        _dark={{ bg: 'blueGray.900' }}
+        _light={{ bg: 'blueGray.50' }}
+        flex={1}
+        key={index}
+        height="50px">
         <HStack>
           <View flex={1}></View>
           <Text flex={1} fontSize={24} textAlign="center">
@@ -88,7 +104,7 @@ export const TrainInfoScreen = () => {
           removeClippedSubviews={true}
           initialScrollIndex={trainInfoLive?.index.showDelayTime}
           refreshing={false}
-          estimatedItemSize={100}
+          estimatedItemSize={50}
           data={trainInfoDetail.StopTimes}
           renderItem={RenderItem}
           keyExtractor={(item) => item.StationID}

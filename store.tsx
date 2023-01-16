@@ -86,7 +86,6 @@ export const TrainInfoDetailRecoil = selector({
   get: async ({ get }) => {
     const trainInfo = get(TrainInfoRecoil);
     const apiToken = get(apiTokenRecoil);
-    console.log(TrainInfoDetailRecoil);
     const trainInfoDetail = await apiTodayTrainStatusByNo(
       apiToken.access_token,
       trainInfo.TrainNo
@@ -105,8 +104,14 @@ export const TrainInfoLiveRecoil = selector({
     const trainLiveBoard = trainLiveBoardData.TrainLiveBoards.find(
       (train) => train.TrainNo === trainInfoDetail.TrainInfo.TrainNo
     );
+
+    //if trainInfoDetail is blank, return
+    if (!trainInfoDetail) {
+      console.log('TrainInfoScreen not focoused');
+      return;
+    }
     if (!trainLiveBoard) {
-      console.log('trainLiveBoard not found');
+      console.log('Train not found');
       return {
         index: {
           initialScroll: 0,
@@ -122,7 +127,7 @@ export const TrainInfoLiveRecoil = selector({
         }
         return trainLiveBoard.StationID <= stopTime.StationID;
       });
-      console.log('showDelayIndex' + showDelayIndex);
+      console.log('showDelayIndex ' + showDelayIndex);
       return {
         ...trainLiveBoard,
         index: {
