@@ -47,15 +47,3 @@ export const getApiToken = async () => {
 
 export const apiTrainStatus = (token: string): Promise<AxiosResponse> =>
   apiRequest(token).get(`/v3/Rail/TRA/TrainLiveBoard`);
-
-/*
-const { journey } = useContext(StationContext);
-const { departure, destination, time } = journey;
-const TrainDate = time.toISOString().split('T')[0];
-const DestinationStationID = destination?.StationID;
-const StationID = departure?.StationID;
-const getApiData = () => {
-axios.get(API_AUTH_URL).then((res) => {
-  console.log(res.data);
-});
-}; */
