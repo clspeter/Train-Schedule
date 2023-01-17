@@ -1,5 +1,5 @@
 import { View, Switch, Text, HStack, Flex } from 'native-base';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { appSettingRecoil } from '../store';
 
@@ -20,6 +20,10 @@ export default function SettingScreen() {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    console.log(appSetting);
+  }, [appSetting]);
 
   const handleSwitch = () => {
     setAppSetting({
