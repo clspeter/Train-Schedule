@@ -146,14 +146,16 @@ export const RecoilState = () => {
         );
         return prevDistance < currDistance ? prev : curr;
       });
-      if (nearestStation.StationID === initalJourney.departure?.StationID) return;
-      else if (nearestStation.StationID === initalJourney.destination?.StationID)
+      if (nearestStation.StationID === journey.departure?.StationID) return;
+      else if (nearestStation.StationID === journey.destination?.StationID)
         setJourney({
-          ...initalJourney,
+          ...journey,
           departure: nearestStation,
-          destination: initalJourney.departure,
+          destination: journey.departure,
         });
-      else setJourney({ ...initalJourney, departure: nearestStation });
+      else {
+        setJourney({ ...journey, departure: nearestStation });
+      }
     }
   };
 
