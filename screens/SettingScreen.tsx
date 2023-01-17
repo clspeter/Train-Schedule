@@ -32,7 +32,7 @@ export default function SettingScreen() {
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} px={2} flex={1}>
       <HStack flex="1" justifyContent="space-between" flexDirection="row" mt={5}>
-        <Text fontSize={20}>啟動App時以最近車站為出發地</Text>
+        <Text fontSize={20}>自動以最近車站為出發站</Text>
         <Switch
           ml={5}
           size="md"
