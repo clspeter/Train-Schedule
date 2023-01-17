@@ -102,7 +102,7 @@ export const TrainInfoScreen = () => {
       <Suspense fallback="Loading...">
         <FlashList
           removeClippedSubviews={true}
-          initialScrollIndex={trainInfoLive?.index.showDelayTime}
+          initialScrollIndex={trainInfoLive?.index.initialScroll}
           refreshing={false}
           estimatedItemSize={50}
           data={trainInfoDetail.StopTimes}
