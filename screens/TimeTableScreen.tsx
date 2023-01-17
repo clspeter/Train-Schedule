@@ -170,59 +170,64 @@ export default function TimeTableScreen() {
   );
 
   const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => {
+    const checkFlatlistIndex = (index: number) => {
+      if (index === FlatlistIndex) {
+        return 'info.900';
+      } else return 'blueGray.900';
+    };
     return (
-      <Pressable onPress={() => handleOnPress(item)}>
-        <Box
-          opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
-          borderTopWidth="1"
-          borderColor="muted.400"
-          backgroundColor={index === FlatlistIndex ? 'info.900' : 'blueGray.900'}
-          flex={1}
-          h="100"
-          pl={['0', '4']}
-          pr={['0', '5']}
-          py="2">
-          <HStack>
-            <VStack flex={1.2}>
-              <Text alignSelf="center" fontSize={20} ml={1} color="white">
-                {item.TrainNo}
-              </Text>
-              <Text
-                fontSize={16}
-                ml={1}
-                alignSelf="center"
-                color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
-                {item.TrainTypeName}
-              </Text>
-              <Text fontSize={16} ml={1} color="white" alignSelf="center">
-                {item.Stops}站
-              </Text>
-            </VStack>
-            <HStack mt={0} flex={5}>
-              <Text fontSize={30} color="white" width={85} alignSelf="center" pl="-5">
-                {item.DepartureTime}
-              </Text>
-              <View w={100} h={30} mt={1}>
-                <VStack>
-                  {new Date(journey.time).toLocaleDateString('en-US') ===
-                  new Date().toLocaleDateString('en-US') ? (
-                    <ShowDelayTime time={item.DelayTime} />
-                  ) : (
-                    <Text alignSelf="center" fontSize="sm">
-                      {' '}
-                    </Text>
-                  )}
-                  <SvgArrow color="white" />
-                  <TravelTime train={item} />
-                </VStack>
-              </View>
-              {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
-              <Text fontSize={30} color="white" width={85} alignSelf="center" ml={2}>
-                {item.ArrivalTime}
-              </Text>
-            </HStack>
+      <Pressable
+        onPress={() => handleOnPress(item)}
+        opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
+        borderTopWidth="1"
+        borderColor="muted.400"
+        _pressed={{ backgroundColor: 'blueGray.700' }}
+        backgroundColor={checkFlatlistIndex(index)}
+        flex={1}
+        h="100"
+        pl={['0', '4']}
+        pr={['0', '5']}
+        py="2">
+        <HStack>
+          <VStack flex={1.2}>
+            <Text alignSelf="center" fontSize={20} ml={1} color="white">
+              {item.TrainNo}
+            </Text>
+            <Text
+              fontSize={16}
+              ml={1}
+              alignSelf="center"
+              color={item.TrainTypeName === '區間' ? 'blue.400' : 'white'}>
+              {item.TrainTypeName}
+            </Text>
+            <Text fontSize={16} ml={1} color="white" alignSelf="center">
+              {item.Stops}站
+            </Text>
+          </VStack>
+          <HStack mt={0} flex={5}>
+            <Text fontSize={30} color="white" width={85} alignSelf="center" pl="-5">
+              {item.DepartureTime}
+            </Text>
+            <View w={100} h={30} mt={1}>
+              <VStack>
+                {new Date(journey.time).toLocaleDateString('en-US') ===
+                new Date().toLocaleDateString('en-US') ? (
+                  <ShowDelayTime time={item.DelayTime} />
+                ) : (
+                  <Text alignSelf="center" fontSize="sm">
+                    {' '}
+                  </Text>
+                )}
+                <SvgArrow color="white" />
+                <TravelTime train={item} />
+              </VStack>
+            </View>
+            {/* <Fontisto name="arrow-right-l" size={40} color="white" /> */}
+            <Text fontSize={30} color="white" width={85} alignSelf="center" ml={2}>
+              {item.ArrivalTime}
+            </Text>
           </HStack>
-        </Box>
+        </HStack>
       </Pressable>
     );
   };
