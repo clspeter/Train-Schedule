@@ -68,12 +68,15 @@ const ShortCuts = () => {
         borderRadius="md"
         marginX={2}
         mt={1}>
-        <HStack space={2} alignItems="center" justifyContent="space-between">
-          <View flex={5}>
+        <HStack justifyContent="space-between">
+          <View flex={5} justifyContent="center">
             <Pressable
+              justifyContent="center"
+              flex={1}
               onPress={() => {
                 handleApplyShortcut(item);
-              }}>
+              }}
+              _pressed={{ backgroundColor: 'blueGray.400' }}>
               <Text alignSelf="center" fontSize={18}>
                 {item.departure?.StationName.Zh_tw}{' '}
                 <AntDesign name="arrowright" size={18} color="white" />{' '}
