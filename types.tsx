@@ -46,6 +46,10 @@ export interface ShortCutType {
 
 export type SettingType = {
   useNearestStationOnStartUp: boolean;
+  themeConfig: {
+    useSystemColorMode: boolean;
+    initialColorMode: string;
+  };
 };
 
 export type RootStackParamList = {

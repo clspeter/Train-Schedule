@@ -224,7 +224,9 @@ export default function SelectStationandTime() {
                     letterSpacing: 'lg',
                     textAlign: 'center',
                   }}>
-                  {journey?.destination.StationName.Zh_tw}
+                  {journey?.destination.StationName.Zh_tw
+                    ? journey?.destination.StationName.Zh_tw
+                    : ''}
                 </Center>
               </Button>
             </HStack>

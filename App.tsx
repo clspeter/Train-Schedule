@@ -2,12 +2,14 @@ import { SSRProvider } from '@react-aria/ssr';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider, extendTheme } from 'native-base';
-import React from 'react';
-import { RecoilRoot } from 'recoil';
+import React, { ReactNode } from 'react';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import RecoilState from './state';
+import { appSettingRecoil } from './store';
 
 import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen';
+import { atom } from 'recoil';
 import SelectDepartureScreen from './screens/SelectDepartureScreen';
 import SelectDestinationScreen from './screens/SelectDestinationScreen';
 import SettingScreen from './screens/SettingScreen';
@@ -15,26 +17,37 @@ import TrainInfoScreen from './screens/TrainInfoScreen';
 import TimeTableScreen from './screens/TimeTableScreen';
 import { RootStackParamList, homeScreenProp } from './types';
 
-// Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: 'dark',
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-// extend the theme
-export const theme = extendTheme({ config });
 /* type MyThemeType = typeof theme;
 declare module 'native-base' {
   interface ICustomTheme extends MyThemeType {}
 } */
+
+const NativeBaseProviderTheme = (props: { children: ReactNode }) => {
+  const appSetting = useRecoilValue(appSettingRecoil);
+  const themeConfig = appSetting.themeConfig;
+  const config = {
+    useSystemColorMode: true,
+    initialColorMode: 'light',
+  };
+  console.log(themeConfig + 'themeConfig');
+  console.log(config + 'config');
+  // extend the theme
+
+  console.log(themeConfig == config);
+  const theme = extendTheme({ config });
+  return <NativeBaseProvider theme={theme}>{props.children}</NativeBaseProvider>;
+};
+
 export default function App(): JSX.Element {
+  // Define the config
+
+  const Stack = createNativeStackNavigator<RootStackParamList>();
+
   return (
     <SSRProvider>
-      <NativeBaseProvider theme={theme}>
-        <RecoilRoot>
-          <RecoilState />
+      <RecoilRoot>
+        <RecoilState />
+        <NativeBaseProviderTheme>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
               <Stack.Screen
@@ -132,8 +145,8 @@ export default function App(): JSX.Element {
                 }}></Stack.Screen>
             </Stack.Navigator>
           </NavigationContainer>
-        </RecoilRoot>
-      </NativeBaseProvider>
+        </NativeBaseProviderTheme>
+      </RecoilRoot>
     </SSRProvider>
   );
 }

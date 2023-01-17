@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import * as Recoil from '../store';
-import { View, Text, Heading, VStack, HStack } from 'native-base';
+import { View, Text, Heading, VStack, HStack, Divider } from 'native-base';
 import { TrainInfoType, StopTimes, homeScreenProp, ODTimeTableInfoType } from '../types';
 import { TrainInfo } from '../type/DailyTrainTimetableTodayTrainNoType';
 
@@ -101,6 +101,15 @@ export const TrainInfoScreen = () => {
           <ShowDelayTime />
         </View>
       </HStack>
+      <Divider
+        my="2"
+        _light={{
+          bg: 'muted.800',
+        }}
+        _dark={{
+          bg: 'muted.50',
+        }}
+      />
       <Suspense fallback="Loading...">
         <FlashList
           removeClippedSubviews={true}

@@ -33,10 +33,7 @@ export const RecoilState = () => {
         await AsyncStorage.setItem('setting', JSON.stringify(appSetting));
       } else {
         const objSetting = JSON.parse(setting);
-        console.log(
-          'saved setting found, load it. useNearestStationOnStartUp: ' +
-            objSetting.useNearestStationOnStartUp
-        );
+        console.log('saved setting found, load it,' + setting);
         setAppSetting(objSetting);
       }
     } catch (e) {
@@ -146,6 +143,7 @@ export const RecoilState = () => {
         );
         return prevDistance < currDistance ? prev : curr;
       });
+      console.log('nearest Station:' + nearestStation.StationName.Zh_tw);
       if (nearestStation.StationID === initalJourney.departure?.StationID) return;
       else if (nearestStation.StationID === initalJourney.destination?.StationID)
         setJourney({
@@ -161,7 +159,7 @@ export const RecoilState = () => {
     if (initalJourney.departure === null || appSetting.useNearestStationOnStartUp === false) {
       return;
     }
-    findNearestStation();
+    //findNearestStation();
   }, [initalJourney, appSetting]);
 
   const updateTrainStatus = () => {

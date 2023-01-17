@@ -73,7 +73,13 @@ export const oDTimeTableInfoInitialRecoil = atom({
 
 export const appSettingRecoil = atom({
   key: 'appSettingRecoil',
-  default: { useNearestStationOnStartUp: false } as SettingType,
+  default: {
+    useNearestStationOnStartUp: false,
+    themeConfig: {
+      useSystemColorMode: false,
+      initialColorMode: 'dark',
+    },
+  } as SettingType,
 });
 
 export const TrainInfoRecoil = atom({
