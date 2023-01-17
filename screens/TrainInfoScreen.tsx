@@ -26,19 +26,19 @@ export const TrainInfoScreen = () => {
   const ShowDelayTime = () => {
     if (trainInfoLive?.DelayTime === -1) {
       return (
-        <Text textAlign="center" color="gray.600" fontSize="md">
+        <Text textAlign="center" color="gray.600" fontSize="xl">
           未發車
         </Text>
       );
     } else if (trainInfoLive?.DelayTime === 0) {
       return (
-        <Text textAlign="center" color="green.500" fontSize="md">
+        <Text textAlign="center" color="green.500" fontSize="xl">
           準點
         </Text>
       );
     } else {
       return (
-        <Text textAlign="center" color="red.500" fontSize="md">
+        <Text textAlign="center" color="red.500" fontSize="xl">
           慢{trainInfoLive?.DelayTime}分
         </Text>
       );
@@ -97,7 +97,9 @@ export const TrainInfoScreen = () => {
         <Text flex={1} fontSize={20} textAlign="center">
           離站
         </Text>
-        <View flex={1}></View>
+        <View flex={1} justifyContent="center">
+          <ShowDelayTime />
+        </View>
       </HStack>
       <Suspense fallback="Loading...">
         <FlashList
