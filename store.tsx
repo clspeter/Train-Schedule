@@ -12,6 +12,11 @@ import {
   StatinType,
 } from './types';
 
+export const isArrivalTimeRecoil = atom({
+  key: 'isArrivalTimeRecoil',
+  default: false,
+});
+
 export const isNowRecoil = atom({
   key: 'isNowRecoil',
   default: false,

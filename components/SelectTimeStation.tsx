@@ -28,7 +28,7 @@ export default function SelectStationandTime() {
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
   const [isNow, setIsNow] = useRecoilState(Recoil.isNowRecoil);
-  const [isArrivalTime, setIsArrivalTime] = useState(false);
+  const [isArrivalTime, setIsArrivalTime] = useRecoilState(Recoil.isArrivalTimeRecoil);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
@@ -55,6 +55,13 @@ export default function SelectStationandTime() {
       });
     }
   };
+  const handelIsArriveTime = () => {
+    if (isArrivalTime) {
+      setIsArrivalTime(false);
+    } else {
+      setIsArrivalTime(true);
+    }
+  };
 
   const saveJourney = async () => {
     try {
@@ -71,14 +78,6 @@ export default function SelectStationandTime() {
   };
 
   const handleLookUp = () => {
-    /*  apiDailyTimetableOD(
-      apiToken,
-      journey.departure!.StationID,
-      journey.destination!.StationID,
-      journey.time.toLocaleDateString('en-CA')
-    ).then((res) => {
-      setODTimeTable(res.data);
-    }); */
     saveJourney();
     navigation.navigate('TimeTable');
   };
@@ -292,13 +291,16 @@ export default function SelectStationandTime() {
               </Button>
               <Button
                 flex="1"
-                bg="info.900"
+                bg={isArrivalTime ? 'info.600' : 'info.900'}
                 borderRadius="xl"
+                onPress={() => {
+                  handelIsArriveTime();
+                }}
                 _text={{
                   fontSize: '2xl',
                   color: 'white',
                 }}>
-                抵達
+                {isArrivalTime ? '抵達' : '出發'}
               </Button>
             </HStack>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)} closeOnOverlayClick>

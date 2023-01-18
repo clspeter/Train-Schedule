@@ -28,6 +28,7 @@ export default function TimeTableScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const setTrainInfo = useSetRecoilState(Recoil.TrainInfoRecoil);
   const journey = useRecoilValue(Recoil.journeyRecoil);
+  const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
@@ -36,13 +37,17 @@ export default function TimeTableScreen() {
     navigation.navigate('TrainInfo');
   };
 
-  const isLater = (item: ODTimeTableInfoType) =>
-    item.DepartureTime >
-    journey.time.toLocaleTimeString('zh-TW', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const isLater = (item: ODTimeTableInfoType) => {
+    const searchTime = isArrivalTime ? item.ArrivalTime : item.DepartureTime;
+    return (
+      searchTime >
+      journey.time.toLocaleTimeString('zh-TW', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    );
+  };
 
   const toastUpdateTrainLiveBoard = () => {
     Toast.show({
@@ -78,37 +83,6 @@ export default function TimeTableScreen() {
     }
     setIsLoaded(true);
   }, []);
-
-  /* const getODTimeTable = async () => {
-    try {
-      const value = await AsyncStorage.getItem(
-        `odtimetables${journey.time.toLocaleDateString('en-CA')}-${
-          journey.departure?.StationID
-        }-${journey.destination?.StationID}`
-      );
-      if (value !== null) {
-        setODTimeTable(JSON.parse(value));
-        setFlatlistIndex(() => {
-          const index = JSON.parse(value).findIndex(isLater);
-          if (index === -1) {
-            return JSON.parse(value).length;
-          }
-          return index;
-        });
-        count = 0;
-        setIsLoaded(true);
-        return;
-      }
-      if (value === null || count < 20) {
-        await delay(2);
-        getODTimeTable();
-      } else {
-        count = 0;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }; */
 
   const LoadingSpinner = () => {
     return (
