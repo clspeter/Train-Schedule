@@ -2,6 +2,7 @@
   "expo": {
     "name": "Train-Schedule",
     "slug": "Train-Schedule",
+    "owner": "mustpe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,14 +10,12 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "blueGray.900"
+      "backgroundColor": "#0f172a"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mustpe.TrainSchedule"

@@ -19,7 +19,33 @@ const clearAll = async () => {
   }
   console.log('All storage Cleared.');
 };
+const DebugView = () => {
+  const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
+  const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
+  return (
+    <Center m={5}>
+      <Text>
+        API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
+        Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
+      </Text>
+      <Text>
+        Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
+      </Text>
 
+      <Button
+        mt="5"
+        width="150"
+        rounded="3xl"
+        onPress={() => {
+          clearAll();
+        }}>
+        <HStack space={2} alignItems="center">
+          <Text fontSize="md">Clear All</Text>
+        </HStack>
+      </Button>
+    </Center>
+  );
+};
 const ShortCuts = () => {
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
@@ -113,9 +139,6 @@ const ShortCuts = () => {
 };
 
 export default function HomeScreen() {
-  const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
-  const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
-
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
       <VStack space={5} alignItems="center" mt="10">
@@ -124,26 +147,7 @@ export default function HomeScreen() {
         </HStack>
       </VStack>
       <ShortCuts />
-      <Center m={5}>
-        <Text>
-          API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
-          Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
-        </Text>
-        <Text>
-          Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
-        </Text>
-      </Center>
-      <Button
-        mt="5"
-        width="150"
-        rounded="3xl"
-        onPress={() => {
-          clearAll();
-        }}>
-        <HStack space={2} alignItems="center">
-          <Text fontSize="md">Clear All</Text>
-        </HStack>
-      </Button>
+      {__DEV__ && <DebugView />}
     </View>
   );
 }

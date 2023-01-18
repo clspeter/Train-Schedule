@@ -164,7 +164,7 @@ export const RecoilState = () => {
       return;
     }
     findNearestStation();
-  }, [initalJourney, appSetting]);
+  }, [initalJourney]);
 
   const updateTrainStatus = () => {
     apiTrainStatus(apiToken.access_token).then((status) => {
