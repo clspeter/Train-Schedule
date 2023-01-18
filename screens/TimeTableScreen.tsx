@@ -72,8 +72,11 @@ export default function TimeTableScreen() {
   useEffect(() => {
     if (oDTimeTableInfo) {
       setFlatlistIndex(() => {
-        const index = oDTimeTableInfo.findIndex(isLater);
-        if (index === -1) {
+        let index = oDTimeTableInfo.findIndex(isLater);
+        if (isArrivalTime) {
+          index = index - 1;
+        }
+        if (index < 0) {
           return oDTimeTableInfo.length;
         }
         return index;

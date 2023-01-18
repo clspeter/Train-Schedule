@@ -53,6 +53,7 @@ export default function SelectStationandTime() {
         ...journey,
         time: new Date(),
       });
+      if (isArrivalTime) setIsArrivalTime(false);
     }
   };
   const handelIsArriveTime = () => {
@@ -60,6 +61,7 @@ export default function SelectStationandTime() {
       setIsArrivalTime(false);
     } else {
       setIsArrivalTime(true);
+      if (isNow) setIsNow(false);
     }
   };
 
