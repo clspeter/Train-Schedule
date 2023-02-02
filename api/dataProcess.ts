@@ -83,7 +83,7 @@ const trainType = (TrainTypeNameZH: string) => {
   } else return 'e' + TrainTypeNameZH;
 };
 
-//處理資料
+//處理TimeTable顯示資料
 export const apiDailyTimetableODDataProcess = (ODTimeTable: oDTimeTableType[]) => {
   const ODTimeTableInfo: ODTimeTableInfoType[] = [];
   ODTimeTable.forEach((item) => {

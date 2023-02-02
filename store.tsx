@@ -118,6 +118,7 @@ export const TrainInfoLiveRecoil = selector({
     if (!trainLiveBoard) {
       console.log('Train not found');
       return {
+        DelayTime: -1,
         index: {
           initialScroll: 0,
           showDelayTime: -1,

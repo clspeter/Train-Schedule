@@ -26,8 +26,8 @@ export const TrainInfoScreen = () => {
   const ShowDelayTime = () => {
     if (trainInfoLive?.DelayTime === -1) {
       return (
-        <Text textAlign="center" color="gray.600" fontSize="xl">
-          未發車
+        <Text textAlign="center" color="gray.500" fontSize="xl">
+          準點
         </Text>
       );
     } else if (trainInfoLive?.DelayTime === 0) {
