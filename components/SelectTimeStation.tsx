@@ -68,7 +68,6 @@ export default function SelectStationandTime() {
   const saveJourney = async () => {
     try {
       await AsyncStorage.setItem('journey', JSON.stringify(journey));
-      console.log('saved journey');
     } catch (e) {
       console.log(e);
     }
@@ -131,8 +130,10 @@ export default function SelectStationandTime() {
       checkTimeTable().then((res) => {
         if (res) {
           setODTimeTableInfo(res);
+          console.log('use local stored timetable');
         } else {
           apiTimeTable();
+          console.log('api get timetable');
         }
       });
     }
