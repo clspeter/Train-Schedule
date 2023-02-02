@@ -1,7 +1,7 @@
 import { View, Switch, Text, HStack, Flex, Button, VStack, Center, Box } from 'native-base';
 import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { appSettingRecoil } from '../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { appSettingRecoil, apiTokenRecoil, trainLiveBoardDataRecoil } from '../store';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -41,6 +41,33 @@ export default function SettingScreen() {
     console.log('All storage Cleared.');
   };
 
+  const DebugView = () => {
+    const apiToken = useRecoilValue(apiTokenRecoil);
+    const trainLiveBoardData = useRecoilValue(trainLiveBoardDataRecoil);
+    return (
+      <Center m={3}>
+        <Text>
+          API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
+          Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
+        </Text>
+        <Text>
+          Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
+        </Text>
+        <Button
+          mt="5"
+          width="150"
+          rounded="3xl"
+          onPress={() => {
+            clearStorageData();
+          }}>
+          <HStack space={2} alignItems="center">
+            <Text fontSize="md">清除快取資料</Text>
+          </HStack>
+        </Button>
+      </Center>
+    );
+  };
+
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} px={2} flex={1}>
       <HStack justifyContent="space-between" m={3}>
@@ -58,17 +85,7 @@ export default function SettingScreen() {
           }}
         />
       </HStack>
-      <Center>
-        <Button
-          m={5}
-          width="150"
-          rounded="3xl"
-          onPress={() => {
-            clearStorageData();
-          }}>
-          <Text fontSize="md">清除快取資料</Text>
-        </Button>
-      </Center>
+      <DebugView />
     </View>
   );
 }

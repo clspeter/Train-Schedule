@@ -82,7 +82,7 @@ export const RecoilState = () => {
     getApiToken().then((token) => {
       //get token and set vaild time
       const vaild_time = new Date();
-      vaild_time.setHours(vaild_time.getHours() + 1); //1 for testind, 24 for production
+      vaild_time.setHours(vaild_time.getHours() + (__DEV__ ? 1 : 23)); //1 for testind, 24 for production
       setApiToken({
         access_token: token.access_token,
         vaild_time,
