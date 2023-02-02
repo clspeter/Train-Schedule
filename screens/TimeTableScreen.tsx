@@ -22,7 +22,6 @@ import { ODTimeTableInfoType, TrainLiveBoardType, homeScreenProp } from '../type
 import * as Recoil from '../store';
 
 export default function TimeTableScreen() {
-  const [oDTimeTableInfoState, setODTimeTableInfoState] = useState<ODTimeTableInfoType[]>([]);
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -81,8 +80,6 @@ export default function TimeTableScreen() {
         }
         return index;
       });
-      console.log('oDTimeTableInfoState updated');
-      setODTimeTableInfoState(oDTimeTableInfo);
     }
     setIsLoaded(true);
   }, []);
@@ -210,13 +207,13 @@ export default function TimeTableScreen() {
   };
   if (isLoaded === false) {
     return (
-      <View backgroundColor="blueGray.900" flex={1}>
+      <View backgroundColor="blueGray.900" flex={1} justifyContent="center">
         <Center>
           <Spinner size="lg" />
         </Center>
       </View>
     );
-  } else if (oDTimeTableInfoState) {
+  } else if (oDTimeTableInfo) {
     return (
       <Box flex={1} backgroundColor="blueGray.900">
         {isRefreshing && <LoadingSpinner />}
@@ -226,7 +223,7 @@ export default function TimeTableScreen() {
             initialScrollIndex={FlatlistIndex - 1}
             refreshing={false}
             estimatedItemSize={100}
-            data={oDTimeTableInfoState}
+            data={oDTimeTableInfo}
             /*           onScrollToIndexFailed={(info) => {
             const wait = new Promise((resolve) => setTimeout(resolve, 500));
             wait.then(() => {
