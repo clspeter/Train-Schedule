@@ -24,6 +24,12 @@ export const apiDailyTimetableOD = (
     `/v2/Rail/TRA/DailyTimetable/OD/${OriginStationID}/to/${DestinationStationID}/${TrainDate}`
   );
 
+export const apiDailyStationTimetableTodayStation = (
+  token: string,
+  StationID: string
+): Promise<AxiosResponse> =>
+  apiRequest(token).get(`/v3/Rail/TRA/DailyStationTimetable/Today/Station/${StationID}`);
+
 export const apiTodayTrainStatusByNo = (token: string, trainNo: string): Promise<AxiosResponse> =>
   apiRequest(token).get(`/v3/Rail/TRA/DailyTrainTimetable/Today/TrainNo/${trainNo}`);
 
