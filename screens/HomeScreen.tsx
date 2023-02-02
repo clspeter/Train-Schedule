@@ -40,7 +40,7 @@ const DebugView = () => {
           clearAll();
         }}>
         <HStack space={2} alignItems="center">
-          <Text fontSize="md">Clear All</Text>
+          <Text fontSize="md">清除快取資料</Text>
         </HStack>
       </Button>
     </Center>
