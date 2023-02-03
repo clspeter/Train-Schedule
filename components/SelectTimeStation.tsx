@@ -96,13 +96,17 @@ export default function SelectStationandTime() {
       }
   };
 
-  const storeTimeTable = async (value: ODTimeTableInfoType[]) => {
+  const storeTimeTable = async (
+    departureStationID: string,
+    destinationStationID: string,
+    value: ODTimeTableInfoType[]
+  ) => {
     if (journey.departure && journey.destination)
       try {
         await AsyncStorage.setItem(
-          `odtimetables${journey.time.toLocaleDateString('en-CA')}-${journey.departure.StationID}-${
-            journey.destination.StationID
-          }`,
+          `odtimetables${journey.time.toLocaleDateString(
+            'en-CA'
+          )}-${departureStationID}-${destinationStationID}`,
           JSON.stringify(value)
         );
       } catch (e) {
@@ -120,7 +124,16 @@ export default function SelectStationandTime() {
       ).then((res) => {
         const infoData = apiDailyTimetableODDataProcess(res.data);
         setODTimeTableInfo(infoData);
-        storeTimeTable(infoData);
+        storeTimeTable(journey.departure.StationID, journey.destination.StationID, infoData);
+      });
+      apiDailyTimetableOD(
+        apiToken.access_token,
+        journey.destination.StationID,
+        journey.departure.StationID,
+        journey.time.toLocaleDateString('en-CA')
+      ).then((res) => {
+        const infoData = apiDailyTimetableODDataProcess(res.data);
+        storeTimeTable(journey.destination.StationID, journey.departure.StationID, infoData);
       });
     }
   };
@@ -133,7 +146,7 @@ export default function SelectStationandTime() {
           console.log('use local stored timetable');
         } else {
           apiTimeTable();
-          console.log('api get timetable');
+          console.log('api get two-way timetables');
         }
       });
     }
@@ -141,15 +154,12 @@ export default function SelectStationandTime() {
 
   useEffect(() => {
     if (isNow) {
-      console.log('set interval');
       const intervalId = setInterval(() => {
         setJourney({ ...journey, time: new Date() });
         const displaytime = new Date().toLocaleTimeString;
-        console.log(displaytime);
       }, 60000 - new Date().getSeconds() * 1000);
       return () => {
         clearInterval(intervalId);
-        console.log('clear interval');
       };
     }
   }, [isNow]);
