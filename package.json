@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "train-schedule",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
@@ -51,6 +52,7 @@
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.29.0",
     "eslint-plugin-react": "^7.31.11",
+    "expo-cli": "^6.2.1",
     "prettier": "^2.8.0",
     "typescript": "^4.9.3"
   },
