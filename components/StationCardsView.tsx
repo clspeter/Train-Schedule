@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { VStack, Box, Divider, View, Text, HStack, Button } from 'native-base';
+import { VStack, Box, Divider, View, Text, HStack, Button, ScrollView } from 'native-base';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { journeyRecoil } from '../store';
@@ -59,65 +59,67 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
 
   return (
     <VStack space="1" alignItems="center" my={1}>
-      <VStack space="1" alignItems="center" my={2}>
-        {cityListArrayChuck(cityListWithIndex, 3).map((row, i) => (
-          <HStack key={i}>
-            {row.map((col, i) => (
-              <Button
-                onPress={() => {
-                  handleSetCity(col.id);
-                }}
-                key={`${i}2`}
-                _text={{
-                  fontSize: 'lg',
-                  fontWeight: 'medium',
-                  color: 'muted.100',
-                  letterSpacing: 'lg',
-                  textAlign: 'center',
-                }}
-                borderColor="blueGray.500"
-                borderWidth={1}
-                bg="blueGray.800"
-                rounded="xl"
-                mx="0.5"
-                flex={1}
-                h={20}>
-                {col.name}
-              </Button>
-            ))}
-          </HStack>
-        ))}
-      </VStack>
-      <Divider></Divider>
-      <VStack space="1" alignItems="center" my={2}>
-        {stationArrayChunk(stationsListByCityByIndex[cityId], 3).map((row, i) => (
-          <HStack key={i}>
-            {row.map((col, i) => (
-              <Button
-                onPress={() => {
-                  handelSetDeparture(col);
-                }}
-                key={`${i}2`}
-                _text={{
-                  fontSize: 'lg',
-                  fontWeight: 'medium',
-                  color: 'muted.100',
-                  letterSpacing: 'lg',
-                  textAlign: 'center',
-                }}
-                borderColor="blueGray.500"
-                borderWidth={1}
-                bg="blueGray.800"
-                rounded="xl"
-                mx="0.5"
-                flex={1}
-                h={20}>
-                {col.StationName.Zh_tw}
-              </Button>
-            ))}
-          </HStack>
-        ))}
-      </VStack>
+      <ScrollView w="100%" showsVerticalScrollIndicator={false}>
+        <VStack space="1" alignItems="center" my={2}>
+          {cityListArrayChuck(cityListWithIndex, 3).map((row, i) => (
+            <HStack key={i}>
+              {row.map((col, i) => (
+                <Button
+                  onPress={() => {
+                    handleSetCity(col.id);
+                  }}
+                  key={`${i}2`}
+                  _text={{
+                    fontSize: 'lg',
+                    fontWeight: 'medium',
+                    color: 'muted.100',
+                    letterSpacing: 'lg',
+                    textAlign: 'center',
+                  }}
+                  borderColor="blueGray.500"
+                  borderWidth={1}
+                  bg="blueGray.800"
+                  rounded="xl"
+                  mx="0.5"
+                  flex={1}
+                  h={20}>
+                  {col.name}
+                </Button>
+              ))}
+            </HStack>
+          ))}
+        </VStack>
+        <Divider></Divider>
+        <VStack space="1" alignItems="center" my={2}>
+          {stationArrayChunk(stationsListByCityByIndex[cityId], 3).map((row, i) => (
+            <HStack key={i}>
+              {row.map((col, i) => (
+                <Button
+                  onPress={() => {
+                    handelSetDeparture(col);
+                  }}
+                  key={`${i}2`}
+                  _text={{
+                    fontSize: 'lg',
+                    fontWeight: 'medium',
+                    color: 'muted.100',
+                    letterSpacing: 'lg',
+                    textAlign: 'center',
+                  }}
+                  borderColor="blueGray.500"
+                  borderWidth={1}
+                  bg="blueGray.800"
+                  rounded="xl"
+                  mx="0.5"
+                  flex={1}
+                  h={20}>
+                  {col.StationName.Zh_tw}
+                </Button>
+              ))}
+            </HStack>
+          ))}
+        </VStack>
+      </ScrollView>
     </VStack>
   );
 }
