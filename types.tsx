@@ -4,6 +4,7 @@ import StationList from './responselist/StationList.json';
 import oDTimeTableExample from './responselist/oDTimeTableExample.json';
 import trainLiveBoardData from './responselist/trainLiveBoardData.json';
 import DailyTrainTimeTable from './responselist/DailyTrainTimeTable.json';
+import stationsListByCityByIndex from './data/stationsListByCityIndex.json';
 
 export type oDTimeTableType = typeof oDTimeTableExample[number];
 export type TrainLiveBoardDataType = typeof trainLiveBoardData;
@@ -11,6 +12,7 @@ export type TrainLiveBoardType = typeof trainLiveBoardData.TrainLiveBoards[0];
 export type StationListType = typeof StationList;
 export type StatinType = StationListType[number];
 export type TrainInfoType = typeof DailyTrainTimeTable;
+export type stationsListByCityByIndexType = StationListType[][];
 
 export type ODTimeTableInfoType = {
   TrainNo: string;

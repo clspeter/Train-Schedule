@@ -3883,26 +3883,61 @@ const allStationsListJson = {
 };
 
 const stationsListByCity = [
-  { city: '基隆市', stationsList: [] },
-  { city: '新北市', stationsList: [] },
-  { city: '臺北市', stationsList: [] },
-  { city: '桃園市', stationsList: [] },
-  { city: '新竹縣', stationsList: [] },
-  { city: '新竹市', stationsList: [] },
-  { city: '苗栗縣', stationsList: [] },
-  { city: '臺中市', stationsList: [] },
-  { city: '彰化縣', stationsList: [] },
-  { city: '南投縣', stationsList: [] },
-  { city: '雲林縣', stationsList: [] },
-  { city: '嘉義縣', stationsList: [] },
-  { city: '嘉義市', stationsList: [] },
-  { city: '台南市', stationsList: [] },
-  { city: '高雄市', stationsList: [] },
-  { city: '屏東縣', stationsList: [] },
-  { city: '臺東縣', stationsList: [] },
-  { city: '花蓮縣', stationsList: [] },
-  { city: '宜蘭縣', stationsList: [] },
+  { city: '基隆', index: 0 },
+  { city: '新北', index: 1 },
+  { city: '臺北', index: 1 },
+  { city: '桃園', index: 2 },
+  { city: '新竹', index: 3 },
+  { city: '苗栗', index: 4 },
+  { city: '臺中', index: 5 },
+  { city: '彰化', index: 6 },
+  { city: '南投', index: 7 },
+  { city: '雲林', index: 8 },
+  { city: '嘉義', index: 9 },
+  { city: '台南', index: 10 },
+  { city: '高雄', index: 11 },
+  { city: '屏東', index: 12 },
+  { city: '臺東', index: 13 },
+  { city: '花蓮', index: 14 },
+  { city: '宜蘭', index: 15 },
 ];
+const citylist = [
+  '基隆',
+  '雙北',
+  '桃園',
+  '新竹',
+  '苗栗',
+  '臺中',
+  '彰化',
+  '南投',
+  '雲林',
+  '嘉義',
+  '台南',
+  '高雄',
+  '屏東',
+  '臺東',
+  '花蓮',
+  '宜蘭',
+];
+
+const stations = allStationsListJson.Stations;
+const stationsListByCityIndex = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+stations.map((station) => {
+  stationsListByCity.forEach((c) => {
+    if (station.StationAddress.includes(c.city)) {
+      stationsListByCityIndex[c.index].push(station);
+    }
+  });
+});
+
+console.log(stationsListByCityIndex);
+
+//save stationsListByCity to json
+
+writeFile('stationsListByCityIndex.json', JSON.stringify(stationsListByCityIndex), (err) => {
+  if (err) throw err;
+  console.log('The file has been saved!');
+});
 
 const stationslist = [
   ['基隆', '三坑', '八堵', '七堵', '百福', '海科館', '暖暖'],
@@ -4125,20 +4160,3 @@ const stationslist = [
     '石城',
   ],
 ];
-
-const stations = allStationsListJson.Stations;
-stations.map((station) => {
-  stationsListByCity.forEach((c) => {
-    if (station.StationAddress.includes(c.city)) {
-      c.stationsList.push(station);
-    }
-  });
-});
-console.log(stationsListByCity);
-
-//save stationsListByCity to json
-
-writeFile('stationsListByCity.json', JSON.stringify(stationsListByCity), (err) => {
-  if (err) throw err;
-  console.log('The file has been saved!');
-});
