@@ -10,6 +10,7 @@ import ToggleDarkMode from '../components/ToggleDarkMode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { isArrivalTimeRecoil } from '../store';
 
 const clearAll = async () => {
   try {
@@ -50,6 +51,7 @@ const ShortCuts = () => {
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
   const [isNow, setIsNow] = useRecoilState(Recoil.isNowRecoil);
+  const [isArrivalTime, setIsArrivalTime] = useRecoilState(Recoil.isArrivalTimeRecoil);
   require('dayjs/locale/zh-tw');
 
   const handleApplyShortcut = (item: ShortCutType) => {
@@ -60,6 +62,15 @@ const ShortCuts = () => {
         destination: item.destination,
       });
       setIsNow(true);
+      setIsArrivalTime(false);
+    } else if (item.isArrivalTime) {
+      setJourney({
+        departure: item.departure,
+        destination: item.destination,
+        time: dayjs().set('hour', item.time.hour).set('minute', item.time.minute).toDate(),
+      });
+      setIsNow(false);
+      setIsArrivalTime(true);
     } else {
       setJourney({
         departure: item.departure,
@@ -67,6 +78,7 @@ const ShortCuts = () => {
         time: dayjs().set('hour', item.time.hour).set('minute', item.time.minute).toDate(),
       });
       setIsNow(false);
+      setIsArrivalTime(false);
     }
   };
 
@@ -76,6 +88,7 @@ const ShortCuts = () => {
       destination: journey.destination,
       time: { hour: dayjs(journey.time).hour(), minute: dayjs(journey.time).minute() },
       isNow: isNow,
+      isArrivalTime: isArrivalTime,
     };
     setShortCuts([...shortCuts, newShortCut]);
   };
@@ -113,7 +126,8 @@ const ShortCuts = () => {
                       .set('hour', item.time.hour)
                       .set('minute', item.time.minute)
                       .locale('zh-tw')
-                      .format('A HH:mm')}
+                      .format('A HH:mm')}{' '}
+                {item.isArrivalTime ? '抵達' : ''}
               </Text>
             </Pressable>
           </View>

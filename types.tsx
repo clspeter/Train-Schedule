@@ -44,6 +44,7 @@ export interface ShortCutType {
   destination: StatinType;
   time: { hour: number; minute: number };
   isNow: boolean;
+  isArrivalTime: boolean;
 }
 
 export type SettingType = {
