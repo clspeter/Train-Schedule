@@ -25,23 +25,23 @@
 
 1.主畫面
 
-![image](https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2499.PNG)
+<img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2499.PNG" width="33%" height="50%">
 
 2.選擇時間
 
-![image](https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2504.PNG)
+<img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2504.PNG" width="33%" height="50%">
 
 3.時刻表
 
-![image](https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2505.PNG
+<img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2505.PNG" width="33%" height="50%">
 
 4.列車詳細時刻表
 
-![image](https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2503.PNG)
+<img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2503.PNG" width="33%" height="50%">
 
 5.設定頁面
 
-![image](https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2502.PNG)
+<img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2502.PNG" width="33%" height="50%">
 
 ## Usage
 
