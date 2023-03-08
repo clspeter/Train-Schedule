@@ -22,7 +22,7 @@ Andorid 未測試
   - 快速查詢站到站列車時刻表
   - 設定出發時間為現在
   - 設定為查詢抵達時間
-  - 儲存快速行程，點擊列表可立刻載入每日時間、立即和抵達狀態
+  - 儲存快速行程，點擊可立刻載入每日時間、立即和抵達狀態
 
     <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2499.PNG" width="33%" height="50%">
 
@@ -36,11 +36,16 @@ Andorid 未測試
 
     <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2505.PNG" width="33%" height="50%">
 
-  - 點擊列車進入該車次詳細資料(每站到離站時刻，含即時誤點資料，自動滾動到起訖站區間)
+  - 點擊列車進入該車次詳細資料
+
+    - 每站到離站時刻
+    - 即時誤點資料
+    - 自動滾動到起訖站區間
 
     <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2503.PNG" width="33%" height="50%">
 
 - 其他功能
+
   - 設定內可選擇開啟 App 時自動選取最近火車站為出發站
 
     <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2502.PNG" width="33%" height="50%">
