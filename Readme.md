@@ -10,10 +10,10 @@ Andorid 未測試
 
 ## 使用技術
 
-1. React Native 0.70 https://reactnative.dev/
-2. Expo https://expo.dev/
-3. Native Base https://nativebase.io/
-4. Recoil.js https://recoiljs.org/
+1. 主要框架: React Native 0.70 https://reactnative.dev/
+2. 開發工具: Expo https://expo.dev/
+3. UI: Native Base https://nativebase.io/
+4. 全局變數管理: Recoil.js https://recoiljs.org/
 
 ## 功能介紹 &實際畫面
 
