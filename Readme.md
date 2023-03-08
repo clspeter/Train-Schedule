@@ -24,22 +24,26 @@ Andorid 未測試
   - 設定為查詢抵達時間
   - 儲存快速行程，點擊可立刻載入每日時間、立即和抵達狀態
 
-    <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2499.PNG" width="33%" height="50%">
+  <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2499.PNG" width="33%" height="50%">
 
   - 選擇時間
 
-    <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2504.PNG" width="33%" height="50%">
+  <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2504.PNG" width="33%" height="50%">
+
+  - 選擇車站
+
+  <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2506.PNG" width="33%" height="50%">
 
 - 時刻表
 
-  - 即時誤點資料每分鐘自動更新，有更新提示小彈窗
+  - 即時誤點資料，且每分鐘自動更新，有更新提示小彈窗
 
-    <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2505.PNG" width="33%" height="50%">
+  <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2505.PNG" width="33%" height="50%">
 
   - 點擊列車進入該車次詳細資料
 
-    - 每站到離站時刻
-    - 即時誤點資料
+    - 各站到離站時刻
+    - 即時誤點資料、列車目前位置
     - 自動滾動到起訖站區間
 
     <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2503.PNG" width="33%" height="50%">
@@ -48,7 +52,7 @@ Andorid 未測試
 
   - 設定內可選擇開啟 App 時自動選取最近火車站為出發站
 
-    <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2502.PNG" width="33%" height="50%">
+  <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2502.PNG" width="33%" height="50%">
 
 ## 如何使用
 
