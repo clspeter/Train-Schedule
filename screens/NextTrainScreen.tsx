@@ -17,8 +17,15 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 
-import { ODTimeTableInfoType, TrainLiveBoardType, homeScreenProp } from '../types';
+import {
+  ODTimeTableInfoType,
+  TrainLiveBoardType,
+  homeScreenProp,
+  TopTabNavigatorParamList,
+} from '../types';
 import * as Recoil from '../store';
 
 export default function TimeTableScreen() {
@@ -29,6 +36,7 @@ export default function TimeTableScreen() {
   const journey = useRecoilValue(Recoil.journeyRecoil);
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
+  const Tab = createMaterialTopTabNavigator();
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
   const handleOnPress = (item: ODTimeTableInfoType) => {
@@ -143,6 +151,32 @@ export default function TimeTableScreen() {
     </Svg>
   );
 
+  const NextTrainSouth = () => (
+    <View backgroundColor="blueGray.900" flex={1}>
+      <FlashList
+        removeClippedSubviews={true}
+        initialScrollIndex={FlatlistIndex - 1}
+        refreshing={false}
+        estimatedItemSize={100}
+        data={oDTimeTableInfo}
+        /*           onScrollToIndexFailed={(info) => {
+    const wait = new Promise((resolve) => setTimeout(resolve, 500));
+    wait.then(() => {
+      flatList.current?.scrollToIndex({ index: info.index, animated: true });
+    });
+  }} */
+        renderItem={RenderItem}
+        keyExtractor={(item) => item.TrainNo}
+      />
+    </View>
+  );
+
+  const NextTrainNorth = () => (
+    <View backgroundColor="blueGray.900" flex={1}>
+      <Text>北上</Text>
+    </View>
+  );
+
   const RenderItem = ({ item, index }: { item: ODTimeTableInfoType; index: number }) => {
     const checkFlatlistIndex = (index: number) => {
       if (index === FlatlistIndex) {
@@ -218,21 +252,35 @@ export default function TimeTableScreen() {
       <Box flex={1} backgroundColor="blueGray.900">
         {isRefreshing && <LoadingSpinner />}
         <View backgroundColor="blueGray.900" flex={1}>
-          <FlashList
-            removeClippedSubviews={true}
-            initialScrollIndex={FlatlistIndex - 1}
-            refreshing={false}
-            estimatedItemSize={100}
-            data={oDTimeTableInfo}
-            /*           onScrollToIndexFailed={(info) => {
-            const wait = new Promise((resolve) => setTimeout(resolve, 500));
-            wait.then(() => {
-              flatList.current?.scrollToIndex({ index: info.index, animated: true });
-            });
-          }} */
-            renderItem={RenderItem}
-            keyExtractor={(item) => item.TrainNo}
-          />
+          <NavigationContainer independent>
+            <Tab.Navigator
+              screenOptions={{
+                tabBarLabelStyle: { fontSize: 14, color: 'white' },
+                tabBarActiveTintColor: 'info',
+                tabBarInactiveTintColor: 'Gray',
+                tabBarIndicatorStyle: { backgroundColor: '#0369a1' },
+                tabBarStyle: { backgroundColor: 'blueGray.800' },
+                animationEnabled: false,
+              }}
+              initialRouteName="Settings">
+              <Tab.Screen
+                name="NextTrainNorth"
+                component={NextTrainNorth}
+                options={{
+                  tabBarLabel: '北上',
+                  //tabBarIcon: ({ color }) => <AntDesign name="home" color={color} size={26} />,
+                }}
+              />
+              <Tab.Screen
+                name="NextTrainSouth"
+                component={NextTrainSouth}
+                options={{
+                  tabBarLabel: '南下',
+                  //tabBarIcon: ({ color }) => <AntDesign name="youtube" color={color} size={26} />,
+                }}
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
         </View>
       </Box>
     );

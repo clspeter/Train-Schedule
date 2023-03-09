@@ -61,7 +61,12 @@ export type RootStackParamList = {
   TrainInfo: undefined;
   NextTrain: undefined;
 };
+export type homeScreenProp = NativeStackNavigationProp<RootStackParamList>;
 
+export type TopTabNavigatorParamList = {
+  NextTrainNorth: undefined;
+  NextTrainSouth: undefined;
+};
 export interface TrainLiveBaordTrainInfoDisplay extends TrainLiveBoardType {
   index: {
     initialScroll: number;
@@ -87,5 +92,3 @@ export interface StopTimes {
   DepartureTime: string;
   SuspendedFlag: number;
 }
-
-export type homeScreenProp = NativeStackNavigationProp<RootStackParamList>;
