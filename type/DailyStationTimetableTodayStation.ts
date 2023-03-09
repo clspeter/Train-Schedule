@@ -1,17 +1,17 @@
-export interface DailyStationTimetableTodayStation {
+export interface DailyStationTimetableTodayStationType {
   UpdateTime: Date;
   UpdateInterval: number;
   SrcUpdateTime: Date;
   SrcUpdateInterval: number;
   TrainDate: Date;
-  StationTimetables: StationTimetable[];
+  StationTimetables: StationTimetableType[];
 }
 
-export interface StationTimetable {
+export interface StationTimetableType {
   StationID: string;
   StationName: Name;
   Direction: number;
-  TimeTables: TimeTable[];
+  TimeTables: TimeTableType[];
 }
 
 export interface Name {
@@ -19,7 +19,7 @@ export interface Name {
   En: string;
 }
 
-export interface TimeTable {
+export interface TimeTableType {
   Sequence: number;
   TrainNo: string;
   DestinationStationID: string;
@@ -30,4 +30,25 @@ export interface TimeTable {
   ArrivalTime: string;
   DepartureTime: string;
   SuspendedFlag: number;
+}
+
+export interface TimeTableWithDelayTimeType extends TimeTableType {
+  DelayTime: number;
+  PassedByStation: {
+    ID: string;
+    Name: string;
+  };
+}
+
+export interface DailyStationTimetableTodayStationTypeWithDelayTime {
+  UpdateTime: Date;
+  UpdateInterval: number;
+  SrcUpdateTime: Date;
+  SrcUpdateInterval: number;
+  TrainDate: Date;
+  StationTimetables: StationTimetableWithDelayTimeType[];
+}
+
+export interface StationTimetableWithDelayTimeType extends StationTimetableType {
+  TimeTables: TimeTableWithDelayTimeType[];
 }

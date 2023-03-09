@@ -34,6 +34,7 @@ export default function SelectStationandTime() {
   const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
+  const nextTrain = useRecoilValue(Recoil.nextTrainRecoil);
 
   const navigation = useNavigation<homeScreenProp>();
   const handleSwapDepartureAndDestination = () => {
@@ -85,6 +86,7 @@ export default function SelectStationandTime() {
 
   const handleNextTrain = () => {
     saveJourney();
+    console.log(nextTrain);
     navigation.navigate('NextTrain');
   };
 

@@ -7,6 +7,7 @@ import StationList from './responselist/StationList.json';
 import { updateDelayTime } from './api/dataProcess';
 import { Journey, StatinType, ODTimeTableInfoType, TrainLiveBoardType } from './types';
 import { getApiToken, apiTrainStatus } from './api/apiRequest';
+import { neareastStationRecoil } from './store';
 
 export const RecoilState = () => {
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
@@ -15,6 +16,7 @@ export const RecoilState = () => {
   const [trainLiveBoardData, setTrainLiveBoardData] = useRecoilState(
     Recoil.trainLiveBoardDataRecoil
   );
+  const [neareastStation, setNeareastStation] = useRecoilState(neareastStationRecoil);
   const oDTimeTableInfoInitial = useRecoilValue(Recoil.oDTimeTableInfoInitialRecoil);
   const setODTimeTableInfo = useSetRecoilState(Recoil.oDTimeTableInfoRecoil);
   const [apiToken, setApiToken] = useRecoilState(Recoil.apiTokenRecoil);
@@ -156,6 +158,7 @@ export const RecoilState = () => {
       else {
         setJourney({ ...journey, departure: nearestStation });
       }
+      setNeareastStation(nearestStation);
     }
   };
 
