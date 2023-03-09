@@ -18,7 +18,6 @@ import {
   SettingType,
   StatinType,
 } from './types';
-
 dayjs.extend(customParseFormat);
 
 export const currentTimeRecoil = atom({
@@ -57,6 +56,7 @@ export const nextTrainIndexReciol = selector({
       console.log('nextTrainIndex not found');
       return;
     }
+    console.log('try to find nextTrainIndex');
     const nextTrainIndex = nextTrain.StationTimetables[0].TimeTables.findIndex(
       (train: TimeTableType) => {
         return currentTime > train.DepartureTime;

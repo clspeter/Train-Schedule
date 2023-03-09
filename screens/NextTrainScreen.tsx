@@ -48,6 +48,7 @@ export default function TimeTableScreen() {
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
   const [nextTrain, setNextTrain] = useState<DailyStationTimetableTodayStationType>();
   const nextTrainfromRecoil = useRecoilValue(nextTrainRecoil);
+  const currentTime = useRecoilValue(Recoil.currentTimeRecoil);
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
   const handleOnPress = (item: ODTimeTableInfoType) => {
@@ -68,7 +69,6 @@ export default function TimeTableScreen() {
   };
 
   const apiNextTrain = async () => {
-    console.log(neareastStation.StationID);
     apiDailyStationTimetableTodayStation(apiToken.access_token, neareastStation.StationID).then(
       (res) => {
         setNextTrain(res.data);
@@ -90,14 +90,10 @@ export default function TimeTableScreen() {
 
   useEffect(() => {
     console.log('nextTrainRecoillength:' + nextTrainfromRecoil.StationTimetables.length);
-  }, [nextTrainfromRecoil]);
-
-  useEffect(() => {
-    if (nextTrain) {
-      console.log('nextTrainStatelength:' + nextTrain.StationTimetables.length);
+    if (nextTrainfromRecoil.StationTimetables.length > 0) {
       setIsLoaded(true);
     }
-  }, [nextTrain]);
+  }, [nextTrainfromRecoil]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -127,6 +123,17 @@ export default function TimeTableScreen() {
     //setIsLoaded(true);
   }, []);
 
+  const getNextTrainIndex = (nextTrain: DailyStationTimetableTodayStationType) => {
+    if (nextTrain) {
+      const nextTrainIndex = nextTrain.StationTimetables[0].TimeTables.findIndex(
+        (train: TimeTableType) => {
+          return currentTime > train.DepartureTime;
+        }
+      );
+      return nextTrainIndex;
+    }
+  };
+
   const LoadingSpinner = () => {
     return (
       <Spinner
@@ -142,15 +149,6 @@ export default function TimeTableScreen() {
         zIndex={100}
         backgroundColor="rgba(0, 0, 0, 0.5)"
       />
-    );
-  };
-
-  const TravelTime = (props: { train: ODTimeTableInfoType }) => {
-    return (
-      <Text color="white" fontSize="md" alignSelf="center" mt={-6}>
-        {props.train.TravelTime.Hours}
-        {props.train.TravelTime.Minutes}
-      </Text>
     );
   };
 
@@ -186,13 +184,7 @@ export default function TimeTableScreen() {
     </Svg>
   );
 
-  const NextTrainSouth = () => (
-    <View backgroundColor="blueGray.900" flex={1}>
-      <Text>南下</Text>
-    </View>
-  );
-
-  const RenderItemNorth = ({ item, index }: { item: TimeTableType; index: number }) => {
+  const RenderItem = ({ item, index }: { item: TimeTableType; index: number }) => {
     const checkFlatlistIndex = (index: number) => {
       if (index === FlatlistIndex) {
         return 'info.900';
@@ -239,7 +231,21 @@ export default function TimeTableScreen() {
         refreshing={false}
         estimatedItemSize={50}
         data={nextTrainfromRecoil?.StationTimetables[0].TimeTables}
-        renderItem={RenderItemNorth}
+        renderItem={RenderItem}
+        keyExtractor={(item) => item.TrainNo}
+      />
+    </View>
+  );
+
+  const NextTrainSouth = () => (
+    <View backgroundColor="blueGray.900" flex={1}>
+      <FlashList
+        removeClippedSubviews={true}
+        initialScrollIndex={FlatlistIndex - 1}
+        refreshing={false}
+        estimatedItemSize={50}
+        data={nextTrainfromRecoil?.StationTimetables[1].TimeTables}
+        renderItem={RenderItem}
         keyExtractor={(item) => item.TrainNo}
       />
     </View>

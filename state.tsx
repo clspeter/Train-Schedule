@@ -18,7 +18,7 @@ export const RecoilState = () => {
     Recoil.trainLiveBoardDataRecoil
   );
 
-  const setCurrentTimeRecoil = useSetRecoilState(Recoil.currentTimeRecoil);
+  const [currentTime, setCurrentTime] = useRecoilState(Recoil.currentTimeRecoil);
   const [neareastStation, setNeareastStation] = useRecoilState(neareastStationRecoil);
   const oDTimeTableInfoInitial = useRecoilValue(Recoil.oDTimeTableInfoInitialRecoil);
   const setODTimeTableInfo = useSetRecoilState(Recoil.oDTimeTableInfoRecoil);
@@ -203,11 +203,14 @@ export const RecoilState = () => {
     updateTrainStatus();
     const interval = setInterval(() => {
       updateTrainStatus();
-      setCurrentTimeRecoil(dayjs(new Date()).format('HH:mm'));
-      console.log('setCurrentTimeRecoil to:' + dayjs(new Date()).format('HH:mm'));
+      setCurrentTime(dayjs(new Date()).format('HH:mm'));
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, [apiToken]);
+
+  useEffect(() => {
+    console.log('current time: ' + currentTime);
+  }, [currentTime]);
 
   const saveShortcuts = async () => {
     try {
