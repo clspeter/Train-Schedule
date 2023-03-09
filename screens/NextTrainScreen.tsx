@@ -36,7 +36,6 @@ export default function TimeTableScreen() {
   const journey = useRecoilValue(Recoil.journeyRecoil);
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
-  const nextTrainLive = useRecoilValue(Recoil.nextTrainLiveRecoil);
   const Tab = createMaterialTopTabNavigator();
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);

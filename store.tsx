@@ -26,23 +26,27 @@ export const nextTrainRecoil = selector({
   get: async ({ get }) => {
     const neareastStation = get(neareastStationRecoil);
     const apiToken = get(apiTokenRecoil);
-
     const NextTrainData = await apiDailyStationTimetableTodayStation(
       apiToken.access_token,
       neareastStation.StationID
     ).then((res) => {
       return res.data;
     });
-    return NextTrainData;
+    return NextTrainData as DailyStationTimetableTodayStationTypeWithDelayTime;
   },
 });
 
+/* 
 export const nextTrainLiveRecoil = selector({
   key: 'nextTrainLiveRecoil',
   get: async ({ get }) => {
     const nextTrain = get(nextTrainRecoil);
     const trainLiveBoardData = get(trainLiveBoardDataRecoil);
     //add delayTime to nextTrain
+    if (!nextTrain || !trainLiveBoardData) return;
+
+    console.log('nextTrainLiveRecoil', nextTrain);
+    
     const nextTrainLive = nextTrain.StationTimetables[0].map((train: TimeTableType) => {
       const trainLive = trainLiveBoardData.TrainLiveBoards.find(
         (trainLive) => trainLive.TrainNo === train.TrainNo
@@ -61,7 +65,7 @@ export const nextTrainLiveRecoil = selector({
     });
     return nextTrainLive;
   },
-});
+}); */
 
 export const isArrivalTimeRecoil = atom({
   key: 'isArrivalTimeRecoil',
