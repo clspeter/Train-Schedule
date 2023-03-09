@@ -30,11 +30,9 @@ export default function SelectStationandTime() {
   const [isNow, setIsNow] = useRecoilState(Recoil.isNowRecoil);
   const [isArrivalTime, setIsArrivalTime] = useRecoilState(Recoil.isArrivalTimeRecoil);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
-  const nextTrain = useRecoilValue(Recoil.nextTrainRecoil);
 
   const navigation = useNavigation<homeScreenProp>();
   const handleSwapDepartureAndDestination = () => {
@@ -86,7 +84,7 @@ export default function SelectStationandTime() {
 
   const handleNextTrain = () => {
     saveJourney();
-    console.log(nextTrain);
+
     navigation.navigate('NextTrain');
   };
 
@@ -164,7 +162,6 @@ export default function SelectStationandTime() {
     if (isNow) {
       const intervalId = setInterval(() => {
         setJourney({ ...journey, time: new Date() });
-        const displaytime = new Date().toLocaleTimeString;
       }, 60000 - new Date().getSeconds() * 1000);
       return () => {
         clearInterval(intervalId);

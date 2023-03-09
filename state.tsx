@@ -8,6 +8,7 @@ import { updateDelayTime } from './api/dataProcess';
 import { Journey, StatinType, ODTimeTableInfoType, TrainLiveBoardType } from './types';
 import { getApiToken, apiTrainStatus } from './api/apiRequest';
 import { neareastStationRecoil } from './store';
+import dayjs from 'dayjs';
 
 export const RecoilState = () => {
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
@@ -16,6 +17,8 @@ export const RecoilState = () => {
   const [trainLiveBoardData, setTrainLiveBoardData] = useRecoilState(
     Recoil.trainLiveBoardDataRecoil
   );
+
+  const setCurrentTimeRecoil = useSetRecoilState(Recoil.currentTimeRecoil);
   const [neareastStation, setNeareastStation] = useRecoilState(neareastStationRecoil);
   const oDTimeTableInfoInitial = useRecoilValue(Recoil.oDTimeTableInfoInitialRecoil);
   const setODTimeTableInfo = useSetRecoilState(Recoil.oDTimeTableInfoRecoil);
@@ -125,7 +128,7 @@ export const RecoilState = () => {
     checkAndUpdateToken();
   }, []);
 
-  const findNearestStation = async () => {
+  const findNearestStation = async (toJourney: boolean) => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
@@ -148,25 +151,29 @@ export const RecoilState = () => {
         );
         return prevDistance < currDistance ? prev : curr;
       });
-      if (nearestStation.StationID === journey.departure?.StationID) return;
-      else if (nearestStation.StationID === journey.destination?.StationID)
-        setJourney({
-          ...journey,
-          departure: nearestStation,
-          destination: journey.departure,
-        });
-      else {
-        setJourney({ ...journey, departure: nearestStation });
-      }
       setNeareastStation(nearestStation);
+      console.log('nearest station: ' + nearestStation.StationName.Zh_tw);
+      if (toJourney) {
+        if (nearestStation.StationID === journey.departure?.StationID) return;
+        else if (nearestStation.StationID === journey.destination?.StationID) {
+          setJourney({
+            ...journey,
+            departure: nearestStation,
+            destination: journey.departure,
+          });
+        } else {
+          setJourney({ ...journey, departure: nearestStation });
+        }
+      }
     }
   };
 
   useEffect(() => {
     if (initalJourney.departure === null || appSetting.useNearestStationOnStartUp === false) {
+      findNearestStation(false);
       return;
     }
-    findNearestStation();
+    findNearestStation(true);
   }, [initalJourney]);
 
   const updateTrainStatus = () => {
@@ -196,6 +203,8 @@ export const RecoilState = () => {
     updateTrainStatus();
     const interval = setInterval(() => {
       updateTrainStatus();
+      setCurrentTimeRecoil(dayjs(new Date()).format('HH:mm'));
+      console.log('setCurrentTimeRecoil to:' + dayjs(new Date()).format('HH:mm'));
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, [apiToken]);
