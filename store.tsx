@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil';
 import { apiTodayTrainStatusByNo, apiDailyStationTimetableTodayStation } from './api/apiRequest';
 import { TrainInfoType, TrainLiveBaordTrainInfoDisplay, TrainLiveBoardType } from './types';
 import {
-  DailyStationTimetableTodayStationType,
+  DailyStationTimetableTodayStationTypeWithDelayTime,
   TimeTableType,
 } from './type/DailyStationTimetableTodayStation';
 
@@ -21,68 +21,45 @@ export const neareastStationRecoil = atom({
   default: {} as StatinType,
 });
 
-export const DailyStationTimetableTodayStationRecoil = {
-  key: 'DailyStationTimetableTodayStationRecoil',
-  default: {} as DailyStationTimetableTodayStationType,
-};
-
 export const nextTrainRecoil = selector({
   key: 'nextTrainRecoil',
   get: async ({ get }) => {
     const neareastStation = get(neareastStationRecoil);
     const apiToken = get(apiTokenRecoil);
-    const trainLiveBoardData = get(trainLiveBoardDataRecoil);
-    if (neareastStation && apiToken && trainLiveBoardData) {
-      const NextTrainData = await apiTodayTrainStatusByNo(
-        apiToken.access_token,
-        neareastStation.StationID
-      );
-      //map NextTrainData.data.StationTimetebles[0] to DailyStationTimetableTodayStationTypeWithDelayTime
-      const updatedNextTrainWithDelayTime0 = NextTrainData.data.StationTimetebles[0].TimeTables.map(
-        (TimeTeble: TimeTableType) => {
-          const trainLiveBoard = trainLiveBoardData.TrainLiveBoards.find(
-            (trainLiveBoard: TrainLiveBoardType) => trainLiveBoard.TrainNo === TimeTeble.TrainNo
-          );
-          if (trainLiveBoard) {
-            return {
-              ...TimeTeble,
-              DelayTime: trainLiveBoard.DelayTime,
-            };
-          } else {
-            return { ...TimeTeble, DelayTime: -1 };
-          }
-        }
-      );
-      const updatedNextTrainWithDelayTime1 = NextTrainData.data.StationTimetebles[1].TimeTables.map(
-        (TimeTeble: TimeTableType) => {
-          const trainLiveBoard = trainLiveBoardData.TrainLiveBoards.find(
-            (trainLiveBoard: TrainLiveBoardType) => trainLiveBoard.TrainNo === TimeTeble.TrainNo
-          );
-          if (trainLiveBoard) {
-            return {
-              ...TimeTeble,
-              DelayTime: trainLiveBoard.DelayTime,
-            };
-          } else {
-            return { ...TimeTeble, DelayTime: -1 };
-          }
-        }
-      );
-      return {
-        ...NextTrainData.data,
-        StationTimetebles: [
-          {
-            ...NextTrainData.data.StationTimetebles[0],
-            TimeTables: updatedNextTrainWithDelayTime0,
-          },
 
-          {
-            ...NextTrainData.data.StationTimetebles[1],
-            TimeTables: updatedNextTrainWithDelayTime1,
-          },
-        ],
-      };
-    } else return {} as DailyStationTimetableTodayStationType;
+    const NextTrainData = await apiDailyStationTimetableTodayStation(
+      apiToken.access_token,
+      neareastStation.StationID
+    ).then((res) => {
+      return res.data;
+    });
+    return NextTrainData;
+  },
+});
+
+export const nextTrainLiveRecoil = selector({
+  key: 'nextTrainLiveRecoil',
+  get: async ({ get }) => {
+    const nextTrain = get(nextTrainRecoil);
+    const trainLiveBoardData = get(trainLiveBoardDataRecoil);
+    //add delayTime to nextTrain
+    const nextTrainLive = nextTrain.StationTimetables[0].map((train: TimeTableType) => {
+      const trainLive = trainLiveBoardData.TrainLiveBoards.find(
+        (trainLive) => trainLive.TrainNo === train.TrainNo
+      );
+      if (trainLive) {
+        return {
+          ...train,
+          DelayTime: trainLive.DelayTime,
+        };
+      } else {
+        return {
+          ...train,
+          DelayTime: -1,
+        };
+      }
+    });
+    return nextTrainLive;
   },
 });
 
