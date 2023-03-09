@@ -59,6 +59,7 @@ export type RootStackParamList = {
   TimeTable: undefined;
   Setting: undefined;
   TrainInfo: undefined;
+  NextTrain: undefined;
 };
 
 export interface TrainLiveBaordTrainInfoDisplay extends TrainLiveBoardType {

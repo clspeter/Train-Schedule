@@ -1,4 +1,4 @@
-import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -82,6 +82,12 @@ export default function SelectStationandTime() {
     saveJourney();
     navigation.navigate('TimeTable');
   };
+
+  const handleNextTrain = () => {
+    saveJourney();
+    navigation.navigate('NextTrain');
+  };
+
   const checkTimeTable = async () => {
     if (journey.departure && journey.destination)
       try {
@@ -347,18 +353,32 @@ export default function SelectStationandTime() {
             </Modal>
           </Center>
         </Box>
-        <Button
-          mt="5"
-          width="150"
-          rounded="3xl"
-          onPress={() => {
-            handleLookUp();
-          }}>
-          <HStack space={2} alignItems="center">
-            <Icon as={SimpleLineIcons} name="magnifier" size={4} color="white" mt="0.5" />
-            <Text fontSize="md">查詢時刻</Text>
-          </HStack>
-        </Button>
+        <HStack space={2}>
+          <Button
+            mt="5"
+            width="150"
+            rounded="3xl"
+            onPress={() => {
+              handleLookUp();
+            }}>
+            <HStack space={2} alignItems="center">
+              <Icon as={SimpleLineIcons} name="magnifier" size={4} color="white" mt="0.5" />
+              <Text fontSize="md">查詢時刻</Text>
+            </HStack>
+          </Button>
+          <Button
+            mt="5"
+            width="150"
+            rounded="3xl"
+            onPress={() => {
+              handleNextTrain();
+            }}>
+            <HStack space={2} alignItems="center">
+              <MaterialCommunityIcons name="source-commit-next-local" size={24} color="white" />
+              <Text fontSize="md">下一班列車</Text>
+            </HStack>
+          </Button>
+        </HStack>
         <Center flex={1} bg="blue.200" w="40" h="40" />
       </VStack>
     );

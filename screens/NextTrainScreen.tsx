@@ -178,7 +178,7 @@ export default function TimeTableScreen() {
               {item.Stops}站
             </Text>
           </VStack>
-          <HStack mt={0} flex={5} ml={4}>
+          <HStack mt={0} flex={5}>
             <Text fontSize={30} color="white" width={85} alignSelf="center" pl="-5">
               {item.DepartureTime}
             </Text>

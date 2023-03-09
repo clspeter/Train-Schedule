@@ -13,6 +13,7 @@ import SelectDestinationScreen from './screens/SelectDestinationScreen';
 import SettingScreen from './screens/SettingScreen';
 import TrainInfoScreen from './screens/TrainInfoScreen';
 import TimeTableScreen from './screens/TimeTableScreen';
+import NextTrainScreen from './screens/NextTrainScreen';
 import { RootStackParamList, homeScreenProp } from './types';
 
 // Define the config
@@ -122,6 +123,19 @@ export default function App(): JSX.Element {
                 component={TrainInfoScreen}
                 options={{
                   title: '列車詳細資料',
+                  headerStyle: {
+                    backgroundColor: '#0A1E45',
+                  },
+                  headerTintColor: '#AAAAAA',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                }}></Stack.Screen>
+              <Stack.Screen
+                name="NextTrain"
+                component={NextTrainScreen}
+                options={{
+                  title: '下一班火車',
                   headerStyle: {
                     backgroundColor: '#0A1E45',
                   },
