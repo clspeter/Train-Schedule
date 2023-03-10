@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Box,
   Text,
-  FlatList,
   View,
   HStack,
   VStack,
@@ -16,7 +15,7 @@ import {
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { apiDailyStationTimetableTodayStation } from '../api/apiRequest';
@@ -33,47 +32,25 @@ import {
   TopTabNavigatorParamList,
 } from '../types';
 import * as Recoil from '../store';
-import { neareastStationRecoil, nextTrainRecoil } from '../store';
+import { neareastStationRecoil, nextTrainTableRecoil } from '../store';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 export default function TimeTableScreen() {
-  const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const setTrainInfo = useSetRecoilState(Recoil.TrainInfoRecoil);
-  const journey = useRecoilValue(Recoil.journeyRecoil);
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
   const Tab = createMaterialTopTabNavigator();
+  const { NextTrainNorthTable, NextTrainSouthTable, nextTrainIndexNorth, nextTrainIndexSouth } =
+    useRecoilValue(nextTrainTableRecoil);
   const neareastStation = useRecoilValue(neareastStationRecoil);
-  const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
-  const [nextTrain, setNextTrain] = useState<DailyStationTimetableTodayStationType>();
-  const nextTrainfromRecoil = useRecoilValue(nextTrainRecoil);
-  const currentTime = useRecoilValue(Recoil.currentTimeRecoil);
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
   const handleOnPress = (item: ODTimeTableInfoType) => {
     setTrainInfo(item);
     navigation.navigate('TrainInfo');
-  };
-
-  const isLater = (item: ODTimeTableInfoType) => {
-    const searchTime = isArrivalTime ? item.ArrivalTime : item.DepartureTime;
-    return (
-      searchTime >
-      journey.time.toLocaleTimeString('zh-TW', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-    );
-  };
-
-  const apiNextTrain = async () => {
-    apiDailyStationTimetableTodayStation(apiToken.access_token, neareastStation.StationID).then(
-      (res) => {
-        setNextTrain(res.data);
-      }
-    );
   };
 
   const toastUpdateTrainLiveBoard = () => {
@@ -85,15 +62,10 @@ export default function TimeTableScreen() {
   };
 
   useEffect(() => {
-    apiNextTrain();
-  }, []);
-
-  useEffect(() => {
-    console.log('nextTrainRecoillength:' + nextTrainfromRecoil.StationTimetables.length);
-    if (nextTrainfromRecoil.StationTimetables.length > 0) {
+    if (NextTrainNorthTable.length > 0) {
       setIsLoaded(true);
     }
-  }, [nextTrainfromRecoil]);
+  }, [NextTrainNorthTable]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -106,33 +78,6 @@ export default function TimeTableScreen() {
       toastUpdateTrainLiveBoard();
     }
   }, [oDTimeTableInfo]);
-
-  useEffect(() => {
-    if (oDTimeTableInfo) {
-      setFlatlistIndex(() => {
-        let index = oDTimeTableInfo.findIndex(isLater);
-        if (isArrivalTime) {
-          index = index - 1;
-        }
-        if (index < 0) {
-          return oDTimeTableInfo.length;
-        }
-        return index;
-      });
-    }
-    //setIsLoaded(true);
-  }, []);
-
-  const getNextTrainIndex = (nextTrain: DailyStationTimetableTodayStationType) => {
-    if (nextTrain) {
-      const nextTrainIndex = nextTrain.StationTimetables[0].TimeTables.findIndex(
-        (train: TimeTableType) => {
-          return currentTime > train.DepartureTime;
-        }
-      );
-      return nextTrainIndex;
-    }
-  };
 
   const LoadingSpinner = () => {
     return (
@@ -184,15 +129,15 @@ export default function TimeTableScreen() {
     </Svg>
   );
 
-  const RenderItem = ({ item, index }: { item: TimeTableType; index: number }) => {
+  const RenderItemNorth = ({ item, index }: { item: TimeTableType; index: number }) => {
     const checkFlatlistIndex = (index: number) => {
-      if (index === FlatlistIndex) {
+      if (index === nextTrainIndexNorth) {
         return 'info.900';
       } else return 'blueGray.900';
     };
     return (
       <Pressable
-        opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
+        opacity={index + 1 > nextTrainIndexNorth ? 1 : 0.5}
         borderTopWidth="1"
         borderColor="muted.400"
         _pressed={{ backgroundColor: 'blueGray.700' }}
@@ -217,39 +162,92 @@ export default function TimeTableScreen() {
     );
   };
 
-  const NextTrainNorth2 = () => (
-    <View backgroundColor="blueGray.900" flex={1}>
-      <Text>北上</Text>
-    </View>
-  );
+  const NextTrainNorth = () => {
+    return (
+      <View backgroundColor="blueGray.900" flex={1}>
+        <HStack space={5}>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            車次
+          </Text>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            出發時間
+          </Text>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            終點站
+          </Text>
+        </HStack>
+        <FlashList
+          removeClippedSubviews={true}
+          initialScrollIndex={nextTrainIndexNorth - 1}
+          refreshing={false}
+          estimatedItemSize={50}
+          data={NextTrainNorthTable}
+          renderItem={RenderItemNorth}
+          keyExtractor={(item) => item.TrainNo}
+        />
+      </View>
+    );
+  };
 
-  const NextTrainNorth = () => (
-    <View backgroundColor="blueGray.900" flex={1}>
-      <FlashList
-        removeClippedSubviews={true}
-        initialScrollIndex={FlatlistIndex - 1}
-        refreshing={false}
-        estimatedItemSize={50}
-        data={nextTrainfromRecoil?.StationTimetables[0].TimeTables}
-        renderItem={RenderItem}
-        keyExtractor={(item) => item.TrainNo}
-      />
-    </View>
-  );
+  const RenderItemSouth = ({ item, index }: { item: TimeTableType; index: number }) => {
+    const checkFlatlistIndex = (index: number) => {
+      if (index === nextTrainIndexSouth) {
+        return 'info.900';
+      } else return 'blueGray.900';
+    };
+    return (
+      <Pressable
+        opacity={index + 1 > nextTrainIndexSouth ? 1 : 0.5}
+        borderTopWidth="1"
+        borderColor="muted.400"
+        _pressed={{ backgroundColor: 'blueGray.700' }}
+        backgroundColor={checkFlatlistIndex(index)}
+        flex={1}
+        h="50"
+        pl={['0', '4']}
+        pr={['0', '5']}
+        py="2">
+        <HStack space={5}>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            {item.TrainNo}
+          </Text>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            {item.DepartureTime}
+          </Text>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            {item.DestinationStationName.Zh_tw}
+          </Text>
+        </HStack>
+      </Pressable>
+    );
+  };
 
-  const NextTrainSouth = () => (
-    <View backgroundColor="blueGray.900" flex={1}>
-      <FlashList
-        removeClippedSubviews={true}
-        initialScrollIndex={FlatlistIndex - 1}
-        refreshing={false}
-        estimatedItemSize={50}
-        data={nextTrainfromRecoil?.StationTimetables[1].TimeTables}
-        renderItem={RenderItem}
-        keyExtractor={(item) => item.TrainNo}
-      />
-    </View>
-  );
+  const NextTrainSouth = () => {
+    return (
+      <View backgroundColor="blueGray.900" flex={1}>
+        <HStack space={5}>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            車次
+          </Text>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            出發時間
+          </Text>
+          <Text fontSize={24} flex={1} color="white" textAlign="center">
+            終點站
+          </Text>
+        </HStack>
+        <FlashList
+          removeClippedSubviews={true}
+          initialScrollIndex={nextTrainIndexSouth - 1}
+          refreshing={false}
+          estimatedItemSize={50}
+          data={NextTrainSouthTable}
+          renderItem={RenderItemSouth}
+          keyExtractor={(item) => item.TrainNo}
+        />
+      </View>
+    );
+  };
 
   if (isLoaded === false) {
     return (
@@ -259,10 +257,7 @@ export default function TimeTableScreen() {
         </Center>
       </View>
     );
-  } else if (
-    nextTrain?.StationTimetables.length === undefined ||
-    nextTrain?.StationTimetables.length > 1
-  ) {
+  } else if (NextTrainNorthTable) {
     return (
       <Box flex={1} backgroundColor="blueGray.900">
         {isRefreshing && <LoadingSpinner />}
@@ -277,7 +272,7 @@ export default function TimeTableScreen() {
                 tabBarStyle: { backgroundColor: 'blueGray.800' },
                 animationEnabled: false,
               }}
-              initialRouteName="Settings">
+              initialRouteName="NextTrainNorth">
               <Tab.Screen
                 name="NextTrainNorth"
                 component={NextTrainNorth}

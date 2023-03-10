@@ -6,9 +6,9 @@ import trainLiveBoardData from './responselist/trainLiveBoardData.json';
 import DailyTrainTimeTable from './responselist/DailyTrainTimeTable.json';
 import stationsListByCityByIndex from './data/stationsListByCityIndex.json';
 
-export type oDTimeTableType = typeof oDTimeTableExample[number];
+export type oDTimeTableType = (typeof oDTimeTableExample)[number];
 export type TrainLiveBoardDataType = typeof trainLiveBoardData;
-export type TrainLiveBoardType = typeof trainLiveBoardData.TrainLiveBoards[0];
+export type TrainLiveBoardType = (typeof trainLiveBoardData.TrainLiveBoards)[0];
 export type StationListType = typeof StationList;
 export type StatinType = StationListType[number];
 export type TrainInfoType = typeof DailyTrainTimeTable;
@@ -59,7 +59,7 @@ export type RootStackParamList = {
   TimeTable: undefined;
   Setting: undefined;
   TrainInfo: undefined;
-  NextTrain: undefined;
+  NextTrain: { name: string };
 };
 export type homeScreenProp = NativeStackNavigationProp<RootStackParamList>;
 

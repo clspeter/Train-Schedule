@@ -208,10 +208,6 @@ export const RecoilState = () => {
     return () => clearInterval(interval);
   }, [apiToken]);
 
-  useEffect(() => {
-    console.log('current time: ' + currentTime);
-  }, [currentTime]);
-
   const saveShortcuts = async () => {
     try {
       await AsyncStorage.setItem('shortcuts', JSON.stringify(shortCuts));

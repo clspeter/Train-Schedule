@@ -30,23 +30,70 @@ export const neareastStationRecoil = atom({
   default: {} as StatinType,
 });
 
-export const nextTrainRecoil = selector({
-  key: 'nextTrainRecoil',
+export const nextTrainDataRecoil = selector({
+  key: 'nextTrainDataRecoil',
   get: async ({ get }) => {
     const neareastStation = get(neareastStationRecoil);
     const apiToken = get(apiTokenRecoil);
-    if (neareastStation.StationID === '') return {} as DailyStationTimetableTodayStationType;
+    if (neareastStation.StationID === '')
+      return { NextTrainNorthTable: [], NextTrainSouthTable: [] } as {
+        NextTrainNorthTable: TimeTableType[];
+        NextTrainSouthTable: TimeTableType[];
+      };
     const NextTrainData = await apiDailyStationTimetableTodayStation(
       apiToken.access_token,
       neareastStation.StationID
     ).then((res) => {
       return res.data;
     });
-    return NextTrainData as DailyStationTimetableTodayStationType;
+    return NextTrainData;
   },
 });
 
-export const nextTrainIndexReciol = selector({
+export const nextTrainTableRecoil = selector({
+  key: 'nextTrainTableRecoil',
+  get: async ({ get }) => {
+    const NextTrainData = get(nextTrainDataRecoil);
+    const currentTime = get(currentTimeRecoil);
+    const NextTrainNorthTable = NextTrainData.StationTimetables[0].TimeTables;
+    const NextTrainSouthTable = NextTrainData.StationTimetables[1].TimeTables;
+    if (NextTrainNorthTable.length === 0) {
+      return {
+        NextTrainNorthTable: [],
+        NextTrainSouthTable: [],
+        nextTrainIndexNorth: -1,
+        nextTrainIndexSouth: -1,
+      } as {
+        NextTrainNorthTable: TimeTableType[];
+        NextTrainSouthTable: TimeTableType[];
+        nextTrainIndexNorth: number;
+        nextTrainIndexSouth: number;
+      };
+    }
+    const nextTrainIndexNorth = NextTrainNorthTable.findIndex((train: TimeTableType) => {
+      return currentTime < train.DepartureTime;
+    });
+    const nextTrainIndexSouth = NextTrainSouthTable.findIndex((train: TimeTableType) => {
+      return currentTime < train.DepartureTime;
+    });
+    console.log('nextTrainIndexNorth:', nextTrainIndexNorth);
+    console.log('nextTrainIndexSouth:', nextTrainIndexSouth);
+    return {
+      NextTrainNorthTable,
+      NextTrainSouthTable,
+      nextTrainIndexNorth,
+      nextTrainIndexSouth,
+    } as {
+      NextTrainNorthTable: TimeTableType[];
+      NextTrainSouthTable: TimeTableType[];
+      nextTrainIndexNorth: number;
+      nextTrainIndexSouth: number;
+    };
+  },
+  //find nextTrainIndex
+});
+
+/* export const nextTrainIndexReciol = selector({
   key: 'nextTrainIndexReciol',
   get: async ({ get }) => {
     const nextTrain = get(nextTrainRecoil);
@@ -59,15 +106,16 @@ export const nextTrainIndexReciol = selector({
     console.log('try to find nextTrainIndex');
     const nextTrainIndex = nextTrain.StationTimetables[0].TimeTables.findIndex(
       (train: TimeTableType) => {
+        console.log(currentTime + 'vs' + train.DepartureTime);
         return currentTime > train.DepartureTime;
       }
     );
     console.log('nextTrainIndex:', nextTrainIndex);
     return nextTrainIndex;
   },
-});
+}); */
 
-export const nextTrainLiveRecoil = selector({
+/* export const nextTrainLiveRecoil = selector({
   key: 'nextTrainLiveRecoil',
   get: async ({ get }) => {
     const nextTrain = get(nextTrainRecoil);
@@ -96,7 +144,7 @@ export const nextTrainLiveRecoil = selector({
     return nextTrainLive;
   },
 });
-
+ */
 export const isArrivalTimeRecoil = atom({
   key: 'isArrivalTimeRecoil',
   default: false,

@@ -33,6 +33,7 @@ export default function SelectStationandTime() {
   const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
+  const neareastStation = useRecoilValue(Recoil.neareastStationRecoil);
 
   const navigation = useNavigation<homeScreenProp>();
   const handleSwapDepartureAndDestination = () => {
@@ -84,8 +85,7 @@ export default function SelectStationandTime() {
 
   const handleNextTrain = () => {
     saveJourney();
-
-    navigation.navigate('NextTrain');
+    navigation.navigate('NextTrain', { name: `${neareastStation.StationName.Zh_tw}-下一班火車` });
   };
 
   const checkTimeTable = async () => {

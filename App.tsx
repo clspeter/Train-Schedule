@@ -134,8 +134,8 @@ export default function App(): JSX.Element {
               <Stack.Screen
                 name="NextTrain"
                 component={NextTrainScreen}
-                options={{
-                  title: '下一班火車',
+                options={({ route }) => ({
+                  title: route.params.name,
                   headerStyle: {
                     backgroundColor: '#0A1E45',
                   },
@@ -143,7 +143,7 @@ export default function App(): JSX.Element {
                   headerTitleStyle: {
                     fontWeight: 'bold',
                   },
-                }}></Stack.Screen>
+                })}></Stack.Screen>
             </Stack.Navigator>
           </NavigationContainer>
         </RecoilRoot>
