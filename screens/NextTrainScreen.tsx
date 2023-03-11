@@ -19,11 +19,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { apiDailyStationTimetableTodayStation } from '../api/apiRequest';
-import {
-  DailyStationTimetableTodayStationTypeWithDelayTime,
-  DailyStationTimetableTodayStationType,
-  TimeTableType,
-} from '../type/DailyStationTimetableTodayStation';
+import { TimeTableLiveType, TimeTableType } from '../type/DailyStationTimetableTodayStation';
 
 import {
   ODTimeTableInfoType,
@@ -32,7 +28,12 @@ import {
   TopTabNavigatorParamList,
 } from '../types';
 import * as Recoil from '../store';
-import { neareastStationRecoil, nextTrainTableRecoil } from '../store';
+import {
+  neareastStationRecoil,
+  nextTrainTableRecoil,
+  nextTrainIndexReciol,
+  nextTrainLiveTableRecoil,
+} from '../store';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
@@ -43,8 +44,10 @@ export default function TimeTableScreen() {
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
   const Tab = createMaterialTopTabNavigator();
-  const { NextTrainNorthTable, NextTrainSouthTable, nextTrainIndexNorth, nextTrainIndexSouth } =
-    useRecoilValue(nextTrainTableRecoil);
+  const { NextTrainNorthTable, NextTrainSouthTable } = useRecoilValue(nextTrainTableRecoil);
+  const { NextTrainNorthLiveTable, NextTrainSouthLiveTable } =
+    useRecoilValue(nextTrainLiveTableRecoil);
+  const { nextTrainIndexNorth, nextTrainIndexSouth } = useRecoilValue(nextTrainIndexReciol);
   const neareastStation = useRecoilValue(neareastStationRecoil);
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
@@ -97,23 +100,23 @@ export default function TimeTableScreen() {
     );
   };
 
-  const ShowDelayTime = (props: { time: number }) => {
+  const DelayTime = (props: { time: number }) => {
     const delayTime = props.time;
     if (delayTime === -1) {
       return (
-        <Text alignSelf="center" color="gray.600" fontSize="md">
+        <Text flex={1} textAlign="center" color="gray.600" fontSize={24}>
           未發車
         </Text>
       );
     } else if (delayTime === 0) {
       return (
-        <Text alignSelf="center" color="green.500" fontSize="md">
+        <Text flex={1} textAlign="center" color="green.500" fontSize={24}>
           準點
         </Text>
       );
     } else {
       return (
-        <Text alignSelf="center" color="red.500" fontSize="md">
+        <Text flex={1} textAlign="center" color="red.500" fontSize={24}>
           慢{delayTime}分
         </Text>
       );
@@ -129,7 +132,26 @@ export default function TimeTableScreen() {
     </Svg>
   );
 
-  const RenderItemNorth = ({ item, index }: { item: TimeTableType; index: number }) => {
+  const trainNoColor = (TrainTypeCode: string) => {
+    switch (TrainTypeCode) {
+      case '6':
+        return 'blue.400';
+      case '1':
+        return 'red.400';
+      case '2':
+        return 'red.400';
+      case '3':
+        return 'orange.400';
+      case '4':
+        return 'orange.600';
+      case '10':
+        return 'blue.600';
+      default:
+        return 'white';
+    }
+  };
+
+  const RenderItemNorth = ({ item, index }: { item: TimeTableLiveType; index: number }) => {
     const checkFlatlistIndex = (index: number) => {
       if (index === nextTrainIndexNorth) {
         return 'info.900';
@@ -148,12 +170,13 @@ export default function TimeTableScreen() {
         pr={['0', '5']}
         py="2">
         <HStack space={5}>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={24} flex={1} textAlign="center" color={trainNoColor(item.TrainTypeCode)}>
             {item.TrainNo}
           </Text>
           <Text fontSize={24} flex={1} color="white" textAlign="center">
             {item.DepartureTime}
           </Text>
+          <DelayTime time={item.DelayTime} />
           <Text fontSize={24} flex={1} color="white" textAlign="center">
             {item.DestinationStationName.Zh_tw}
           </Text>
@@ -166,13 +189,16 @@ export default function TimeTableScreen() {
     return (
       <View backgroundColor="blueGray.900" flex={1}>
         <HStack space={5}>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
             車次
           </Text>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
             出發時間
           </Text>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
+            即時
+          </Text>
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
             終點站
           </Text>
         </HStack>
@@ -181,7 +207,7 @@ export default function TimeTableScreen() {
           initialScrollIndex={nextTrainIndexNorth - 1}
           refreshing={false}
           estimatedItemSize={50}
-          data={NextTrainNorthTable}
+          data={NextTrainNorthLiveTable}
           renderItem={RenderItemNorth}
           keyExtractor={(item) => item.TrainNo}
         />
@@ -189,12 +215,13 @@ export default function TimeTableScreen() {
     );
   };
 
-  const RenderItemSouth = ({ item, index }: { item: TimeTableType; index: number }) => {
+  const RenderItemSouth = ({ item, index }: { item: TimeTableLiveType; index: number }) => {
     const checkFlatlistIndex = (index: number) => {
       if (index === nextTrainIndexSouth) {
         return 'info.900';
       } else return 'blueGray.900';
     };
+
     return (
       <Pressable
         opacity={index + 1 > nextTrainIndexSouth ? 1 : 0.5}
@@ -207,13 +234,14 @@ export default function TimeTableScreen() {
         pl={['0', '4']}
         pr={['0', '5']}
         py="2">
-        <HStack space={5}>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+        <HStack space={1}>
+          <Text fontSize={24} flex={1} textAlign="center" color={trainNoColor(item.TrainTypeCode)}>
             {item.TrainNo}
           </Text>
           <Text fontSize={24} flex={1} color="white" textAlign="center">
             {item.DepartureTime}
           </Text>
+          <DelayTime time={item.DelayTime} />
           <Text fontSize={24} flex={1} color="white" textAlign="center">
             {item.DestinationStationName.Zh_tw}
           </Text>
@@ -226,13 +254,16 @@ export default function TimeTableScreen() {
     return (
       <View backgroundColor="blueGray.900" flex={1}>
         <HStack space={5}>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
             車次
           </Text>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
             出發時間
           </Text>
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
+            即時
+          </Text>
+          <Text fontSize={20} flex={1} color="white" textAlign="center">
             終點站
           </Text>
         </HStack>
@@ -241,7 +272,7 @@ export default function TimeTableScreen() {
           initialScrollIndex={nextTrainIndexSouth - 1}
           refreshing={false}
           estimatedItemSize={50}
-          data={NextTrainSouthTable}
+          data={NextTrainSouthLiveTable}
           renderItem={RenderItemSouth}
           keyExtractor={(item) => item.TrainNo}
         />

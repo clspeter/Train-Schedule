@@ -32,23 +32,10 @@ export interface TimeTableType {
   SuspendedFlag: number;
 }
 
-export interface TimeTableWithDelayTimeType extends TimeTableType {
+export interface TimeTableLiveType extends TimeTableType {
   DelayTime: number;
   PassedByStation: {
     ID: string;
     Name: string;
   };
-}
-
-export interface DailyStationTimetableTodayStationTypeWithDelayTime {
-  UpdateTime: Date;
-  UpdateInterval: number;
-  SrcUpdateTime: Date;
-  SrcUpdateInterval: number;
-  TrainDate: Date;
-  StationTimetables: StationTimetableWithDelayTimeType[];
-}
-
-export interface StationTimetableWithDelayTimeType extends StationTimetableType {
-  TimeTables: TimeTableWithDelayTimeType[];
 }

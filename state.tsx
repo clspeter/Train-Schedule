@@ -110,9 +110,7 @@ export const RecoilState = () => {
     //if token is not null, check if it is expired
     const tokenObj = JSON.parse(token);
     const vaild_time = new Date(tokenObj.vaild_time);
-    /*   console.log(vaild_time.toLocaleString());
-      console.log(new Date().toLocaleString());
-      vaild_time.setHours(vaild_time.getHours() - 23); */
+
     if (new Date() < vaild_time) {
       setApiToken(tokenObj);
       console.log('token valid until: ' + vaild_time.toLocaleString());
