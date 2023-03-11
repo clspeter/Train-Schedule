@@ -40,7 +40,7 @@ LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered
 export default function TimeTableScreen() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const setTrainInfo = useSetRecoilState(Recoil.TrainInfoRecoil);
+  const setTrainInfo = useSetRecoilState(Recoil.selectTrainNoRecoil);
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
   const Tab = createMaterialTopTabNavigator();
@@ -51,8 +51,8 @@ export default function TimeTableScreen() {
   const neareastStation = useRecoilValue(neareastStationRecoil);
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
-  const handleOnPress = (item: ODTimeTableInfoType) => {
-    setTrainInfo(item);
+  const handleOnPress = (trainNo: string) => {
+    setTrainInfo(trainNo);
     navigation.navigate('TrainInfo');
   };
 
@@ -104,19 +104,19 @@ export default function TimeTableScreen() {
     const delayTime = props.time;
     if (delayTime === -1) {
       return (
-        <Text flex={1} textAlign="center" color="gray.600" fontSize={24}>
+        <Text flex={1} textAlign="center" color="gray.600" fontSize={22}>
           未發車
         </Text>
       );
     } else if (delayTime === 0) {
       return (
-        <Text flex={1} textAlign="center" color="green.500" fontSize={24}>
+        <Text flex={1} textAlign="center" color="green.500" fontSize={22}>
           準點
         </Text>
       );
     } else {
       return (
-        <Text flex={1} textAlign="center" color="red.500" fontSize={24}>
+        <Text flex={1} textAlign="center" color="red.500" fontSize={22}>
           慢{delayTime}分
         </Text>
       );
@@ -159,6 +159,7 @@ export default function TimeTableScreen() {
     };
     return (
       <Pressable
+        onPress={() => handleOnPress(item.TrainNo)}
         opacity={index + 1 > nextTrainIndexNorth ? 1 : 0.5}
         borderTopWidth="1"
         borderColor="muted.400"
@@ -177,7 +178,7 @@ export default function TimeTableScreen() {
             {item.DepartureTime}
           </Text>
           <DelayTime time={item.DelayTime} />
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={22} flex={1} color="white" textAlign="center">
             {item.DestinationStationName.Zh_tw}
           </Text>
         </HStack>
@@ -242,7 +243,7 @@ export default function TimeTableScreen() {
             {item.DepartureTime}
           </Text>
           <DelayTime time={item.DelayTime} />
-          <Text fontSize={24} flex={1} color="white" textAlign="center">
+          <Text fontSize={22} flex={1} color="white" textAlign="center">
             {item.DestinationStationName.Zh_tw}
           </Text>
         </HStack>

@@ -9,7 +9,7 @@ import { TrainInfo } from '../type/DailyTrainTimetableTodayTrainNoType';
 
 export const TrainInfoScreen = () => {
   const [delayShown, setDelayShown] = useState<boolean>(false);
-  const [trainInfo, setTrainInfo] = useRecoilState(Recoil.TrainInfoRecoil);
+  const [selectTrainNo, setSelectTrainNo] = useRecoilState(Recoil.selectTrainNoRecoil);
   const trainInfoDetail = useRecoilValue(Recoil.TrainInfoDetailRecoil);
   const trainInfoLive = useRecoilValue(Recoil.TrainInfoLiveRecoil);
 
@@ -17,7 +17,7 @@ export const TrainInfoScreen = () => {
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        if (!__DEV__) setTrainInfo({} as ODTimeTableInfoType);
+        if (!__DEV__) setSelectTrainNo('');
         console.log('TrainInfoScreen unmount');
       };
     }, [])
@@ -81,10 +81,11 @@ export const TrainInfoScreen = () => {
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
       <Text fontSize={24}>
-        {trainInfo.TrainNo}次 {trainInfo.TrainTypeName}
+        {trainInfoDetail.TrainInfo.TrainNo}次 {trainInfoDetail.TrainInfo.TrainTypeName.Zh_tw}
       </Text>
       <Text fontSize={24}>
-        {trainInfo.StartingStationName} 到 {trainInfo.EndingStationName}
+        {trainInfoDetail.TrainInfo.StartingStationName.Zh_tw} 到{' '}
+        {trainInfoDetail.TrainInfo.EndingStationName.Zh_tw}
       </Text>
       <HStack>
         <View flex={1}></View>

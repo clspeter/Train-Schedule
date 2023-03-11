@@ -25,14 +25,14 @@ export default function TimeTableScreen() {
   const [FlatlistIndex, setFlatlistIndex] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const setTrainInfo = useSetRecoilState(Recoil.TrainInfoRecoil);
+  const setTrainInfo = useSetRecoilState(Recoil.selectTrainNoRecoil);
   const journey = useRecoilValue(Recoil.journeyRecoil);
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
-  const handleOnPress = (item: ODTimeTableInfoType) => {
-    setTrainInfo(item);
+  const handleOnPress = (trainNo: string) => {
+    setTrainInfo(trainNo);
     navigation.navigate('TrainInfo');
   };
 
@@ -151,7 +151,7 @@ export default function TimeTableScreen() {
     };
     return (
       <Pressable
-        onPress={() => handleOnPress(item)}
+        onPress={() => handleOnPress(item.TrainNo)}
         opacity={index + 1 > FlatlistIndex ? 1 : 0.5}
         borderTopWidth="1"
         borderColor="muted.400"

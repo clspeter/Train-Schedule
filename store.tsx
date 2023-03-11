@@ -99,7 +99,6 @@ export const nextTrainLiveTableRecoil = selector({
   get: async ({ get }) => {
     const { NextTrainNorthTable, NextTrainSouthTable } = get(nextTrainTableRecoil);
     const trainLiveBoardData = get(trainLiveBoardDataRecoil);
-    console.log(trainLiveBoardData.UpdateTime);
     //add delayTime to nextTrain
     if (!NextTrainNorthTable || !trainLiveBoardData)
       return {
@@ -222,19 +221,19 @@ export const appSettingRecoil = atom({
   default: { useNearestStationOnStartUp: false } as SettingType,
 });
 
-export const TrainInfoRecoil = atom({
-  key: 'TrainInfoRecoil',
-  default: {} as ODTimeTableInfoType,
+export const selectTrainNoRecoil = atom({
+  key: 'selectTrainNoRecoil',
+  default: '',
 });
 
 export const TrainInfoDetailRecoil = selector({
   key: 'TrainInfoDetailRecoil',
   get: async ({ get }) => {
-    const trainInfo = get(TrainInfoRecoil);
+    const selectTrainNo = get(selectTrainNoRecoil);
     const apiToken = get(apiTokenRecoil);
     const trainInfoDetail = await apiTodayTrainStatusByNo(
       apiToken.access_token,
-      trainInfo.TrainNo
+      selectTrainNo
     ).then((res) => {
       return res.data.TrainTimetables[0] as TrainInfoType['TrainTimetables'][0];
     });
