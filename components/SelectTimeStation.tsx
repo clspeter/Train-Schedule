@@ -352,29 +352,31 @@ export default function SelectStationandTime() {
             </Modal>
           </Center>
         </Box>
-        <HStack space={2}>
+        <HStack space={5}>
           <Button
             mt="5"
-            width="150"
-            rounded="3xl"
+            width={150}
+            height={12}
+            rounded="xl"
             onPress={() => {
               handleLookUp();
             }}>
             <HStack space={2} alignItems="center">
               <Icon as={SimpleLineIcons} name="magnifier" size={4} color="white" mt="0.5" />
-              <Text fontSize="md">查詢時刻</Text>
+              <Text fontSize="xl">查詢時刻</Text>
             </HStack>
           </Button>
           <Button
             mt="5"
-            width="150"
-            rounded="3xl"
+            width={150}
+            height={12}
+            rounded="xl"
             onPress={() => {
               handleNextTrain();
             }}>
             <HStack space={2} alignItems="center">
               <MaterialCommunityIcons name="source-commit-next-local" size={24} color="white" />
-              <Text fontSize="md">下一班列車</Text>
+              <Text fontSize="xl">下一班火車</Text>
             </HStack>
           </Button>
         </HStack>

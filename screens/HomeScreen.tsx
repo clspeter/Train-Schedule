@@ -140,7 +140,7 @@ const ShortCuts = () => {
   };
 
   return (
-    <Box backgroundColor="blueGray.700" m={5} rounded="sm" borderColor="gray.400" borderWidth={1}>
+    <Box backgroundColor="blueGray.700" m={5} rounded="md" borderColor="gray.400" borderWidth={1}>
       <Text mt={2} fontSize="2xl" alignSelf="center">
         快速行程
       </Text>
