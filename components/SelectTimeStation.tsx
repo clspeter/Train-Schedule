@@ -375,7 +375,7 @@ export default function SelectStationandTime() {
             }}>
             <HStack space={2} alignItems="center">
               <MaterialCommunityIcons name="source-commit-next-local" size={24} color="white" />
-              <Text fontSize="xl">下一班火車</Text>
+              <Text fontSize="xl">下一班車</Text>
             </HStack>
           </Button>
         </HStack>
