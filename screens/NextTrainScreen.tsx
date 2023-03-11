@@ -44,11 +44,10 @@ export default function TimeTableScreen() {
   const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
   const Tab = createMaterialTopTabNavigator();
-  const { NextTrainNorthTable, NextTrainSouthTable } = useRecoilValue(nextTrainTableRecoil);
+  const { NextTrainNorthTable } = useRecoilValue(nextTrainTableRecoil);
   const { NextTrainNorthLiveTable, NextTrainSouthLiveTable } =
     useRecoilValue(nextTrainLiveTableRecoil);
   const { nextTrainIndexNorth, nextTrainIndexSouth } = useRecoilValue(nextTrainIndexReciol);
-  const neareastStation = useRecoilValue(neareastStationRecoil);
 
   const oDTimeTableInfo = useRecoilValue(Recoil.oDTimeTableInfoRecoil);
   const handleOnPress = (trainNo: string) => {
@@ -65,10 +64,10 @@ export default function TimeTableScreen() {
   };
 
   useEffect(() => {
-    if (NextTrainNorthTable.length > 0) {
+    if (NextTrainNorthLiveTable.length > 0) {
       setIsLoaded(true);
     }
-  }, [NextTrainNorthTable]);
+  }, [NextTrainNorthLiveTable]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -189,7 +188,7 @@ export default function TimeTableScreen() {
   const NextTrainNorth = () => {
     return (
       <View backgroundColor="blueGray.900" flex={1}>
-        <HStack space={5}>
+        <HStack space={5} borderBottomWidth={1} borderBottomColor="muted.300">
           <Text fontSize={20} flex={1} color="white" textAlign="center">
             車次
           </Text>
@@ -203,6 +202,7 @@ export default function TimeTableScreen() {
             終點站
           </Text>
         </HStack>
+
         <FlashList
           removeClippedSubviews={true}
           initialScrollIndex={nextTrainIndexNorth - 1}
@@ -254,7 +254,7 @@ export default function TimeTableScreen() {
   const NextTrainSouth = () => {
     return (
       <View backgroundColor="blueGray.900" flex={1}>
-        <HStack space={5}>
+        <HStack space={5} borderBottomWidth={1} borderBottomColor="muted.300">
           <Text fontSize={20} flex={1} color="white" textAlign="center">
             車次
           </Text>

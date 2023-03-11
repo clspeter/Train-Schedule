@@ -9,20 +9,14 @@ export default function SettingScreen() {
   const [appSetting, setAppSetting] = useRecoilState(appSettingRecoil);
   const saveSettingToStorage = async () => {
     try {
-      await AsyncStorage.setItem(
-        'setting',
-        JSON.stringify({
-          ...appSetting,
-          useNearestStationOnStartUp: !appSetting.useNearestStationOnStartUp,
-        })
-      );
+      await AsyncStorage.setItem('setting', JSON.stringify(appSetting));
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    console.log(appSetting);
+    saveSettingToStorage();
   }, [appSetting]);
 
   const handleSwitch = () => {
@@ -30,7 +24,6 @@ export default function SettingScreen() {
       ...appSetting,
       useNearestStationOnStartUp: !appSetting.useNearestStationOnStartUp,
     });
-    saveSettingToStorage();
   };
   const clearStorageData = async () => {
     try {

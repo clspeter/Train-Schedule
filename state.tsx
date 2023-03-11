@@ -167,12 +167,15 @@ export const RecoilState = () => {
   };
 
   useEffect(() => {
-    if (initalJourney.departure === null || appSetting.useNearestStationOnStartUp === false) {
-      findNearestStation(false);
-      return;
+    if (initalJourney.departure === null) return;
+    else {
+      if (!appSetting.useNearestStationOnStartUp) {
+        findNearestStation(false);
+        return;
+      }
     }
     findNearestStation(true);
-  }, [initalJourney]);
+  }, [initalJourney, appSetting.useNearestStationOnStartUp]);
 
   const updateTrainStatus = () => {
     apiTrainStatus(apiToken.access_token).then((status) => {
@@ -229,7 +232,6 @@ export const RecoilState = () => {
   useEffect(() => {
     if (shortCuts.length > 0) {
       saveShortcuts();
-      console.log('shortcuts saved');
     }
   }, [shortCuts]);
 

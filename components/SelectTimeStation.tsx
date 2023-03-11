@@ -31,7 +31,6 @@ export default function SelectStationandTime() {
   const [isArrivalTime, setIsArrivalTime] = useRecoilState(Recoil.isArrivalTimeRecoil);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
-  const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
   const neareastStation = useRecoilValue(Recoil.neareastStationRecoil);
 
