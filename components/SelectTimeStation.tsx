@@ -14,7 +14,7 @@ import {
   Modal,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import * as Recoil from '../store';
 
 import { apiDailyTimetableOD } from '../api/apiRequest';
@@ -167,6 +167,7 @@ export default function SelectStationandTime() {
       };
     }
   }, [isNow]);
+
   if (journey.departure === undefined || journey.destination === undefined) {
     return (
       <Center flex={1}>

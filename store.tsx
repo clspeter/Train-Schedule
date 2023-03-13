@@ -151,6 +151,10 @@ export const nextTrainLiveTableRecoil = selector({
     };
   },
 });
+export const selectedCityIdRecoil = atom({
+  key: 'selectedCityIdRecoil',
+  default: 16,
+});
 
 export const isArrivalTimeRecoil = atom({
   key: 'isArrivalTimeRecoil',

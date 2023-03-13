@@ -1,8 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import { VStack, Box, Divider, View, Text, HStack, Button, ScrollView, Center } from 'native-base';
-import React, { useRef, useState } from 'react';
+import {
+  VStack,
+  Box,
+  Divider,
+  View,
+  Text,
+  HStack,
+  Button,
+  ScrollView,
+  Center,
+  Container,
+} from 'native-base';
+import React, { useRef, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { journeyRecoil } from '../store';
+import { journeyRecoil, selectedCityIdRecoil } from '../store';
 
 import stationsListByCity from '../responselist/stationsListByCity.json';
 import cityListWithIndex from '../data/cityListWithIndex.json';
@@ -15,18 +26,32 @@ import {
   homeScreenProp,
   stationsListByCityByIndexType,
 } from '../types';
+import { FlashList } from '@shopify/flash-list';
 
 export default function StationCardsView(props: { selected: 'departure' | 'destination' }) {
-  const [cityId, setCityId] = React.useState(0);
+  const [selectedCityId, setSelectedCityId] = useRecoilState(selectedCityIdRecoil);
   const [journey, setJourney] = useRecoilState(journeyRecoil);
   const [dividerLayout, setDividerLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const navigation = useNavigation<homeScreenProp>();
   const notselected = props.selected === 'departure' ? 'destination' : 'departure';
-  const scrollViewRef = useRef(null);
-  //基隆的車站列表
+  const scrollViewRef = useRef<typeof ScrollView | null>(null);
+
+  const currentCityIndex = stationsListByCityByIndex.findIndex((item) =>
+    item.map((item) => item.StationID).includes(journey[props.selected].StationID)
+  );
+
+  useEffect(() => {
+    if (currentCityIndex === selectedCityId) return;
+    setSelectedCityId(currentCityIndex);
+  }, []);
+  useEffect(() => {
+    console.log('selectedCityId:', selectedCityId);
+  }, [selectedCityId]);
 
   const scrollToDivider = () => {
     if (dividerLayout && scrollViewRef.current) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       scrollViewRef.current.scrollTo({
         y: dividerLayout.y,
         animated: true,
@@ -34,12 +59,12 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
     }
   };
 
-  const handleSetCity = (cityId: number) => {
-    setCityId(cityId);
+  const handleSetCity = (selectedCityId: number) => {
+    setSelectedCityId(selectedCityId);
     scrollToDivider();
   };
 
-  const handelSetDeparture = (station: StatinType) => {
+  const handleSetStation = (station: StatinType) => {
     if (journey[notselected] === station) {
       setJourney({
         departure: journey.destination,
@@ -58,26 +83,26 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
   const renderCityButtons = (data: { name: string; id: number }[]) => {
     const buttons = [];
     const numButtons = data.length;
-    const dummyButton = numButtons % 3 == 0 ? 0 : 3 - (numButtons % 3);
-    for (let i = 0; i < numButtons; i += 3) {
+    const dummyButton = numButtons % 4 == 0 ? 0 : 4 - (numButtons % 4);
+    for (let i = 0; i < numButtons; i += 4) {
       buttons.push(
         <View key={`row${i}`} style={{ flexDirection: 'row' }}>
-          {data.slice(i, i + 3).map((item) => (
+          {data.slice(i, i + 4).map((item) => (
             <Button
               onPress={() => handleSetCity(item.id)}
               key={`city${item.id}`}
               _text={{
-                fontSize: 'lg',
+                fontSize: 'xl',
                 fontWeight: 'medium',
                 color: 'muted.100',
                 letterSpacing: 'lg',
                 textAlign: 'center',
               }}
-              borderColor={cityId === item.id ? 'blue.500' : 'blueGray.500'}
+              borderColor={selectedCityId === item.id ? 'blue.500' : 'blueGray.500'}
               borderWidth={1}
-              bg="blueGray.800"
+              bg={selectedCityId === item.id ? 'darkBlue.800' : 'blueGray.800'}
               rounded="xl"
-              mx="0.5"
+              m="0.5"
               flex={1}
               h={20}>
               {item.name}
@@ -114,63 +139,49 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
     return buttons;
   };
 
-  const renderStationButtons = (data: StationListType) => {
-    const buttons = [];
-    const numButtons = data.length;
-    const dummyButton = numButtons % 3 == 0 ? 0 : 3 - (numButtons % 3);
-    for (let i = 0; i < data.length; i += 3) {
-      buttons.push(
-        <View key={`row${i}`} style={{ flexDirection: 'row' }}>
-          {data.slice(i, i + 3).map((item) => (
+  const StationList = ({ data }: { data: StationListType }) => {
+    return (
+      <FlashList
+        data={data}
+        renderItem={({ item }) => {
+          const borderColor = () => {
+            if (journey[props.selected] === item) {
+              return 'blue.500';
+            } else if (item.StationClass === '0') {
+              return 'red.500';
+            } else if (item.StationClass === '1') {
+              return 'white';
+            } else {
+              return 'blueGray.600';
+            }
+          };
+          return (
             <Button
-              key={`station${item.StationID}`}
-              onPress={() => handelSetDeparture(item)}
+              onPress={() => handleSetStation(item)}
+              id={item.StationID}
               _text={{
-                fontSize: 'lg',
+                fontSize: 'xl',
                 fontWeight: 'medium',
                 color: 'muted.100',
                 letterSpacing: 'lg',
                 textAlign: 'center',
               }}
-              borderColor="blueGray.500"
+              borderColor={borderColor()}
               borderWidth={1}
-              bg="blueGray.800"
+              bg={journey[props.selected] === item ? 'darkBlue.800' : 'blueGray.800'}
               rounded="xl"
-              mx="0.5"
+              m="0.5"
               flex={1}
               h={20}>
               {item.StationName.Zh_tw}
             </Button>
-          ))}
-
-          {/* Add number of  dummyButtons button if the number of buttons is not a multiple of 3 */}
-          {dummyButton > 0 && i >= numButtons - 3 && (
-            <Button
-              key="dummy1"
-              _text={{ fontSize: 'lg', fontWeight: 'medium', color: 'transparent' }}
-              bg="transparent"
-              rounded="xl"
-              mx="0.5"
-              flex={1}
-              h={20}
-            />
-          )}
-
-          {dummyButton > 1 && i >= numButtons - 3 && (
-            <Button
-              key="dummy2"
-              _text={{ fontSize: 'lg', fontWeight: 'medium', color: 'transparent' }}
-              bg="transparent"
-              rounded="xl"
-              mx="0.5"
-              flex={1}
-              h={20}
-            />
-          )}
-        </View>
-      );
-    }
-    return buttons;
+          );
+        }}
+        keyExtractor={(item) => `${item.StationID}`}
+        numColumns={4}
+        estimatedItemSize={84}
+      />
+    );
   };
 
   return (
@@ -186,9 +197,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
           }}>
           地區
         </Center>
-        <VStack space="1" alignItems="center">
-          {renderCityButtons(cityListWithIndex)}
-        </VStack>
+        <View>{renderCityButtons(cityListWithIndex)}</View>
         <Divider my={2} onLayout={(event) => setDividerLayout(event.nativeEvent.layout)}></Divider>
         <Center
           _text={{
@@ -200,9 +209,9 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
           }}>
           車站
         </Center>
-        <VStack space="1" alignItems="center">
-          {renderStationButtons(stationsListByCityByIndex[cityId])}
-        </VStack>
+        <View h={Math.ceil(stationsListByCityByIndex[selectedCityId].length / 4) * 84}>
+          <StationList data={stationsListByCityByIndex[selectedCityId]} />
+        </View>
       </ScrollView>
     </VStack>
   );
