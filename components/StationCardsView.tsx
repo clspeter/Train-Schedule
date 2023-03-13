@@ -26,6 +26,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
   const [selectedCityId, setSelectedCityId] = useState(16);
   const [journey, setJourney] = useRecoilState(journeyRecoil);
   const [dividerLayout, setDividerLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [userSelectedCity, setUserSelectedCity] = useState(false);
   const navigation = useNavigation<homeScreenProp>();
   const notselected = props.selected === 'departure' ? 'destination' : 'departure';
   const scrollViewRef = useRef<typeof ScrollView | null>(null);
@@ -44,19 +45,16 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
   }, [selectedCityId]);
 
   const scrollToDivider = () => {
-    if (dividerLayout && scrollViewRef.current) {
+    if (scrollViewRef.current) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      scrollViewRef.current.scrollTo({
-        y: dividerLayout.y,
-        animated: true,
-      });
+      scrollViewRef.current.scrollToEnd();
     }
   };
 
   const handleSetCity = (selectedCityId: number) => {
     setSelectedCityId(selectedCityId);
-    scrollToDivider();
+    setUserSelectedCity(true);
   };
 
   const handleSetStation = (station: StatinType) => {
@@ -138,6 +136,9 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
   const StationList = ({ data }: { data: StationListType }) => {
     return (
       <FlashList
+        onLayout={() => {
+          if (userSelectedCity) scrollToDivider();
+        }}
         data={data}
         renderItem={({ item }) => {
           const borderColor = () => {
@@ -196,7 +197,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
           地區
         </Center>
         <View>{renderCityButtons(cityListWithIndex)}</View>
-        <Divider my={2} onLayout={(event) => setDividerLayout(event.nativeEvent.layout)}></Divider>
+        <Divider my={2}></Divider>
         <Center
           _text={{
             fontSize: '2xl',
