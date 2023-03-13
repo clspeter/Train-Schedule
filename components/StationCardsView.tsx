@@ -132,6 +132,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
     return buttons;
   };
   const stationListData = stationsListByCityByIndex[selectedCityId];
+  const stationListHeight = Math.ceil(stationListData.length / 4) * 84;
 
   const StationList = ({ data }: { data: StationListType }) => {
     return (
@@ -208,7 +209,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
           }}>
           車站
         </Center>
-        <View h={Math.ceil(stationListData.length / 4) * 84}>
+        <View h={stationListHeight}>
           <StationList data={stationListData} />
         </View>
       </ScrollView>
