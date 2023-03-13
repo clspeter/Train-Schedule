@@ -84,7 +84,7 @@ export default function SelectStationandTime() {
 
   const handleNextTrain = () => {
     saveJourney();
-    navigation.navigate('NextTrain', { name: `${neareastStation.StationName.Zh_tw}-下一班火車` });
+    navigation.navigate('NextTrain', { name: `${neareastStation.StationName.Zh_tw} - 下一班車` });
   };
 
   const checkTimeTable = async () => {

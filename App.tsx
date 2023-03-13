@@ -59,6 +59,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 })}
               />
@@ -73,6 +75,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 }}
               />
@@ -87,6 +91,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 }}
               />
@@ -101,6 +107,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 }}
               />
@@ -115,6 +123,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 }}
               />
@@ -129,6 +139,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 }}></Stack.Screen>
               <Stack.Screen
@@ -142,6 +154,8 @@ export default function App(): JSX.Element {
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'white',
                   },
                 })}></Stack.Screen>
             </Stack.Navigator>
