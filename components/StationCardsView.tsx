@@ -147,6 +147,8 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
               return 'red.500';
             } else if (item.StationClass === '1') {
               return 'white';
+            } else if (item.StationClass === '2') {
+              return 'blueGray.400';
             } else {
               return 'blueGray.600';
             }
