@@ -19,17 +19,11 @@ import stationsListByCity from '../responselist/stationsListByCity.json';
 import cityListWithIndex from '../data/cityListWithIndex.json';
 import stationsListByCityByIndex from '../data/stationsListByCityIndex.json';
 
-import {
-  Journey,
-  StationListType,
-  StatinType,
-  homeScreenProp,
-  stationsListByCityByIndexType,
-} from '../types';
+import { Journey, StationListType, StatinType, homeScreenProp } from '../types';
 import { FlashList } from '@shopify/flash-list';
 
 export default function StationCardsView(props: { selected: 'departure' | 'destination' }) {
-  const [selectedCityId, setSelectedCityId] = useRecoilState(selectedCityIdRecoil);
+  const [selectedCityId, setSelectedCityId] = useState(16);
   const [journey, setJourney] = useRecoilState(journeyRecoil);
   const [dividerLayout, setDividerLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const navigation = useNavigation<homeScreenProp>();
@@ -44,6 +38,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
     if (currentCityIndex === selectedCityId) return;
     setSelectedCityId(currentCityIndex);
   }, []);
+
   useEffect(() => {
     console.log('selectedCityId:', selectedCityId);
   }, [selectedCityId]);
@@ -138,6 +133,7 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
     }
     return buttons;
   };
+  const stationListData = stationsListByCityByIndex[selectedCityId];
 
   const StationList = ({ data }: { data: StationListType }) => {
     return (
@@ -209,8 +205,8 @@ export default function StationCardsView(props: { selected: 'departure' | 'desti
           }}>
           車站
         </Center>
-        <View h={Math.ceil(stationsListByCityByIndex[selectedCityId].length / 4) * 84}>
-          <StationList data={stationsListByCityByIndex[selectedCityId]} />
+        <View h={Math.ceil(stationListData.length / 4) * 84}>
+          <StationList data={stationListData} />
         </View>
       </ScrollView>
     </VStack>
