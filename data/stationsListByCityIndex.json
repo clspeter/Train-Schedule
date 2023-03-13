@@ -1299,7 +1299,280 @@
       "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4100"
     }
   ],
-  [],
+  [
+    {
+      "StationUID": "TRA-4110",
+      "StationID": "4110",
+      "StationName": {
+        "Zh_tw": "後壁",
+        "En": "Houbi"
+      },
+      "StationPosition": {
+        "PositionLon": 120.36058,
+        "PositionLat": 23.36626
+      },
+      "StationAddress": "73143臺南市後壁區後壁里後壁 77 號",
+      "StationPhone": "06-6872055",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4110"
+    },
+    {
+      "StationUID": "TRA-4120",
+      "StationID": "4120",
+      "StationName": {
+        "Zh_tw": "新營",
+        "En": "Xinying"
+      },
+      "StationPosition": {
+        "PositionLon": 120.32307,
+        "PositionLat": 23.30673
+      },
+      "StationAddress": "73045臺南市新營區中營里中山路 1 號",
+      "StationPhone": "06-6322104",
+      "StationClass": "1",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4120"
+    },
+    {
+      "StationUID": "TRA-4130",
+      "StationID": "4130",
+      "StationName": {
+        "Zh_tw": "柳營",
+        "En": "Liuying"
+      },
+      "StationPosition": {
+        "PositionLon": 120.32252,
+        "PositionLat": 23.27762
+      },
+      "StationAddress": "73657臺南市柳營區東昇里建國路 1 號",
+      "StationPhone": "06-6226450",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4130"
+    },
+    {
+      "StationUID": "TRA-4140",
+      "StationID": "4140",
+      "StationName": {
+        "Zh_tw": "林鳳營",
+        "En": "Linfengying"
+      },
+      "StationPosition": {
+        "PositionLon": 120.32107,
+        "PositionLat": 23.24259
+      },
+      "StationAddress": "73444臺南市六甲區中社里林鳳營 16 號",
+      "StationPhone": "06-6986086",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4140"
+    },
+    {
+      "StationUID": "TRA-4150",
+      "StationID": "4150",
+      "StationName": {
+        "Zh_tw": "隆田",
+        "En": "Longtian"
+      },
+      "StationPosition": {
+        "PositionLon": 120.31917,
+        "PositionLat": 23.19271
+      },
+      "StationAddress": "72041臺南市官田區隆田里中山路一段 1 號",
+      "StationPhone": "06-5791664",
+      "StationClass": "2",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4150"
+    },
+    {
+      "StationUID": "TRA-4160",
+      "StationID": "4160",
+      "StationName": {
+        "Zh_tw": "拔林",
+        "En": "Balin"
+      },
+      "StationPosition": {
+        "PositionLon": 120.32117,
+        "PositionLat": 23.17287
+      },
+      "StationAddress": "72044臺南市官田區拔林里拔子林 83 之 1 號",
+      "StationPhone": "06-5791664",
+      "StationClass": "5",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4160"
+    },
+    {
+      "StationUID": "TRA-4170",
+      "StationID": "4170",
+      "StationName": {
+        "Zh_tw": "善化",
+        "En": "Shanhua"
+      },
+      "StationPosition": {
+        "PositionLon": 120.30653,
+        "PositionLat": 23.13333
+      },
+      "StationAddress": "74154臺南市善化區光文里中山路 1 號",
+      "StationPhone": "06-5837301",
+      "StationClass": "2",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4170"
+    },
+    {
+      "StationUID": "TRA-4180",
+      "StationID": "4180",
+      "StationName": {
+        "Zh_tw": "南科",
+        "En": "Nanke"
+      },
+      "StationPosition": {
+        "PositionLon": 120.30175,
+        "PositionLat": 23.10714
+      },
+      "StationAddress": "74443臺南市新市區大營里大營 287-300 號",
+      "StationPhone": "06-5896356",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4180"
+    },
+    {
+      "StationUID": "TRA-4190",
+      "StationID": "4190",
+      "StationName": {
+        "Zh_tw": "新市",
+        "En": "Xinshi"
+      },
+      "StationPosition": {
+        "PositionLon": 120.29004,
+        "PositionLat": 23.06816
+      },
+      "StationAddress": "74448臺南市新市區新和里中華路 1 號",
+      "StationPhone": "06-5996911",
+      "StationClass": "3",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4190"
+    },
+    {
+      "StationUID": "TRA-4200",
+      "StationID": "4200",
+      "StationName": {
+        "Zh_tw": "永康",
+        "En": "Yongkang"
+      },
+      "StationPosition": {
+        "PositionLon": 120.25347,
+        "PositionLat": 23.03825
+      },
+      "StationAddress": "71090臺南市永康區埔園里中山路 459 號",
+      "StationPhone": "06-2323305",
+      "StationClass": "2",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4200"
+    },
+    {
+      "StationUID": "TRA-4210",
+      "StationID": "4210",
+      "StationName": {
+        "Zh_tw": "大橋",
+        "En": "Daqiao"
+      },
+      "StationPosition": {
+        "PositionLon": 120.22429,
+        "PositionLat": 23.01923
+      },
+      "StationAddress": "71049臺南市永康區西橋里中華路 835 號",
+      "StationPhone": "06-3021755",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4210"
+    },
+    {
+      "StationUID": "TRA-4220",
+      "StationID": "4220",
+      "StationName": {
+        "Zh_tw": "臺南",
+        "En": "Tainan"
+      },
+      "StationPosition": {
+        "PositionLon": 120.21249,
+        "PositionLat": 22.99719
+      },
+      "StationAddress": "70146臺南市東區成大里北門路二段 4 號",
+      "StationPhone": "06-2261314",
+      "StationClass": "1",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4220"
+    },
+    {
+      "StationUID": "TRA-4250",
+      "StationID": "4250",
+      "StationName": {
+        "Zh_tw": "保安",
+        "En": "Bao'an"
+      },
+      "StationPosition": {
+        "PositionLon": 120.23158,
+        "PositionLat": 22.93296
+      },
+      "StationAddress": "71755臺南市仁德區保安里文賢路一段 529 巷 10 號",
+      "StationPhone": "06-2665988",
+      "StationClass": "3",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4250"
+    },
+    {
+      "StationUID": "TRA-4260",
+      "StationID": "4260",
+      "StationName": {
+        "Zh_tw": "仁德",
+        "En": "Rende"
+      },
+      "StationPosition": {
+        "PositionLon": 120.24061,
+        "PositionLat": 22.92364
+      },
+      "StationAddress": "71750臺南市仁德區保安里永德路 10 號",
+      "StationPhone": "06-2669383",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4260"
+    },
+    {
+      "StationUID": "TRA-4270",
+      "StationID": "4270",
+      "StationName": {
+        "Zh_tw": "中洲",
+        "En": "Zhongzhou"
+      },
+      "StationPosition": {
+        "PositionLon": 120.25286,
+        "PositionLat": 22.90466
+      },
+      "StationAddress": "71754臺南市仁德區中洲五街236號",
+      "StationPhone": "06-2667191",
+      "StationClass": "2",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4270"
+    },
+    {
+      "StationUID": "TRA-4271",
+      "StationID": "4271",
+      "StationName": {
+        "Zh_tw": "長榮大學",
+        "En": "Chang Jung Christian University"
+      },
+      "StationPosition": {
+        "PositionLon": 120.27274,
+        "PositionLat": 22.90735
+      },
+      "StationAddress": "71150臺南市歸仁區大潭里長大路15 號",
+      "StationPhone": "06-2782615",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4271"
+    },
+    {
+      "StationUID": "TRA-4272",
+      "StationID": "4272",
+      "StationName": {
+        "Zh_tw": "沙崙",
+        "En": "Shalun"
+      },
+      "StationPosition": {
+        "PositionLon": 120.28635,
+        "PositionLat": 22.92419
+      },
+      "StationAddress": "71151臺南市歸仁區沙崙里歸仁大道 102 號",
+      "StationPhone": "06-3032686",
+      "StationClass": "4",
+      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/4272"
+    }
+  ],
   [
     {
       "StationUID": "TRA-4290",
