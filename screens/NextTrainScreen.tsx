@@ -225,6 +225,7 @@ export default function TimeTableScreen() {
 
     return (
       <Pressable
+        onPress={() => handleOnPress(item.TrainNo)}
         opacity={index + 1 > nextTrainIndexSouth ? 1 : 0.5}
         borderTopWidth="1"
         borderColor="muted.400"
