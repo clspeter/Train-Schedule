@@ -4,13 +4,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import * as Recoil from '../store';
 import { View, Text, HStack } from 'native-base';
-import { TrainInfoType } from '../type/types';
+import { TrainInfoType, Journey } from '../type/types';
 
 export const TrainInfoScreen = () => {
   const [delayShown, setDelayShown] = useState<boolean>(false);
   const [selectTrainNo, setSelectTrainNo] = useRecoilState(Recoil.selectTrainNoRecoil);
   const trainInfoDetail = useRecoilValue(Recoil.TrainInfoDetailRecoil);
   const trainInfoLive = useRecoilValue(Recoil.TrainInfoLiveRecoil);
+  const Journey = useRecoilValue(Recoil.journeyRecoil);
 
   // unmount時清空trainInfo,避免後臺持續更新trainInfoLive
   useFocusEffect(
@@ -43,6 +44,23 @@ export const TrainInfoScreen = () => {
       );
     }
   };
+  const ShowStartEnd = (props: { StationID: string }) => {
+    if (props.StationID === Journey.departure.StationID) {
+      return (
+        <Text flex={1} fontSize={24} textAlign="center">
+          出發
+        </Text>
+      );
+    } else if (props.StationID === Journey.destination.StationID) {
+      return (
+        <Text flex={1} fontSize={24} textAlign="center">
+          抵達
+        </Text>
+      );
+    } else {
+      return <View flex={1} />;
+    }
+  };
 
   const RenderItem = ({
     item,
@@ -59,7 +77,7 @@ export const TrainInfoScreen = () => {
         key={index}
         height="50px">
         <HStack>
-          <View flex={1}></View>
+          <ShowStartEnd StationID={item.StationID} />
           <Text flex={1} fontSize={24} textAlign="center">
             {item.StationName.Zh_tw}{' '}
           </Text>
