@@ -15,11 +15,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { journeyRecoil, selectedCityIdRecoil } from '../store';
 
-import stationsListByCity from '../responselist/stationsListByCity.json';
+import stationsListByCity from '../type/responselist/stationsListByCity.json';
 import cityListWithIndex from '../data/cityListWithIndex.json';
 import stationsListByCityByIndex from '../data/stationsListByCityIndex.json';
 
-import { Journey, StationListType, StatinType, homeScreenProp } from '../types';
+import { Journey, StationListType, StatinType, homeScreenProp } from '../type/types';
 import { FlashList } from '@shopify/flash-list';
 
 export default function StationCardsView(props: { selected: 'departure' | 'destination' }) {

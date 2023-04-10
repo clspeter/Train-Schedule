@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import * as Recoil from '../store';
 import { View, Text, HStack } from 'native-base';
-import { TrainInfoType } from '../types';
+import { TrainInfoType } from '../type/types';
 
 export const TrainInfoScreen = () => {
   const [delayShown, setDelayShown] = useState<boolean>(false);

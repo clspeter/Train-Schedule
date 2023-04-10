@@ -18,7 +18,7 @@ import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 
-import { ODTimeTableInfoType, TrainLiveBoardType, homeScreenProp } from '../types';
+import { ODTimeTableInfoType, TrainLiveBoardType, homeScreenProp } from '../type/types';
 import * as Recoil from '../store';
 
 export default function TimeTableScreen() {

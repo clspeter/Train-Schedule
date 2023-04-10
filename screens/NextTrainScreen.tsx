@@ -26,7 +26,7 @@ import {
   TrainLiveBoardType,
   homeScreenProp,
   TopTabNavigatorParamList,
-} from '../types';
+} from '../type/types';
 import * as Recoil from '../store';
 import {
   neareastStationRecoil,

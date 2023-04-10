@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { apiTodayTrainStatusByNo, apiDailyStationTimetableTodayStation } from './api/apiRequest';
-import { TrainInfoType, TrainLiveBaordTrainInfoDisplay, TrainLiveBoardType } from './types';
+import { TrainInfoType, TrainLiveBaordTrainInfoDisplay, TrainLiveBoardType } from './type/types';
 import { TimeTableLiveType, TimeTableType } from './type/DailyStationTimetableTodayStation';
 
 import {
@@ -13,7 +13,7 @@ import {
   ODTimeTableInfoType,
   SettingType,
   StatinType,
-} from './types';
+} from './type/types';
 dayjs.extend(customParseFormat);
 
 export const currentTimeRecoil = atom({

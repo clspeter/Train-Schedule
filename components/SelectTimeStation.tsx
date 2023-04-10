@@ -19,7 +19,7 @@ import * as Recoil from '../store';
 
 import { apiDailyTimetableOD } from '../api/apiRequest';
 import { apiDailyTimetableODDataProcess } from '../api/dataProcess';
-import { Journey, homeScreenProp, ODTimeTableInfoType } from '../types';
+import { Journey, homeScreenProp, ODTimeTableInfoType } from '../type/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Box } from 'native-base';
 

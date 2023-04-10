@@ -1,4 +1,4 @@
-import { TrainLiveBoardType } from '../types';
+import { TrainLiveBoardType } from './types';
 export interface Welcome9 {
   UpdateTime: Date;
   UpdateInterval: number;

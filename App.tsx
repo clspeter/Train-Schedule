@@ -14,7 +14,7 @@ import SettingScreen from './screens/SettingScreen';
 import TrainInfoScreen from './screens/TrainInfoScreen';
 import TimeTableScreen from './screens/TimeTableScreen';
 import NextTrainScreen from './screens/NextTrainScreen';
-import { RootStackParamList, homeScreenProp } from './types';
+import { RootStackParamList, homeScreenProp } from './type/types';
 
 // Define the config
 const config = {

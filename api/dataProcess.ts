@@ -1,5 +1,5 @@
-import ODTimeTable from '../responselist/oDTimeTableExample.json';
-import { oDTimeTableType, TrainLiveBoardType, ODTimeTableInfoType } from '../types';
+import ODTimeTable from '../type/responselist/oDTimeTableExample.json';
+import { oDTimeTableType, TrainLiveBoardType, ODTimeTableInfoType } from '../type/types';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
