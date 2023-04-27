@@ -60,7 +60,7 @@ export default function TimeTableScreen() {
       title: '列車即時資訊已更新',
       duration: 3000,
     });
-    setIsRefreshing(true);
+    //setIsRefreshing(true);
   };
 
   useEffect(() => {
@@ -282,7 +282,7 @@ export default function TimeTableScreen() {
     );
   };
 
-  if (isLoaded === false) {
+  /* if (isLoaded === false) {
     return (
       <View backgroundColor="blueGray.900" flex={1} justifyContent="center">
         <Center>
@@ -290,7 +290,8 @@ export default function TimeTableScreen() {
         </Center>
       </View>
     );
-  } else if (NextTrainNorthTable) {
+  } else */
+  if (NextTrainNorthTable) {
     return (
       <Box flex={1} backgroundColor="blueGray.900">
         {isRefreshing && <LoadingSpinner />}
