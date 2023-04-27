@@ -312,6 +312,7 @@ export default function TimeTableScreen() {
                 component={NextTrainNorth}
                 options={{
                   tabBarLabel: '順行',
+                  tabBarLabelStyle: { fontSize: 20, color: 'white' },
                   //tabBarIcon: ({ color }) => <AntDesign name="home" color={color} size={26} />,
                 }}
               />
@@ -320,6 +321,7 @@ export default function TimeTableScreen() {
                 component={NextTrainSouth}
                 options={{
                   tabBarLabel: '逆行',
+                  tabBarLabelStyle: { fontSize: 20, color: 'white' },
                   //tabBarIcon: ({ color }) => <AntDesign name="youtube" color={color} size={26} />,
                 }}
               />
