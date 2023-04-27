@@ -33,6 +33,7 @@ export default function SelectStationandTime() {
   const [oDTimeTableInfo, setODTimeTableInfo] = useRecoilState(Recoil.oDTimeTableInfoInitialRecoil);
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
   const neareastStation = useRecoilValue(Recoil.neareastStationRecoil);
+  const apiStatus = useRecoilValue(Recoil.apiStatusRecoil);
 
   const navigation = useNavigation<homeScreenProp>();
   const handleSwapDepartureAndDestination = () => {
@@ -354,10 +355,12 @@ export default function SelectStationandTime() {
         </Box>
         <HStack space={5}>
           <Button
+            bg={apiStatus ? 'info.600' : 'gray.500'}
             mt="5"
             width={150}
             height={12}
             rounded="xl"
+            disabled={!apiStatus}
             onPress={() => {
               handleLookUp();
             }}>
@@ -367,10 +370,12 @@ export default function SelectStationandTime() {
             </HStack>
           </Button>
           <Button
+            bg={apiStatus ? 'info.600' : 'gray.500'}
             mt="5"
             width={150}
             height={12}
             rounded="xl"
+            disabled={!apiStatus}
             onPress={() => {
               handleNextTrain();
             }}>

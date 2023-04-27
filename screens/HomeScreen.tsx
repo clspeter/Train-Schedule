@@ -9,6 +9,8 @@ import {
   FlatList,
   Pressable,
   Toast,
+  Alert,
+  useToast,
 } from 'native-base';
 import React, { useContext, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -20,7 +22,7 @@ import { AntDesign } from '@expo/vector-icons';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import dayjs from 'dayjs';
+import dayjs, { duration } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { isArrivalTimeRecoil } from '../store';
 
@@ -35,6 +37,7 @@ const clearAll = async () => {
 const DebugView = () => {
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
+  const [apiStatus, setApiStatus] = useRecoilState(Recoil.apiStatusRecoil);
   return (
     <Center m={5}>
       <Text>
@@ -44,18 +47,30 @@ const DebugView = () => {
       <Text>
         Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
       </Text>
-
-      <Button
-        mt="5"
-        width="150"
-        rounded="3xl"
-        onPress={() => {
-          clearAll();
-        }}>
-        <HStack space={2} alignItems="center">
-          <Text fontSize="md">清除快取資料</Text>
-        </HStack>
-      </Button>
+      <HStack space={4}>
+        <Button
+          mt="5"
+          width="150"
+          rounded="3xl"
+          onPress={() => {
+            clearAll();
+          }}>
+          <HStack space={2} alignItems="center">
+            <Text fontSize="md">清除快取資料</Text>
+          </HStack>
+        </Button>
+        <Button
+          mt="5"
+          width="150"
+          rounded="3xl"
+          onPress={() => {
+            setApiStatus(!apiStatus);
+          }}>
+          <HStack space={2} alignItems="center">
+            <Text fontSize="md">開關警告</Text>
+          </HStack>
+        </Button>
+      </HStack>
     </Center>
   );
 };
@@ -157,7 +172,7 @@ const ShortCuts = () => {
         快速行程
       </Text>
       <FlatList data={shortCuts} renderItem={renderItems} />
-      <Button m={2} onPress={handleNowShortcut}>
+      <Button m={2} onPress={handleNowShortcut} bg="info.600">
         新增現在行程
       </Button>
     </Box>
@@ -167,9 +182,22 @@ const ShortCuts = () => {
 export default function HomeScreen() {
   const apiStatus = useRecoilValue(Recoil.apiStatusRecoil);
 
+  const toast = useToast();
+
   const toastApiError = () => {
-    Toast.show({
-      title: 'API錯誤，請清除快取資料後重開',
+    toast.show({
+      render: () => {
+        return (
+          <Alert status="error">
+            <HStack space={2} alignItems="center">
+              <Alert.Icon />
+              <Text fontSize="md" fontWeight="medium" color="gray.500">
+                API 錯誤，請檢查網路連線
+              </Text>
+            </HStack>
+          </Alert>
+        );
+      },
       duration: null,
     });
   };

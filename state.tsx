@@ -184,23 +184,29 @@ export const RecoilState = () => {
   }, [initalJourney, appSetting.useNearestStationOnStartUp]);
 
   const updateTrainStatus = () => {
-    apiTrainStatus(apiToken.access_token).then((status) => {
-      if (status.data === undefined) {
-        return;
-      }
-      if (status.data === trainLiveBoardData) {
-        return;
-      }
-      setTrainLiveBoardData(status.data);
-      console.log(
-        'live status update time: ' +
-          new Date(status.data.UpdateTime).toLocaleString(
-            //show hours and minutes only
-            'en-US',
-            { hour: 'numeric', minute: 'numeric', hour12: true }
-          )
-      );
-    });
+    apiTrainStatus(apiToken.access_token)
+      .then((status) => {
+        if (status.data === undefined) {
+          return;
+        }
+        if (status.data === trainLiveBoardData) {
+          return;
+        }
+        setTrainLiveBoardData(status.data);
+        console.log(
+          'live status update time: ' +
+            new Date(status.data.UpdateTime).toLocaleString(
+              //show hours and minutes only
+              'en-US',
+              { hour: 'numeric', minute: 'numeric', hour12: true }
+            )
+        );
+      })
+      .catch((err) => {
+        console.log('updateTrainStatus error:', err);
+        setApiStatus(false);
+      });
+    return updateTrainStatus;
   };
 
   useEffect(() => {
