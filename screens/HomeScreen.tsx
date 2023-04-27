@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs, { duration } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { isArrivalTimeRecoil } from '../store';
+import { ExpoConfig } from 'expo/config';
 
 const clearAll = async () => {
   try {
@@ -183,6 +184,10 @@ export default function HomeScreen() {
   const apiStatus = useRecoilValue(Recoil.apiStatusRecoil);
 
   const toast = useToast();
+
+  useEffect(() => {
+    __DEV__ && console.log(Constatns?.expoConfig?.extra);
+  }, []);
 
   const toastApiError = () => {
     toast.show({
