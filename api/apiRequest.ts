@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 
 const API_BASE_URL = `https://tdx.transportdata.tw/api/basic`;
 const API_AUTH_URL = `https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token`;
-const CLIENT_ID = 'mustpe-a102ed9a-d8a6-4b33';
-const CLIENT_SECRET = 'f1b32b6d-d6a4-4106-956b-359611040357';
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 const apiRequest = (token: string) => {
   return axios.create({

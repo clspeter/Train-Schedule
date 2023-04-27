@@ -17,6 +17,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "config": {
+        "useNonExemptEncryption": false
+      },
       "supportsTablet": true,
       "bundleIdentifier": "com.mustpe.TrainSchedule",
       "buildNumber": "2"

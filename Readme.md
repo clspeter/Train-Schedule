@@ -16,7 +16,7 @@ Andorid 未測試
 2. 開發工具: Expo https://expo.dev/
 3. UI: Native Base https://nativebase.io/
 4. 全局變數管理: Recoil.js https://recoiljs.org/
-5. API處理: Axios
+5. API 處理: Axios
 
 ## 功能介紹 & 實際畫面
 
@@ -56,13 +56,16 @@ Andorid 未測試
   - 設定內可選擇開啟 App 時自動選取最近火車站為出發站
 
   <img src="https://github.com/clspeter/Train-Schedule/blob/master/Readme/IMG_2502.PNG" width="33%" height="50%">
-  
+
 ## 程式碼說明
 
 state.tsx, store.tsx: 全局變數管理
-apiRequest.ts, dataProcess.tx: API和資料處理
+apiRequest.ts, dataProcess.tx: API 和資料處理
 
 ## 如何使用
+
+copy env.example to .env
+填寫 TDX API 金鑰，由一組 Client Id 和 Client Secret 組成
 
 ```sh
 yarn install
