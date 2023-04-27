@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
+import Constatns from 'expo-constants';
 
 const API_BASE_URL = `https://tdx.transportdata.tw/api/basic`;
 const API_AUTH_URL = `https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token`;
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const CLIENT_ID = Constatns?.expoConfig?.extra?.CLIENT_ID;
+const CLIENT_SECRET = Constatns?.expoConfig?.extra?.CLIENT_SECRET;
 
 const apiRequest = (token: string) => {
   return axios.create({

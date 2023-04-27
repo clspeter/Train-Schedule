@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
 import { ShortCutType } from '../type/types';
+import Constatns from 'expo-constants';
 
 import { AntDesign } from '@expo/vector-icons';
 import SelectStationandTime from '../components/SelectTimeStation';
