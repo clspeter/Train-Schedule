@@ -47,10 +47,20 @@ export const getApiToken = async () => {
       client_id: CLIENT_ID,
       client_secret: CLIENT_SECRET,
     },
-  }).then((res) => {
-    return res.data;
-  });
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log('get api error:' + err);
+      throw err;
+    });
 };
 
 export const apiTrainStatus = (token: string): Promise<AxiosResponse> =>
-  apiRequest(token).get(`/v3/Rail/TRA/TrainLiveBoard`);
+  apiRequest(token)
+    .get(`/v3/Rail/TRA/TrainLiveBoard`)
+    .catch((err) => {
+      console.log('Train Status Error:' + err);
+      throw err;
+    });

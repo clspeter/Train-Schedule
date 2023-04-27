@@ -1,4 +1,15 @@
-import { Text, HStack, Center, VStack, View, Box, Button, FlatList, Pressable } from 'native-base';
+import {
+  Text,
+  HStack,
+  Center,
+  VStack,
+  View,
+  Box,
+  Button,
+  FlatList,
+  Pressable,
+  Toast,
+} from 'native-base';
 import React, { useContext, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
@@ -154,6 +165,24 @@ const ShortCuts = () => {
 };
 
 export default function HomeScreen() {
+  const apiStatus = useRecoilValue(Recoil.apiStatusRecoil);
+
+  const toastApiError = () => {
+    Toast.show({
+      title: 'API錯誤，請清除快取資料後重開',
+      duration: null,
+    });
+  };
+
+  const toastClose = () => {
+    Toast.closeAll();
+  };
+
+  useEffect(() => {
+    if (!apiStatus) toastApiError();
+    else toastClose();
+  }, [apiStatus]);
+
   return (
     <View _dark={{ bg: 'blueGray.900' }} _light={{ bg: 'blueGray.50' }} flex={1}>
       <VStack space={5} alignItems="center" mt="10">

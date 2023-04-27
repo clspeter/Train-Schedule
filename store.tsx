@@ -21,6 +21,11 @@ export const currentTimeRecoil = atom({
   default: dayjs(new Date()).format('HH:mm'),
 });
 
+export const apiStatusRecoil = atom({
+  key: 'apiStatusRecoil',
+  default: true,
+});
+
 export const neareastStationRecoil = atom({
   key: 'neareastStationRecoil',
   default: {} as StatinType,
@@ -100,6 +105,7 @@ export const nextTrainLiveTableRecoil = selector({
     const { NextTrainNorthTable, NextTrainSouthTable } = get(nextTrainTableRecoil);
     const trainLiveBoardData = get(trainLiveBoardDataRecoil);
     //add delayTime to nextTrain
+    console.log(NextTrainNorthTable);
     if (!NextTrainNorthTable || !trainLiveBoardData)
       return {
         NextTrainNorthLiveTable: [],

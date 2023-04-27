@@ -29,6 +29,7 @@ export const RecoilState = () => {
     destination: {} as StatinType,
     time: new Date(),
   });
+  const [apiStatus, setApiStatus] = useRecoilState(Recoil.apiStatusRecoil);
 
   const loadSettingFromStorage = async () => {
     try {
@@ -84,19 +85,24 @@ export const RecoilState = () => {
   };
 
   const getApiTokenAndSave = () => {
-    getApiToken().then((token) => {
-      //get token and set vaild time
-      const vaild_time = new Date();
-      vaild_time.setHours(vaild_time.getHours() + (__DEV__ ? 1 : 23)); //1 for testind, 24 for production
-      setApiToken({
-        access_token: token.access_token,
-        vaild_time,
+    getApiToken()
+      .then((token) => {
+        //get token and set vaild time
+        const vaild_time = new Date();
+        vaild_time.setHours(vaild_time.getHours() + (__DEV__ ? 1 : 23)); //1 for testind, 24 for production
+        setApiToken({
+          access_token: token.access_token,
+          vaild_time,
+        });
+        AsyncStorage.setItem(
+          'apiToken',
+          JSON.stringify({ access_token: token.access_token, vaild_time })
+        );
+      })
+      .catch((err) => {
+        console.log('getApiTokenAndSave error:', err); // 在这里处理错误
+        setApiStatus(false);
       });
-      AsyncStorage.setItem(
-        'apiToken',
-        JSON.stringify({ access_token: token.access_token, vaild_time })
-      );
-    });
   };
 
   const checkAndUpdateToken = async () => {
@@ -198,9 +204,7 @@ export const RecoilState = () => {
   };
 
   useEffect(() => {
-    if (apiToken.access_token === '') {
-      return;
-    }
+    if (apiToken.access_token === '') return;
     updateTrainStatus();
     const interval = setInterval(() => {
       updateTrainStatus();
