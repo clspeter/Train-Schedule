@@ -3,7 +3,7 @@
     "name": "Train-Schedule",
     "slug": "Train-Schedule",
     "owner": "mustpe",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/train.png",
     "userInterfaceStyle": "dark",
@@ -22,7 +22,7 @@
       },
       "supportsTablet": true,
       "bundleIdentifier": "com.mustpe.TrainSchedule",
-      "buildNumber": "2"
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
