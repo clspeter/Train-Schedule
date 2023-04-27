@@ -105,7 +105,6 @@ export const nextTrainLiveTableRecoil = selector({
     const { NextTrainNorthTable, NextTrainSouthTable } = get(nextTrainTableRecoil);
     const trainLiveBoardData = get(trainLiveBoardDataRecoil);
     //add delayTime to nextTrain
-    console.log(NextTrainNorthTable);
     if (!NextTrainNorthTable || !trainLiveBoardData)
       return {
         NextTrainNorthLiveTable: [],
