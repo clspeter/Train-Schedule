@@ -186,7 +186,10 @@ export default function HomeScreen() {
   const toast = useToast();
 
   useEffect(() => {
-    __DEV__ && console.log(Constatns?.expoConfig?.extra);
+    if (__DEV__) {
+      console.log(Constatns?.expoConfig?.extra);
+      console.log('App Version:' + Constatns?.expoConfig?.version);
+    }
   }, []);
 
   const toastApiError = () => {
