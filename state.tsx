@@ -136,11 +136,13 @@ export const RecoilState = () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
+      setNeareastStation(journey.departure);
       return;
     }
     const location = await Location.getLastKnownPositionAsync({});
     if (location === null) {
       console.log('location not found');
+      setNeareastStation(journey.departure);
       return;
     } else {
       const { latitude, longitude } = location.coords;
