@@ -25,8 +25,8 @@ export const DebugView = () => {
     }
   };
 
-  const CLIENT_ID = Constatns?.expoConfig?.extra?.eas?.CLIENT_ID;
-  const CLIENT_SECRET = Constatns?.expoConfig?.extra?.eas?.CLIENT_SECRET;
+  const CLIENT_ID = Constatns?.expoConfig?.extra?.CLIENT_ID;
+  const CLIENT_SECRET = Constatns?.expoConfig?.extra?.CLIENT_SECRET;
 
   return (
     <Center m={5}>
