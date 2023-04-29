@@ -8,13 +8,6 @@
       "distribution": "internal",
       "channel": "development"
     },
-    "preview": {
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      },
-      "channel": "preview"
-    },
     "production": {
       "channel": "production"
     }
