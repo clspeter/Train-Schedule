@@ -4,25 +4,25 @@ import * as Recoil from '../store';
 import { Button, Center, HStack, Text, Toast } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const clearCacheAndGetNewApi = async () => {
-  const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
-  try {
-    await AsyncStorage.clear();
-    setReset(!reset);
-    Toast.show({
-      title: '清除快取資料並重新取得API Token',
-      duration: 3000,
-    });
-    console.log('All storage Cleared.');
-  } catch (e) {
-    console.log('Storage Clear error.'); // clear error
-  }
-};
-
 export const DebugView = () => {
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
   const [apiStatus, setApiStatus] = useRecoilState(Recoil.apiStatusRecoil);
+  const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
+
+  const clearCacheAndGetNewApi = async () => {
+    try {
+      await AsyncStorage.clear();
+      setReset(!reset);
+      Toast.show({
+        title: '清除快取資料並重新取得API Token',
+        duration: 3000,
+      });
+      console.log('All storage Cleared.');
+    } catch (e) {
+      console.log('Storage Clear error.'); // clear error
+    }
+  };
   return (
     <Center m={5}>
       <Text>
