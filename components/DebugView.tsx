@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
 import { Button, Center, HStack, Text, Toast } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constatns from 'expo-constants';
 
 export const DebugView = () => {
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
@@ -31,6 +32,10 @@ export const DebugView = () => {
       </Text>
       <Text>
         Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
+      </Text>
+      <Text>
+        CI: {Constatns?.expoConfig?.extra?.eas?.CLIENT_ID.slice(-5)} CS:{' '}
+        {Constatns?.expoConfig?.extra?.eas?.CLIENT_SECRET.slice(-5)}
       </Text>
       <HStack space={4}>
         <Button
