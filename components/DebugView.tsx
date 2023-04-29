@@ -24,6 +24,10 @@ export const DebugView = () => {
       console.log('Storage Clear error.'); // clear error
     }
   };
+
+  const CLIENT_ID = Constatns?.expoConfig?.extra?.eas?.CLIENT_ID;
+  const CLIENT_SECRET = Constatns?.expoConfig?.extra?.eas?.CLIENT_SECRET;
+
   return (
     <Center m={5}>
       <Text>
@@ -34,8 +38,8 @@ export const DebugView = () => {
         Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
       </Text>
       <Text>
-        CI: {Constatns?.expoConfig?.extra?.eas?.CLIENT_ID.slice(-5)} CS:{' '}
-        {Constatns?.expoConfig?.extra?.eas?.CLIENT_SECRET.slice(-5)}
+        CI: {CLIENT_ID ? `...${CLIENT_ID.slice(-5)}` : 'NULL'} CS:{' '}
+        {CLIENT_SECRET ? `...${CLIENT_SECRET.slice(-5)}` : 'NULL'}
       </Text>
       <HStack space={4}>
         <Button
