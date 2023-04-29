@@ -1,14 +1,18 @@
 import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
-import { Button, Center, HStack, Text } from 'native-base';
+import { Button, Center, HStack, Text, Toast } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const clearStorageData = async () => {
+const clearCacheAndGetNewApi = async () => {
   const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
   try {
     await AsyncStorage.clear();
     setReset(!reset);
+    Toast.show({
+      title: '清除快取資料並重新取得API Token',
+      duration: 3000,
+    });
     console.log('All storage Cleared.');
   } catch (e) {
     console.log('Storage Clear error.'); // clear error
@@ -34,7 +38,7 @@ export const DebugView = () => {
           width="150"
           rounded="3xl"
           onPress={() => {
-            clearStorageData();
+            clearCacheAndGetNewApi();
           }}>
           <HStack space={2} alignItems="center">
             <Text fontSize="md">清除快取資料</Text>
