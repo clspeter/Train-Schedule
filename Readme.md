@@ -1,8 +1,11 @@
 # Train-Schedule
 
-鐵路時刻表
-僅有測試 iPhone 版
-Andorid 未測試
+一個使用React Native開發的鐵路時刻表App
+
+## 如何使用
+
+已上架 [TestFlight](https://testflight.apple.com/join/dsbFuhK8)
+
 
 ## 開發目的
 
@@ -12,10 +15,10 @@ Andorid 未測試
 
 ## 使用技術
 
-1. 主要框架: React Native 0.70 https://reactnative.dev/
-2. 開發工具: Expo https://expo.dev/
-3. UI: Native Base https://nativebase.io/
-4. 全局變數管理: Recoil.js https://recoiljs.org/
+1. 主要框架: React Native 0.70 <https://reactnative.dev/>
+2. 開發&上架工具: Expo <https://expo.dev/> 可使用eas update熱更新
+3. UI: Native Base <https://nativebase.io/>
+4. 全局變數管理: Recoil.js <https://recoiljs.org/>
 5. API 處理: Axios
 
 ## 功能介紹 & 實際畫面
@@ -62,7 +65,7 @@ Andorid 未測試
 state.tsx, store.tsx: 全局變數管理
 apiRequest.ts, dataProcess.tx: API 和資料處理
 
-## 如何使用
+## 如何開發
 
 copy env.example to .env
 填寫 TDX API 金鑰，由一組 Client Id 和 Client Secret 組成
