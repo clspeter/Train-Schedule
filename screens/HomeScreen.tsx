@@ -26,58 +26,8 @@ import dayjs, { duration } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { isArrivalTimeRecoil } from '../store';
 import { ExpoConfig } from 'expo/config';
+import DebugView from '../components/DebugView';
 
-const clearStorageData = async () => {
-  const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
-  try {
-    await AsyncStorage.clear();
-    setReset(!reset);
-    console.log('All storage Cleared.');
-  } catch (e) {
-    console.log('Storage Clear error.'); // clear error
-  }
-};
-
-const DebugView = () => {
-  const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
-  const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
-  const [apiStatus, setApiStatus] = useRecoilState(Recoil.apiStatusRecoil);
-  return (
-    <Center m={5}>
-      <Text>
-        API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
-        Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
-      </Text>
-      <Text>
-        Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
-      </Text>
-      <HStack space={4}>
-        <Button
-          mt="5"
-          width="150"
-          rounded="3xl"
-          onPress={() => {
-            clearStorageData();
-          }}>
-          <HStack space={2} alignItems="center">
-            <Text fontSize="md">清除快取資料</Text>
-          </HStack>
-        </Button>
-        <Button
-          mt="5"
-          width="150"
-          rounded="3xl"
-          onPress={() => {
-            setApiStatus(!apiStatus);
-          }}>
-          <HStack space={2} alignItems="center">
-            <Text fontSize="md">API 錯誤測試</Text>
-          </HStack>
-        </Button>
-      </HStack>
-    </Center>
-  );
-};
 const ShortCuts = () => {
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);

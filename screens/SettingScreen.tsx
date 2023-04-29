@@ -11,6 +11,8 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import DebugView from '../components/DebugView';
+
 export default function SettingScreen() {
   const [appSetting, setAppSetting] = useRecoilState(appSettingRecoil);
   const [reset, setReset] = useRecoilState(resetRecoil);
@@ -32,55 +34,6 @@ export default function SettingScreen() {
       ...appSetting,
       useNearestStationOnStartUp: !appSetting.useNearestStationOnStartUp,
     });
-  };
-  const clearStorageData = async () => {
-    try {
-      await AsyncStorage.clear();
-      setReset(!reset);
-      console.log('All storage Cleared.');
-    } catch (e) {
-      console.log('Storage Clear error.'); // clear error
-    }
-  };
-
-  const DebugView = () => {
-    const apiToken = useRecoilValue(apiTokenRecoil);
-    const trainLiveBoardData = useRecoilValue(trainLiveBoardDataRecoil);
-    return (
-      <Center m={3}>
-        <Text>
-          API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
-          Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
-        </Text>
-        <Text>
-          Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
-        </Text>
-        <HStack space={4}>
-          <Button
-            mt="5"
-            width="150"
-            rounded="3xl"
-            onPress={() => {
-              clearStorageData();
-            }}>
-            <HStack alignItems="center">
-              <Text fontSize="md">清除快取資料</Text>
-            </HStack>
-          </Button>
-          <Button
-            mt="5"
-            width="150"
-            rounded="3xl"
-            onPress={() => {
-              setApiStatus(!apiStatus);
-            }}>
-            <HStack alignItems="center">
-              <Text fontSize="md">API 錯誤測試</Text>
-            </HStack>
-          </Button>
-        </HStack>
-      </Center>
-    );
   };
 
   return (
