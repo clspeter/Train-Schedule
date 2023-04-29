@@ -30,6 +30,7 @@ export const RecoilState = () => {
     time: new Date(),
   });
   const [apiStatus, setApiStatus] = useRecoilState(Recoil.apiStatusRecoil);
+  const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
 
   const loadSettingFromStorage = async () => {
     try {
@@ -130,7 +131,7 @@ export const RecoilState = () => {
     loadSettingFromStorage();
     loadJourney();
     checkAndUpdateToken();
-  }, []);
+  }, [reset]);
 
   const findNearestStation = async (toJourney: boolean) => {
     const { status } = await Location.requestForegroundPermissionsAsync();

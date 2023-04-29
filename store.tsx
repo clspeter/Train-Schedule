@@ -16,6 +16,11 @@ import {
 } from './type/types';
 dayjs.extend(customParseFormat);
 
+export const resetRecoil = atom({
+  key: 'resetRecoil',
+  default: false,
+});
+
 export const currentTimeRecoil = atom({
   key: 'currentTimeRecoil',
   default: dayjs(new Date()).format('HH:mm'),

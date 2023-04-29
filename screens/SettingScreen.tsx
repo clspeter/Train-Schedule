@@ -1,12 +1,20 @@
 import { View, Switch, Text, HStack, Flex, Button, VStack, Center, Box } from 'native-base';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { appSettingRecoil, apiTokenRecoil, trainLiveBoardDataRecoil } from '../store';
+import {
+  appSettingRecoil,
+  apiTokenRecoil,
+  trainLiveBoardDataRecoil,
+  resetRecoil,
+  apiStatusRecoil,
+} from '../store';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingScreen() {
   const [appSetting, setAppSetting] = useRecoilState(appSettingRecoil);
+  const [reset, setReset] = useRecoilState(resetRecoil);
+  const [apiStatus, setApiStatus] = useRecoilState(apiStatusRecoil);
   const saveSettingToStorage = async () => {
     try {
       await AsyncStorage.setItem('setting', JSON.stringify(appSetting));
@@ -28,10 +36,11 @@ export default function SettingScreen() {
   const clearStorageData = async () => {
     try {
       await AsyncStorage.clear();
+      setReset(!reset);
+      console.log('All storage Cleared.');
     } catch (e) {
-      // clear error
+      console.log('Storage Clear error.'); // clear error
     }
-    console.log('All storage Cleared.');
   };
 
   const DebugView = () => {
@@ -46,17 +55,30 @@ export default function SettingScreen() {
         <Text>
           Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
         </Text>
-        <Button
-          mt="5"
-          width="150"
-          rounded="3xl"
-          onPress={() => {
-            clearStorageData();
-          }}>
-          <HStack space={2} alignItems="center">
-            <Text fontSize="md">清除快取資料</Text>
-          </HStack>
-        </Button>
+        <HStack space={4}>
+          <Button
+            mt="5"
+            width="150"
+            rounded="3xl"
+            onPress={() => {
+              clearStorageData();
+            }}>
+            <HStack alignItems="center">
+              <Text fontSize="md">清除快取資料</Text>
+            </HStack>
+          </Button>
+          <Button
+            mt="5"
+            width="150"
+            rounded="3xl"
+            onPress={() => {
+              setApiStatus(!apiStatus);
+            }}>
+            <HStack alignItems="center">
+              <Text fontSize="md">API 錯誤測試</Text>
+            </HStack>
+          </Button>
+        </HStack>
       </Center>
     );
   };

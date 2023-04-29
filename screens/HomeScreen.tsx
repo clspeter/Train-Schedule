@@ -27,14 +27,17 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { isArrivalTimeRecoil } from '../store';
 import { ExpoConfig } from 'expo/config';
 
-const clearAll = async () => {
+const clearStorageData = async () => {
+  const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
   try {
     await AsyncStorage.clear();
+    setReset(!reset);
+    console.log('All storage Cleared.');
   } catch (e) {
-    // clear error
+    console.log('Storage Clear error.'); // clear error
   }
-  console.log('All storage Cleared.');
 };
+
 const DebugView = () => {
   const apiToken = useRecoilValue(Recoil.apiTokenRecoil);
   const trainLiveBoardData = useRecoilValue(Recoil.trainLiveBoardDataRecoil);
@@ -54,7 +57,7 @@ const DebugView = () => {
           width="150"
           rounded="3xl"
           onPress={() => {
-            clearAll();
+            clearStorageData();
           }}>
           <HStack space={2} alignItems="center">
             <Text fontSize="md">清除快取資料</Text>
@@ -68,7 +71,7 @@ const DebugView = () => {
             setApiStatus(!apiStatus);
           }}>
           <HStack space={2} alignItems="center">
-            <Text fontSize="md">開關警告</Text>
+            <Text fontSize="md">API 錯誤測試</Text>
           </HStack>
         </Button>
       </HStack>
