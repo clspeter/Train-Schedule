@@ -1,14 +1,13 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import React, { Suspense, useEffect, useState } from 'react';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import React, { Suspense } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import * as Recoil from '../store';
 import { View, Text, HStack } from 'native-base';
-import { TrainInfoType, Journey } from '../type/types';
+import { TrainInfoType } from '../type/types';
 
 export const TrainInfoScreen = () => {
-  const [delayShown, setDelayShown] = useState<boolean>(false);
-  const [selectTrainNo, setSelectTrainNo] = useRecoilState(Recoil.selectTrainNoRecoil);
+  const setSelectTrainNo = useSetRecoilState(Recoil.selectTrainNoRecoil);
   const trainInfoDetail = useRecoilValue(Recoil.TrainInfoDetailRecoil);
   const trainInfoLive = useRecoilValue(Recoil.TrainInfoLiveRecoil);
   const Journey = useRecoilValue(Recoil.journeyRecoil);

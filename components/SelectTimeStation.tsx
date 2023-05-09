@@ -284,11 +284,9 @@ export default function SelectStationandTime() {
                   display="spinner"
                   testID="dateTimePicker"
                   value={journey.time}
-                  // @ts-expect-error: Componet type not set
                   mode="datetime"
                   locale="zh-TW"
                   minuteInterval={10}
-                  is24Hour
                   onChange={onChange}
                 />
               )}
@@ -331,11 +329,9 @@ export default function SelectStationandTime() {
                     display="spinner"
                     testID="dateTimePicker"
                     value={journey.time}
-                    // @ts-expect-error: Componet type not set
                     mode="datetime"
                     locale="zh-TW"
                     minuteInterval={10}
-                    is24Hour
                     onChange={onChange}
                   />
                 </HStack>

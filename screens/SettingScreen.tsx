@@ -1,13 +1,7 @@
-import { View, Switch, Text, HStack, Flex, Button, VStack, Center, Box } from 'native-base';
+import { View, Switch, Text, HStack, Box } from 'native-base';
 import React, { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  appSettingRecoil,
-  apiTokenRecoil,
-  trainLiveBoardDataRecoil,
-  resetRecoil,
-  apiStatusRecoil,
-} from '../store';
+import { useRecoilState } from 'recoil';
+import { appSettingRecoil } from '../store';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,8 +9,6 @@ import DebugView from '../components/DebugView';
 
 export default function SettingScreen() {
   const [appSetting, setAppSetting] = useRecoilState(appSettingRecoil);
-  const [reset, setReset] = useRecoilState(resetRecoil);
-  const [apiStatus, setApiStatus] = useRecoilState(apiStatusRecoil);
   const saveSettingToStorage = async () => {
     try {
       await AsyncStorage.setItem('setting', JSON.stringify(appSetting));

@@ -1,39 +1,16 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  Box,
-  Text,
-  View,
-  HStack,
-  VStack,
-  Center,
-  Spinner,
-  Container,
-  Toast,
-  Pressable,
-} from 'native-base';
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Box, Text, View, HStack, Spinner, Toast, Pressable } from 'native-base';
+import React, { useState, useEffect } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { apiDailyStationTimetableTodayStation } from '../api/apiRequest';
-import { TimeTableLiveType, TimeTableType } from '../type/DailyStationTimetableTodayStation';
+import { TimeTableLiveType } from '../type/DailyStationTimetableTodayStation';
 
-import {
-  ODTimeTableInfoType,
-  TrainLiveBoardType,
-  homeScreenProp,
-  TopTabNavigatorParamList,
-} from '../type/types';
+import { homeScreenProp } from '../type/types';
 import * as Recoil from '../store';
-import {
-  neareastStationRecoil,
-  nextTrainTableRecoil,
-  nextTrainIndexReciol,
-  nextTrainLiveTableRecoil,
-} from '../store';
+import { nextTrainTableRecoil, nextTrainIndexReciol, nextTrainLiveTableRecoil } from '../store';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
@@ -41,7 +18,6 @@ export default function TimeTableScreen() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const setTrainInfo = useSetRecoilState(Recoil.selectTrainNoRecoil);
-  const isArrivalTime = useRecoilValue(Recoil.isArrivalTimeRecoil);
   const navigation = useNavigation<homeScreenProp>();
   const Tab = createMaterialTopTabNavigator();
   const { NextTrainNorthTable } = useRecoilValue(nextTrainTableRecoil);

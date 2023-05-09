@@ -1,7 +1,6 @@
 import {
   Text,
   HStack,
-  Center,
   VStack,
   View,
   Box,
@@ -12,7 +11,7 @@ import {
   Alert,
   useToast,
 } from 'native-base';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
 import { ShortCutType } from '../type/types';
@@ -21,11 +20,8 @@ import Constatns from 'expo-constants';
 import { AntDesign } from '@expo/vector-icons';
 import SelectStationandTime from '../components/SelectTimeStation';
 import ToggleDarkMode from '../components/ToggleDarkMode';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import dayjs, { duration } from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { isArrivalTimeRecoil } from '../store';
-import { ExpoConfig } from 'expo/config';
+import dayjs from 'dayjs';
+
 import DebugView from '../components/DebugView';
 
 const ShortCuts = () => {

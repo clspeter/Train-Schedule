@@ -1,24 +1,11 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  Box,
-  Text,
-  FlatList,
-  View,
-  HStack,
-  VStack,
-  Center,
-  Spinner,
-  Container,
-  Toast,
-  Pressable,
-} from 'native-base';
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Box, Text, View, HStack, VStack, Center, Spinner, Toast, Pressable } from 'native-base';
+import React, { useState, useEffect } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 
-import { ODTimeTableInfoType, TrainLiveBoardType, homeScreenProp } from '../type/types';
+import { ODTimeTableInfoType, homeScreenProp } from '../type/types';
 import * as Recoil from '../store';
 
 export default function TimeTableScreen() {
