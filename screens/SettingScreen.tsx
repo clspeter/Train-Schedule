@@ -1,5 +1,5 @@
-import { View, Switch, Text, HStack, Box } from 'native-base';
-import React, { useEffect } from 'react';
+import { View, Switch, Text, HStack, Box, Button } from 'native-base';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { appSettingRecoil } from '../store';
 
@@ -9,6 +9,10 @@ import DebugView from '../components/DebugView';
 
 export default function SettingScreen() {
   const [appSetting, setAppSetting] = useRecoilState(appSettingRecoil);
+  const [showDebug, setShowDebug] = React.useState<boolean>(false);
+  const [useNearestStation, setUseNearestStation] = useState<boolean>(
+    appSetting.useNearestStationOnStartUp
+  );
   const saveSettingToStorage = async () => {
     try {
       await AsyncStorage.setItem('setting', JSON.stringify(appSetting));
@@ -22,9 +26,10 @@ export default function SettingScreen() {
   }, [appSetting]);
 
   const handleSwitch = () => {
+    setUseNearestStation(!useNearestStation);
     setAppSetting({
       ...appSetting,
-      useNearestStationOnStartUp: !appSetting.useNearestStationOnStartUp,
+      useNearestStationOnStartUp: !useNearestStation,
     });
   };
 
@@ -36,16 +41,10 @@ export default function SettingScreen() {
             自動以最近車站為出發站
           </Text>
         </Box>
-        <Switch
-          ml={5}
-          size="md"
-          isChecked={appSetting.useNearestStationOnStartUp}
-          onChange={() => {
-            handleSwitch();
-          }}
-        />
+        <Switch ml={5} size="md" isChecked={useNearestStation} onToggle={handleSwitch} />
       </HStack>
-      <DebugView />
+      <Button onPress={() => setShowDebug(!showDebug)}>偵錯資訊</Button>
+      {showDebug && <DebugView />}
     </View>
   );
 }
