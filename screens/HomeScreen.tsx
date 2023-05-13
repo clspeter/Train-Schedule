@@ -11,11 +11,12 @@ import {
   Alert,
   useToast,
 } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import * as Recoil from '../store';
-import { ShortCutType } from '../type/types';
+import { ShortCutType, homeScreenProp } from '../type/types';
 import Constatns from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
 
 import { AntDesign } from '@expo/vector-icons';
 import SelectStationandTime from '../components/SelectTimeStation';
@@ -30,6 +31,9 @@ const ShortCuts = () => {
   const [isNow, setIsNow] = useRecoilState(Recoil.isNowRecoil);
   const [isArrivalTime, setIsArrivalTime] = useRecoilState(Recoil.isArrivalTimeRecoil);
   require('dayjs/locale/zh-tw');
+  const [applyShortcut, setApplyShortcut] = useState<boolean>(false);
+
+  const navigation = useNavigation<homeScreenProp>();
 
   const handleApplyShortcut = (item: ShortCutType) => {
     if (item.isNow) {
@@ -57,6 +61,7 @@ const ShortCuts = () => {
       setIsNow(false);
       setIsArrivalTime(false);
     }
+    setApplyShortcut(true);
   };
 
   const handleNowShortcut = () => {
@@ -74,6 +79,13 @@ const ShortCuts = () => {
     const newShortCuts = shortCuts.filter((item, i) => i !== index);
     setShortCuts(newShortCuts);
   };
+
+  useEffect(() => {
+    if (applyShortcut) {
+      navigation.navigate('TimeTable');
+      setApplyShortcut(false);
+    }
+  }, [applyShortcut]);
 
   const renderItems = ({ item, index }: { item: ShortCutType; index: number }) => {
     return (

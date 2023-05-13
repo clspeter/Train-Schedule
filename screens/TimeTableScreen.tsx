@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 import { ODTimeTableInfoType, homeScreenProp } from '../type/types';
 import * as Recoil from '../store';
@@ -42,6 +43,18 @@ export default function TimeTableScreen() {
     });
     setIsRefreshing(true);
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
+          <Text fontSize={20}>{journey.departure.StationName.Zh_tw}</Text>
+          <AntDesign name="arrowright" size={24} color="white" />
+          <Text fontSize={20}>{journey.destination.StationName.Zh_tw}</Text>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     setTimeout(() => {

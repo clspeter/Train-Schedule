@@ -1,4 +1,4 @@
-import { Ionicons, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, SimpleLineIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import {
