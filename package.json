@@ -1,7 +1,7 @@
 {
   "type": "commonjs",
   "name": "train-schedule",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "node_modules/expo/AppEntry.js",
   "keywords": [
     "react",
@@ -38,7 +38,7 @@
     "expo": "^48.0.0",
     "expo-constants": "~14.2.1",
     "expo-location": "~15.1.1",
-    "expo-status-bar": "~1.4.4",
+    "expo-status-bar": "^1.4.4",
     "expo-updates": "~0.16.4",
     "native-base": "^3.4.28",
     "react": "18.2.0",

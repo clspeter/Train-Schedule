@@ -5,6 +5,7 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import RecoilState from './state';
+import { StatusBar } from 'expo-status-bar';
 
 import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen';
@@ -36,6 +37,7 @@ export default function App(): JSX.Element {
       <NativeBaseProvider theme={theme}>
         <RecoilRoot>
           <RecoilState />
+          <StatusBar style="dark" />
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
               <Stack.Screen
