@@ -44,7 +44,7 @@ export default function App(): JSX.Element {
                 name="Home"
                 component={HomeScreen}
                 options={({ navigation }) => ({
-                  title: '鐵路時刻表',
+                  title: '台鐵快查',
                   headerStyle: {
                     backgroundColor: '#0A1E45',
                   },
