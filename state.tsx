@@ -58,13 +58,13 @@ export const RecoilState = () => {
         console.log('no saved journey, set default');
         setJourney({
           ...journey,
-          departure: StationList.find((station) => station.StationID === '1150') as StatinType,
-          destination: StationList.find((station) => station.StationID === '1000') as StatinType,
+          departure: StationList.find((station) => station.StationID === '1000') as StatinType,
+          destination: StationList.find((station) => station.StationID === '0990') as StatinType,
         });
         setInitalJourney({
           ...journey,
-          departure: StationList.find((station) => station.StationID === '1150') as StatinType,
-          destination: StationList.find((station) => station.StationID === '1000') as StatinType,
+          departure: StationList.find((station) => station.StationID === '1000') as StatinType,
+          destination: StationList.find((station) => station.StationID === '0990') as StatinType,
         });
       } else {
         console.log('saved journey found, load it');

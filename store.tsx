@@ -181,28 +181,33 @@ export const shortCutsRecoil = atom({
   default: [] as ShortCutType[],
 });
 
-const initialStation: StatinType = {
-  StationUID: '',
-  StationID: '',
-  StationName: {
-    Zh_tw: '',
-    En: '',
-  },
-  StationPosition: {
-    PositionLon: 0,
-    PositionLat: 0,
-  },
-  StationAddress: '',
-  StationPhone: '',
-  StationClass: '',
-  StationURL: '',
+const initialStationDeparture: StatinType = {
+  StationUID: 'TRA-1000',
+  StationID: '1000',
+  StationName: { Zh_tw: '臺北', En: 'Taipei' },
+  StationPosition: { PositionLon: 121.51784, PositionLat: 25.04771 },
+  StationAddress: '100230臺北市中正區黎明里北平西路 3 號',
+  StationPhone: '02-23713558',
+  StationClass: '0',
+  StationURL: 'http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1000',
+};
+
+const initialStationDestination: StatinType = {
+  StationUID: 'TRA-0990',
+  StationID: '0990',
+  StationName: { Zh_tw: '松山', En: 'Songshan' },
+  StationPosition: { PositionLon: 121.57807, PositionLat: 25.04936 },
+  StationAddress: '11088臺北市信義區永吉里松山路 11 號B1',
+  StationPhone: '02-27673819',
+  StationClass: '1',
+  StationURL: 'http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/0990',
 };
 
 export const journeyRecoil = atom({
   key: 'journeyRecoil',
   default: {
-    departure: initialStation,
-    destination: initialStation,
+    departure: initialStationDeparture,
+    destination: initialStationDestination,
     time: new Date(),
   } as Journey,
 });
