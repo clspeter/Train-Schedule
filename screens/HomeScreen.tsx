@@ -161,7 +161,7 @@ export default function HomeScreen() {
             <HStack space={2} alignItems="center">
               <Alert.Icon />
               <Text fontSize="md" fontWeight="medium" color="gray.500">
-                API 錯誤，請檢查網路連線
+                網路錯誤，請檢查網路連線
               </Text>
             </HStack>
           </Alert>

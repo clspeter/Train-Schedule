@@ -196,6 +196,7 @@ export const RecoilState = () => {
           return;
         }
         setTrainLiveBoardData(status.data);
+        setApiStatus(true);
         console.log(
           'live status update time: ' +
             new Date(status.data.UpdateTime).toLocaleString(
@@ -221,6 +222,14 @@ export const RecoilState = () => {
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, [apiToken]);
+
+  useEffect(() => {
+    if (apiStatus === true) return;
+    const interval = setInterval(() => {
+      updateTrainStatus();
+    }, 1000 * 5);
+    return () => clearInterval(interval);
+  }, [apiStatus]);
 
   const saveShortcuts = async () => {
     try {
