@@ -31,15 +31,15 @@ export const DebugView = () => {
   return (
     <Center m={5}>
       <Text>
-        API Token: {apiToken.access_token ? `...${apiToken.access_token.slice(-5)}` : 'NULL'} |
-        Vaild: {new Date(apiToken.vaild_time).toLocaleString()}
+        API Token: {apiToken.access_token ? `True` : 'NULL'} | Vaild:{' '}
+        {new Date(apiToken.vaild_time).toLocaleString()}
       </Text>
       <Text>
         Train Status Updated Time: {new Date(trainLiveBoardData.UpdateTime).toLocaleString()}
       </Text>
       <Text>
-        CI: {CLIENT_ID ? `...${CLIENT_ID.slice(-5)}` : 'NULL'} CS:{' '}
-        {CLIENT_SECRET ? `...${CLIENT_SECRET.slice(-5)}` : 'NULL'}
+        CI: {CLIENT_ID ? `True` : 'NULL'} CS: {CLIENT_SECRET ? `True` : 'NULL'} | Version:{' '}
+        {Constatns?.expoConfig?.version} Build: {Constatns?.expoConfig?.ios?.buildNumber}
       </Text>
       <HStack space={4}>
         <Button

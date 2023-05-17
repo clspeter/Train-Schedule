@@ -22,7 +22,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.mustpe.TrainSchedule",
-      "buildNumber": "1"
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -40,6 +40,15 @@
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Your location is needed to get nearby stations.",
+          "locationWhenInUsePermission": "Your location is needed to get nearby stations."
+        }
+      ]
+    ]
   }
 }
