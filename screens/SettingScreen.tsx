@@ -43,7 +43,9 @@ export default function SettingScreen() {
         </Box>
         <Switch ml={5} size="md" isChecked={useNearestStation} onToggle={handleSwitch} />
       </HStack>
-      <Button onPress={() => setShowDebug(!showDebug)}>偵錯資訊</Button>
+      <Button width={160} onPress={() => setShowDebug(!showDebug)} alignSelf="center">
+        偵錯資訊
+      </Button>
       {showDebug && <DebugView />}
     </View>
   );

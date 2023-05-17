@@ -184,7 +184,7 @@ export const RecoilState = () => {
       }
     }
     findNearestStation(true);
-  }, [initalJourney, appSetting.useNearestStationOnStartUp]);
+  }, [appSetting.useNearestStationOnStartUp]);
 
   const updateTrainStatus = () => {
     apiTrainStatus(apiToken.access_token)

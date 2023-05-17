@@ -22,7 +22,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.mustpe.TrainSchedule",
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "adaptiveIcon": {
@@ -45,8 +45,8 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Your location is needed to get nearby stations.",
-          "locationWhenInUsePermission": "Your location is needed to get nearby stations."
+          "locationAlwaysAndWhenInUsePermission": "需要您的定位資訊來提供最近車站資料.",
+          "locationWhenInUsePermission": "需要您的定位資訊來提供最近車站資料."
         }
       ]
     ]
