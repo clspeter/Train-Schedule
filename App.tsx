@@ -37,7 +37,7 @@ export default function App(): JSX.Element {
       <NativeBaseProvider theme={theme}>
         <RecoilRoot>
           <RecoilState />
-          <StatusBar style="dark" />
+          <StatusBar style="light" />
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
               <Stack.Screen
