@@ -4,11 +4,17 @@
 
 ## 如何使用
 
-已上架 [TestFlight](https://testflight.apple.com/join/dsbFuhK8) 歡迎下載測試
+已上架 App Store
+
+[![Download on the App Store](./Readme/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg)](https://apps.apple.com/tw/app/%E5%8F%B0%E9%90%B5%E5%BF%AB%E6%9F%A5/id6448436446)
+
+或
+
+[測試版(TestFlight)](https://testflight.apple.com/join/dsbFuhK8)
 
 ## 開發緣由
 
-前一陣子有搭火車的需求，每次搭火車前要查時刻表都要開啟 App 後都需要多次點擊選站選來選去，浪費很多時間，於是決定開發一款能快速查詢時刻表的 App
+前一陣子有搭火車的需求，每次搭火車前要查時刻表開啟 App 後都需要選站和選時間，點來點去，浪費很多時間，於是決定開發一款能快速查詢時刻表的 App
 
 Train-Schedule 提供快速載入通勤或指定路線的火車時刻表，至多只須點擊一至兩次即可取得時刻表，節省使用者操作時間。
 
