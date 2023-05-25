@@ -1,14 +1,15 @@
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import * as Location from 'expo-location';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { apiTrainStatus, getApiToken } from './api/apiRequest';
+import { updateDelayTime } from './api/dataProcess';
 import * as Recoil from './store';
 import StationList from './type/responselist/StationList.json';
-import { updateDelayTime } from './api/dataProcess';
-import { Journey, StatinType, ODTimeTableInfoType, TrainLiveBoardType } from './type/types';
-import { getApiToken, apiTrainStatus } from './api/apiRequest';
-import { neareastStationRecoil } from './store';
-import dayjs from 'dayjs';
+import { Journey, ODTimeTableInfoType, StatinType, TrainLiveBoardType } from './type/types';
 
 export const RecoilState = () => {
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
@@ -19,7 +20,7 @@ export const RecoilState = () => {
   );
 
   const [currentTime, setCurrentTime] = useRecoilState(Recoil.currentTimeRecoil);
-  const [neareastStation, setNeareastStation] = useRecoilState(neareastStationRecoil);
+  const [neareastStation, setNeareastStation] = useRecoilState(Recoil.neareastStationRecoil);
   const oDTimeTableInfoInitial = useRecoilValue(Recoil.oDTimeTableInfoInitialRecoil);
   const setODTimeTableInfo = useSetRecoilState(Recoil.oDTimeTableInfoRecoil);
   const [apiToken, setApiToken] = useRecoilState(Recoil.apiTokenRecoil);

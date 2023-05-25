@@ -1,26 +1,36 @@
+import { StatusBar } from 'expo-status-bar';
+import { extendTheme, NativeBaseProvider } from 'native-base';
+import React from 'react';
+import { Text } from 'react-native';
+import { RecoilRoot } from 'recoil';
+
+import { Ionicons } from '@expo/vector-icons';
 import { SSRProvider } from '@react-aria/ssr';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NativeBaseProvider, extendTheme } from 'native-base';
-import React from 'react';
-import { RecoilRoot } from 'recoil';
-import RecoilState from './state';
-import { StatusBar } from 'expo-status-bar';
 
-import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen';
+import NextTrainScreen from './screens/NextTrainScreen';
 import SelectDepartureScreen from './screens/SelectDepartureScreen';
 import SelectDestinationScreen from './screens/SelectDestinationScreen';
 import SettingScreen from './screens/SettingScreen';
-import TrainInfoScreen from './screens/TrainInfoScreen';
 import TimeTableScreen from './screens/TimeTableScreen';
-import NextTrainScreen from './screens/NextTrainScreen';
-import { RootStackParamList, homeScreenProp } from './type/types';
+import TrainInfoScreen from './screens/TrainInfoScreen';
+import RecoilState from './state';
+import { homeScreenProp, RootStackParamList } from './type/types';
 
 // Define the config
 const config = {
   useSystemColorMode: false,
   initialColorMode: 'dark',
+};
+interface TextWithDefaultProps extends Text {
+  defaultProps?: { allowFontScaling?: boolean };
+}
+
+(Text as unknown as TextWithDefaultProps).defaultProps = {
+  ...((Text as unknown as TextWithDefaultProps).defaultProps || {}),
+  allowFontScaling: false,
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
