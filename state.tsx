@@ -15,6 +15,7 @@ import { Journey, ODTimeTableInfoType, StatinType, TrainLiveBoardType } from './
 export const RecoilState = () => {
   const [shortCuts, setShortCuts] = useRecoilState(Recoil.shortCutsRecoil);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [initialed, setInitialed] = useState<boolean>(false);
   const [appSetting, setAppSetting] = useRecoilState(Recoil.appSettingRecoil);
   const [trainLiveBoardData, setTrainLiveBoardData] = useRecoilState(
     Recoil.trainLiveBoardDataRecoil
@@ -26,11 +27,6 @@ export const RecoilState = () => {
   const setODTimeTableInfo = useSetRecoilState(Recoil.oDTimeTableInfoRecoil);
   const [apiToken, setApiToken] = useRecoilState(Recoil.apiTokenRecoil);
   const [journey, setJourney] = useRecoilState(Recoil.journeyRecoil);
-  const [initalJourney, setInitalJourney] = useState<Journey>({
-    departure: {} as StatinType,
-    destination: {} as StatinType,
-    time: new Date(),
-  });
   const [apiStatus, setApiStatus] = useRecoilState(Recoil.apiStatusRecoil);
   const [reset, setReset] = useRecoilState(Recoil.resetRecoil);
 
@@ -63,11 +59,6 @@ export const RecoilState = () => {
           departure: StationList.find((station) => station.StationID === '1000') as StatinType,
           destination: StationList.find((station) => station.StationID === '0990') as StatinType,
         });
-        setInitalJourney({
-          ...journey,
-          departure: StationList.find((station) => station.StationID === '1000') as StatinType,
-          destination: StationList.find((station) => station.StationID === '0990') as StatinType,
-        });
       } else {
         console.log('saved journey found, load it');
         const objSavedDD = JSON.parse(savedDD);
@@ -76,14 +67,11 @@ export const RecoilState = () => {
           departure: objSavedDD.departure,
           destination: objSavedDD.destination,
         });
-        setInitalJourney({
-          ...journey,
-          departure: objSavedDD.departure,
-          destination: objSavedDD.destination,
-        });
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setInitialed(true);
     }
   };
 
@@ -103,7 +91,7 @@ export const RecoilState = () => {
         );
       })
       .catch((err) => {
-        console.log('getApiTokenAndSave error:', err); // 在这里处理错误
+        console.log('getApiTokenAndSave error:', err);
         setApiStatus(false);
       });
   };
@@ -162,6 +150,7 @@ export const RecoilState = () => {
       });
       setNeareastStation(nearestStation);
       console.log('nearest station: ' + nearestStation.StationName.Zh_tw);
+      console.log(journey);
       if (toJourney) {
         if (nearestStation.StationID === journey.departure?.StationID) return;
         else if (nearestStation.StationID === journey.destination?.StationID) {
@@ -177,7 +166,7 @@ export const RecoilState = () => {
   };
 
   useEffect(() => {
-    if (initalJourney.departure === null) return;
+    if (!initialed) return;
     else {
       if (!appSetting.useNearestStationOnStartUp) {
         findNearestStation(false);
@@ -185,7 +174,7 @@ export const RecoilState = () => {
       }
     }
     findNearestStation(true);
-  }, [appSetting.useNearestStationOnStartUp]);
+  }, [appSetting.useNearestStationOnStartUp, initialed]);
 
   const updateTrainStatus = () => {
     apiTrainStatus(apiToken.access_token)

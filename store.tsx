@@ -226,8 +226,8 @@ const initialStation: StatinType = {
 export const journeyRecoil = atom({
   key: 'journeyRecoil',
   default: {
-    departure: initialStation,
-    destination: initialStation,
+    departure: initialStationDeparture,
+    destination: initialStationDestination,
     time: new Date(),
   } as Journey,
 });
