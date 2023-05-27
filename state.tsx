@@ -157,6 +157,7 @@ export const RecoilState = () => {
           setJourney({
             ...journey,
             departure: nearestStation,
+            destination: journey.departure,
           });
         } else {
           setJourney({ ...journey, departure: nearestStation });
