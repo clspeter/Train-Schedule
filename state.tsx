@@ -9,6 +9,7 @@ import { apiTrainStatus, getApiToken } from './api/apiRequest';
 import { updateDelayTime } from './api/dataProcess';
 import * as Recoil from './store';
 import StationList from './type/responselist/StationList.json';
+import stationsList from './type/responselist/stationsList.json';
 import { Journey, ODTimeTableInfoType, StatinType, TrainLiveBoardType } from './type/types';
 
 export const RecoilState = () => {
@@ -148,7 +149,7 @@ export const RecoilState = () => {
       return;
     } else {
       const { latitude, longitude } = location.coords;
-      const nearestStation = StationList.reduce((prev, curr) => {
+      const nearestStation = stationsList.Stations.reduce((prev, curr) => {
         const prevDistance = Math.sqrt(
           Math.pow(prev.StationPosition.PositionLat - latitude, 2) +
             Math.pow(prev.StationPosition.PositionLon - longitude, 2)
@@ -167,7 +168,6 @@ export const RecoilState = () => {
           setJourney({
             ...journey,
             departure: nearestStation,
-            destination: journey.departure,
           });
         } else {
           setJourney({ ...journey, departure: nearestStation });

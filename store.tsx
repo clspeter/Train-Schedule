@@ -1,19 +1,22 @@
-import { atom, selector } from 'recoil';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { apiTodayTrainStatusByNo, apiDailyStationTimetableTodayStation } from './api/apiRequest';
-import { TrainInfoType, TrainLiveBaordTrainInfoDisplay, TrainLiveBoardType } from './type/types';
-import { TimeTableLiveType, TimeTableType } from './type/DailyStationTimetableTodayStation';
+import { atom, selector } from 'recoil';
 
+import { apiDailyStationTimetableTodayStation, apiTodayTrainStatusByNo } from './api/apiRequest';
+import { TimeTableLiveType, TimeTableType } from './type/DailyStationTimetableTodayStation';
 import {
-  Journey,
-  ShortCutType,
   ApiToken,
-  TrainLiveBoardDataType,
+  Journey,
   ODTimeTableInfoType,
   SettingType,
+  ShortCutType,
   StatinType,
+  TrainInfoType,
+  TrainLiveBaordTrainInfoDisplay,
+  TrainLiveBoardDataType,
+  TrainLiveBoardType,
 } from './type/types';
+
 dayjs.extend(customParseFormat);
 
 export const resetRecoil = atom({
@@ -203,11 +206,28 @@ const initialStationDestination: StatinType = {
   StationURL: 'http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/0990',
 };
 
+const initialStation: StatinType = {
+  StationUID: '',
+  StationID: '',
+  StationName: {
+    Zh_tw: '',
+    En: '',
+  },
+  StationPosition: {
+    PositionLon: 0,
+    PositionLat: 0,
+  },
+  StationAddress: '',
+  StationPhone: '',
+  StationClass: '',
+  StationURL: '',
+};
+
 export const journeyRecoil = atom({
   key: 'journeyRecoil',
   default: {
-    departure: initialStationDeparture,
-    destination: initialStationDestination,
+    departure: initialStation,
+    destination: initialStation,
     time: new Date(),
   } as Journey,
 });

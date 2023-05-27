@@ -21,7 +21,7 @@ Train-Schedule 提供快速載入通勤或指定路線的火車時刻表，至�
 ## 使用技術
 
 1. 主要框架: React Native 0.70 <https://reactnative.dev/>
-2. 開發&上架工具: Expo <https://expo.dev/> 可使用 eas update 熱更新
+2. 開發&上架工具: Expo <https://expo.dev/> 可熱更新
 3. UI: Native Base <https://nativebase.io/>
 4. 全局變數管理: Recoil.js <https://recoiljs.org/>
 5. API 處理: Axios 連接 TDX(運輸資料流通服務平臺)
