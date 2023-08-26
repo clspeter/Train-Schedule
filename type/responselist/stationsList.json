@@ -182,22 +182,6 @@
       "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1000"
     },
     {
-      "StationUID": "TRA-1001",
-      "StationID": "1001",
-      "StationName": {
-        "Zh_tw": "臺北-環島",
-        "En": "Taipei Surround Island"
-      },
-      "StationPosition": {
-        "PositionLon": 121.51793,
-        "PositionLat": 25.04811
-      },
-      "StationAddress": "100230臺北市中正區",
-      "StationPhone": "",
-      "StationClass": "4",
-      "StationURL": "http://www.railway.gov.tw/tra-tip-web/tip/tip00H/tipH41/viewStaInfo/1001"
-    },
-    {
       "StationUID": "TRA-1010",
       "StationID": "1010",
       "StationName": {

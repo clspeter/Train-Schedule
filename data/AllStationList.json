@@ -121,17 +121,6 @@
     "gps": "25.04771 121.51784"
   },
   {
-    "stationCode": "1001",
-    "stationName": "臺北-環島",
-    "stationEName": "Taipei Surround Island",
-    "name": "臺北-環島",
-    "ename": "Taipei Surround Island",
-    "stationAddrTw": "臺北市中正區",
-    "stationAddrEn": ", Zhongzheng Dist., Taipei City",
-    "stationTel": "",
-    "gps": "25.04811 121.51793"
-  },
-  {
     "stationCode": "1010",
     "stationName": "萬華",
     "stationEName": "Wanhua",
