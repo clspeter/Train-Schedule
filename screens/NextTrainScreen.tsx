@@ -1,7 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Box, Text, View, HStack, Spinner, Toast, Pressable } from 'native-base';
 import React, { useState, useEffect } from 'react';
-import Svg, { Path } from 'react-native-svg';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -55,7 +54,7 @@ export default function TimeTableScreen() {
     if (isLoaded) {
       toastUpdateTrainLiveBoard();
     }
-  }, [oDTimeTableInfo]);
+  }, [isLoaded, oDTimeTableInfo]);
 
   const LoadingSpinner = () => {
     return (
@@ -97,15 +96,6 @@ export default function TimeTableScreen() {
       );
     }
   };
-
-  const SvgArrow = (props: { color: string }) => (
-    <Svg width="100" height="50" fill={props.color} viewBox="-10 10 50 50">
-      <Path
-        scale={0.5}
-        d="m 66.666 65.286 l 11.953 -11.953 h -150 v -6.667 h 150 l -11.949 -11.953 l 4.713 -4.713 l 17.644 17.643 a 3.334 3.334 0 0 1 -0.003 4.713 l -17.644 17.644 l -4.714 -4.714 z"
-      />
-    </Svg>
-  );
 
   const trainNoColor = (TrainTypeCode: string) => {
     switch (TrainTypeCode) {

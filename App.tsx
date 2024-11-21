@@ -6,8 +6,11 @@ import { RecoilRoot } from 'recoil';
 
 import { Ionicons } from '@expo/vector-icons';
 import { SSRProvider } from '@react-aria/ssr';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 
 import HomeScreen from './screens/HomeScreen';
 import NextTrainScreen from './screens/NextTrainScreen';
@@ -17,7 +20,11 @@ import SettingScreen from './screens/SettingScreen';
 import TimeTableScreen from './screens/TimeTableScreen';
 import TrainInfoScreen from './screens/TrainInfoScreen';
 import RecoilState from './state';
-import { homeScreenProp, RootStackParamList } from './type/types';
+import { RootStackParamList } from './type/types';
+
+import { RouteProp } from '@react-navigation/native';
+
+type NextTrainRouteProp = RouteProp<RootStackParamList, 'NextTrain'>;
 
 // Define the config
 const config = {
@@ -53,7 +60,11 @@ export default function App(): JSX.Element {
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={({ navigation }) => ({
+                options={({
+                  navigation,
+                }: {
+                  navigation: NativeStackNavigationProp<RootStackParamList>;
+                }) => ({
                   title: '台鐵快查',
                   headerStyle: {
                     backgroundColor: '#0A1E45',
@@ -158,7 +169,7 @@ export default function App(): JSX.Element {
               <Stack.Screen
                 name="NextTrain"
                 component={NextTrainScreen}
-                options={({ route }) => ({
+                options={({ route }: { route: NextTrainRouteProp }) => ({
                   title: route.params.name,
                   headerStyle: {
                     backgroundColor: '#0A1E45',
