@@ -6,7 +6,7 @@ import { RecoilRoot } from 'recoil';
 
 import { Ionicons } from '@expo/vector-icons';
 import { SSRProvider } from '@react-aria/ssr';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -21,8 +21,6 @@ import TimeTableScreen from './screens/TimeTableScreen';
 import TrainInfoScreen from './screens/TrainInfoScreen';
 import RecoilState from './state';
 import { RootStackParamList } from './type/types';
-
-import { RouteProp } from '@react-navigation/native';
 
 type NextTrainRouteProp = RouteProp<RootStackParamList, 'NextTrain'>;
 
@@ -69,16 +67,6 @@ export default function App(): JSX.Element {
                   headerStyle: {
                     backgroundColor: '#0A1E45',
                   },
-                  headerRight: () => (
-                    <Ionicons
-                      name="md-settings-outline"
-                      size={24}
-                      color="#06b6d4"
-                      onPress={() => {
-                        navigation.navigate('Setting');
-                      }}
-                    />
-                  ),
                   headerTintColor: '#AAAAAA',
                   headerTitleStyle: {
                     fontWeight: 'bold',
